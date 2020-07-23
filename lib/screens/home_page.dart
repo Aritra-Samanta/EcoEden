@@ -238,6 +238,7 @@ class HomePageState extends State<HomePage> {
                 IconButton(
                   icon: Icon(FontAwesomeIcons.trophy),
                   onPressed: () => showModalBottomSheet(
+                    backgroundColor: Colors.transparent,
                     context: context,
                     builder: (BuildContext context) {
                       return DraggableScrollableSheet(
@@ -246,89 +247,111 @@ class HomePageState extends State<HomePage> {
                         minChildSize: 0.5,
                         builder: (BuildContext context,
                             ScrollController scrollController) {
-                          return Container(
-                            color: Colors.white,
-                            child: CustomScrollView(
-                              controller: scrollController,
-                              slivers: <Widget>[
-                                SliverAppBar(
-                                  title: Column(
-                                    children: <Widget>[
-                                      Text("Leaderboard", style: TextStyle(color: Colors.black),),
-                                      SizedBox(
-                                        height: 5.0,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          Expanded(
-                                            child: Text("Rank",
-                                                style: TextStyle(fontSize: 12, color: Colors.black)),
-                                            flex: 8,
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              "Username",
-                                              style: TextStyle(fontSize: 12, color: Colors.black),
+                          return ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30),
+                            ),
+                            child: Container(
+
+                              color: Colors.white,
+                              child: CustomScrollView(
+                                controller: scrollController,
+                                slivers: <Widget>[
+                                  SliverAppBar(
+                                    elevation : 20.0,
+                                    expandedHeight: 75.0,
+
+                                    title: Column(
+                                      children: <Widget>[
+                                        SizedBox( height: 5) ,
+                                        Text("Leaderboard", style: TextStyle(color: Colors.black , fontSize: 22), ),
+                                        SizedBox(height: 10 ),
+
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: Text("Rank",
+                                                  style: TextStyle(fontSize: 15, color: Colors.black)),
+                                              flex: 8,
                                             ),
-                                            flex: 10,
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              "Score",
-                                              style: TextStyle(fontSize: 12, color: Colors.black),
+                                            Expanded(
+                                              child: Text(
+                                                "Username",
+                                                style: TextStyle(fontSize: 15, color: Colors.black),
+                                              ),
+                                              flex: 10,
                                             ),
-                                            flex: 3,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                            Expanded(
+                                              child: Text(
+                                                "Score",
+                                                style: TextStyle(fontSize: 15, color: Colors.black),
+                                              ),
+                                              flex: 3,
+                                            ),
+                                          ],
+                                        ),
+
+                                      ],
+                                    ),
+                                    backgroundColor: Colors.lightGreen,
+                                    automaticallyImplyLeading: false,
+                                    primary: false,
+                                    floating: true,
+                                    pinned: true,
+                                    stretch: true ,
+
+
+//                                  shape :  RoundedRectangleBorder(
+//                                    borderRadius: BorderRadius.only(
+//                                      topLeft: Radius.circular(30.0),
+//                                      topRight: Radius.circular(30.0),
+//                                    )
+////                                    borderRadius: BorderRadius.circular(15.0),
+//                                  ),
+
                                   ),
-                                  backgroundColor: Colors.lightGreen,
-                                  automaticallyImplyLeading: false,
-                                  primary: false,
-                                  floating: true,
-                                  pinned: true,
-                                ),
-                                SliverList(
-                                  delegate: SliverChildBuilderDelegate(
-                                    (context, index) => Padding(
-                                      padding: EdgeInsets.all(2.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            color: renderColors(index + 1),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(6.0))),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 10.0, bottom: 8.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: <Widget>[
-                                              Text(" " * 5 +
-                                                  (index + 1).toString()),
-                                              Expanded(
-                                                child: Text(" " * 14 +
-                                                    _army[index].userName),
-                                                flex: 9,
-                                              ),
-                                              Expanded(
-                                                child: Text(_army[index]
-                                                    .score
-                                                    .toString(), style: TextStyle(fontWeight: FontWeight.bold),),
-                                                flex: 2,
-                                              ),
-                                            ],
+                                  SliverList(
+                                    delegate: SliverChildBuilderDelegate(
+                                      (context, index) => Padding(
+                                        padding: EdgeInsets.fromLTRB(8, 6, 8, 2),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: renderColors(index + 1),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(6.0))),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 20.0, bottom: 20.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(" " * 5 +
+                                                    (index + 1).toString()),
+                                                Expanded(
+                                                  child: Text(" " * 14 +
+                                                      _army[index].userName),
+                                                  flex: 9,
+                                                ),
+                                                Expanded(
+                                                  child: Text(_army[index]
+                                                      .score
+                                                      .toString(), style: TextStyle(fontWeight: FontWeight.bold),),
+                                                  flex: 2,
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
+                                      childCount: _army.length,
                                     ),
-                                    childCount: _army.length,
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },

@@ -98,156 +98,201 @@ class _PostState extends State<Post> {
 
   }
 
+  Widget getCollect(){
+    return Container(
+      child:  ListTile(
+        leading: Padding(
+          padding: const EdgeInsets.fromLTRB( 4.0 ,0.0 , 8.0 , 4.0),
+          child: Row(
+//            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+
+              Container(
+
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  child:  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child:  Text('Collected',
+                        style: TextStyle(color: Colors.yellow,  fontWeight: FontWeight.w500),
+                        textAlign: TextAlign.center,),
+                    ),
+                  )),
+//
+
+
+            ],
+          ),
+        ),
+
+      trailing: Container(
+      child: Text('Helllllllloooooooo'),
+    )
+    )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     //print(widget.upvotes.runtimeType);
-    return Card(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            PostHeader(widget.user),
-            ListTile(
-              //contentPadding: EdgeInsets.all(20.0),
-              leading: Text(
-                widget.description,
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontStyle: FontStyle.normal,
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10,6, 10, 6),
+      child: Card(
+             color : Colors.green[200] ,
+            shadowColor :  Colors.grey ,
+          elevation: 20.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              PostHeader(widget.user),
+              Padding(
+                padding: const EdgeInsets.fromLTRB( 4.0 ,0.0 , 8.0 , 4.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+
+                    Container(
+                      width : MediaQuery.of(context).size.width / 1.6 ,
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                        child:  Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child:  Text(widget.description,
+                              style: TextStyle(color: Colors.black,  fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.center,),
+                          ),
+                        )),
+                    Icon(
+                      FontAwesomeIcons.trashAlt,
+                      color: getColor(),
+                    ),
+
+
+                  ],
                 ),
-                textAlign: TextAlign.left,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB( 4.0 ,0.0 , 8.0 , 4.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-
-                  Container(
-                      decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                      child:  Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child:  Text(widget.description,
-                            style: TextStyle(color: Colors.black,  fontWeight: FontWeight.w500),
-                            textAlign: TextAlign.center,),
-                        ),
-                      )),
-                  Icon(
-                    FontAwesomeIcons.trashAlt,
-                    color: getColor(),
-                  ),
-
-                ],
-              ),
-            ),
-            GestureDetector(
-              onDoubleTap: () {
-                setState(() {
-                  widget.upvotes = widget.trashed ? widget.upvotes  :widget.upvotes + 1 ;
-                  widget.downvotes =  widget.disliked ? widget.downvotes - 1 : widget.downvotes;
-                  widget.trashed = true;
-                  widget.disliked = widget.disliked ? !widget.disliked : false;
-                  widget.showHeartOverlay = true;
-                  if (widget.showHeartOverlay) {
-                    Timer(const Duration(
-                        milliseconds: 180), () {
-                      setState(() {
-                        widget.showHeartOverlay = false;
-                      });
+              SizedBox( height : 8 ) ,
+              GestureDetector(
+                onDoubleTap: () {
+                  setState(() {
+                    widget.upvotes = widget.trashed ? widget.upvotes  :widget.upvotes + 1 ;
+                    widget.downvotes =  widget.disliked ? widget.downvotes - 1 : widget.downvotes;
+                    widget.trashed = true;
+                    widget.disliked = widget.disliked ? !widget.disliked : false;
+                    widget.showHeartOverlay = true;
+                    if (widget.showHeartOverlay) {
+                      Timer(const Duration(
+                          milliseconds: 180), () {
+                        setState(() {
+                          widget.showHeartOverlay = false;
+                        });
+                      }
+                      );
                     }
-                    );
-                  }
-                  vote_function();
-                });
-              },
-              child: Stack(
-                alignment: Alignment.center,
-                children: <Widget>[
-                  //Image.asset('assets/profile.jpg'),
-                  widget.imageUrl== null
-                      ? Image.asset('assets/profile.jpg')
-                      : CachedNetworkImage(
-                      imageUrl: widget.imageUrl),
-                  widget.showHeartOverlay ?
-                  Icon(
-                    FontAwesomeIcons.solidTrashAlt, color: Colors.white54,
-                    size: 80.0,)
-                      : Container(),
-                ],
+                    vote_function();
+                  });
+                },
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    //Image.asset('assets/profile.jpg'),
+                    widget.imageUrl== null
+                        ? Image.asset('assets/profile.jpg')
+                        : CachedNetworkImage(
+                        imageUrl: widget.imageUrl),
+                    widget.showHeartOverlay ?
+                    Icon(
+                      FontAwesomeIcons.solidTrashAlt, color: Colors.white54,
+                      size: 80.0,)
+                        : Container(),
+                  ],
+                ),
               ),
-            ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 5.0 , vertical: 2.0),
-                  leading: Wrap(
-                    spacing: 6.0,
-                    children: <Widget>[
-                      Text(" ${widget.upvotes} upvotes",style: TextStyle(fontWeight: FontWeight.w400),),
-                      Text(" ${widget.downvotes} downvotes",style: TextStyle(fontWeight: FontWeight.w400),),
-                    ],
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+//                ListTile(
+//                  contentPadding: EdgeInsets.symmetric(horizontal: 5.0 , vertical: 2.0),
+//                  leading: Wrap(
+//                    spacing: 6.0,
+//                    children: <Widget>[
+//                      Text(" ${widget.upvotes} upvotes",style: TextStyle(fontWeight: FontWeight.w400),),
+//                      Text(" ${widget.downvotes} downvotes",style: TextStyle(fontWeight: FontWeight.w400),),
+//                    ],
+//                  ),
+//                ),
+                  SizedBox(
+                    height: 0.0,
+                    child: Divider(
+                      color: Color(0xff4E4F50),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 0.0,
-                  child: Divider(
-                    color: Color(0xff4E4F50),
+                  ListTile(
+                    leading: Wrap(
+                      //mainAxisSize: MainAxisSize.min,
+                      spacing: 1.0,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 18,0, 0),
+                          child: Text(" ${widget.upvotes}",style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),),
+                        ),
+
+                        IconButton(
+                            iconSize: 25.0,
+                            icon: Icon(widget.trashed ? FontAwesomeIcons.solidThumbsUp : FontAwesomeIcons.thumbsUp,
+                                color: widget.trashed ? Colors.green : Colors.grey),
+                            onPressed: () {
+                              setState((){
+                                widget.upvotes = widget.trashed ? widget.upvotes - 1 :widget.upvotes + 1 ;
+                                widget.downvotes = widget.disliked ? widget.downvotes - 1 : widget.downvotes;
+                                widget.trashed = !widget.trashed;
+                                widget.disliked = widget.disliked ? !widget.disliked : false;
+                                vote_function();
+                              });
+                            }),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 16 ,0  ,0  ),
+                          child: Text(" ${widget.downvotes}",style: TextStyle(fontWeight: FontWeight.w400 ,fontSize: 18),),
+                        ),
+                        IconButton(
+                            iconSize: 25.0,
+                            icon: Icon(widget.disliked ? FontAwesomeIcons.solidThumbsDown : FontAwesomeIcons.thumbsDown,
+                                color: widget.disliked ? Colors.red : Colors.grey),
+                            onPressed: () {
+                              setState(() {
+                                widget.downvotes = widget.disliked ? widget.downvotes - 1 :widget.downvotes + 1 ;
+                                widget.upvotes =  widget.trashed ? widget.upvotes - 1 : widget.upvotes;
+                                widget.disliked = !widget.disliked;
+                                widget.trashed = widget.trashed ? !widget.trashed : false;
+                                vote_function();
+                              });
+                            }),
+                      ],
+                    ),
+                    trailing: IconButton(
+                      iconSize: 27.0,
+                      icon: Icon(Icons.location_on,color:Colors.red) ,
+                      onPressed: (){
+                        print("On pressed" + widget.lat  + widget.lng);
+                        print("Global" + global_store.state.lat + global_store.state.lng);
+                        global_store.dispatch(new LatAction(widget.lat));
+                        global_store.dispatch(new LngAction(widget.lng));
+                        print("Global" + global_store.state.lat + global_store.state.lng);
+                        global_store.dispatch(new NavigatePushAction(AppRoutes.map));
+                      },
+                    ),
                   ),
-                ),
-                ListTile(
-                  leading: Wrap(
-                    //mainAxisSize: MainAxisSize.min,
-                    spacing: 1.0,
-                    children: <Widget>[
-                      IconButton(
-                          iconSize: 25.0,
-                          icon: Icon(widget.trashed ? FontAwesomeIcons.solidThumbsUp : FontAwesomeIcons.thumbsUp,
-                              color: widget.trashed ? Colors.green : Colors.grey),
-                          onPressed: () {
-                            setState((){
-                              widget.upvotes = widget.trashed ? widget.upvotes - 1 :widget.upvotes + 1 ;
-                              widget.downvotes = widget.disliked ? widget.downvotes - 1 : widget.downvotes;
-                              widget.trashed = !widget.trashed;
-                              widget.disliked = widget.disliked ? !widget.disliked : false;
-                              vote_function();
-                            });
-                          }),
-                      IconButton(
-                          iconSize: 25.0,
-                          icon: Icon(widget.disliked ? FontAwesomeIcons.solidThumbsDown : FontAwesomeIcons.thumbsDown,
-                              color: widget.disliked ? Colors.red : Colors.grey),
-                          onPressed: () {
-                            setState(() {
-                              widget.downvotes = widget.disliked ? widget.downvotes - 1 :widget.downvotes + 1 ;
-                              widget.upvotes =  widget.trashed ? widget.upvotes - 1 : widget.upvotes;
-                              widget.disliked = !widget.disliked;
-                              widget.trashed = widget.trashed ? !widget.trashed : false;
-                              vote_function();
-                            });
-                          }),
-                    ],
-                  ),
-                  trailing: IconButton(
-                    iconSize: 27.0,
-                    icon: Icon(Icons.location_on,color:Colors.red) ,
-                    onPressed: (){
-                      print("On pressed" + widget.lat  + widget.lng);
-                      print("Global" + global_store.state.lat + global_store.state.lng);
-                      global_store.dispatch(new LatAction(widget.lat));
-                      global_store.dispatch(new LngAction(widget.lng));
-                      print("Global" + global_store.state.lat + global_store.state.lng);
-                      global_store.dispatch(new NavigatePushAction(AppRoutes.map));
-                    },
-                  ),
-                ),
-              ],
-            )
-          ],
-        )
+                  Divider(),
+                  getCollect()
+                ],
+              )
+            ],
+          )
+      ),
     );
   }
 }
