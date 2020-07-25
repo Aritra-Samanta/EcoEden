@@ -6,6 +6,7 @@ import 'package:ecoeden/services/webservice.dart';
 import 'package:ecoeden/models/post.dart';
 import 'package:http/http.dart' as http;
 import 'package:async/async.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Profile Page
 
@@ -38,9 +39,9 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   TextStyle labelStyle =
-      TextStyle(color: Colors.grey, fontSize: 8, fontWeight: FontWeight.w500);
+  TextStyle(color: Colors.grey, fontSize: 8, fontWeight: FontWeight.w500);
   TextStyle normalStyle =
-      TextStyle(color: Colors.black, fontSize: 8, fontWeight: FontWeight.w500);
+  TextStyle(color: Colors.black, fontSize: 8, fontWeight: FontWeight.w500);
 
   TextStyle selectStyle(String status) {
     if (status.compareTo('verified') == 0) {
@@ -58,67 +59,146 @@ class _ProfilePageState extends State<ProfilePage> {
     Widget showProfile() {
       print("In Profile");
       return Column(
-        mainAxisSize: MainAxisSize.max,
+//        mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          Container(
-            padding: EdgeInsets.fromLTRB(8.0, 12.0, 8.0, 8.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Hero(
-                  tag: "profile",
-                  child: CircleAvatar(
-                    radius: 38.0,
-                    backgroundColor: Colors.lightBlueAccent,
-                    child: Text(
-                      (global_store.state.user.firstName)[0].toString(),
-                      style: TextStyle(fontSize: 40.0),
-                    ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 6, 0, 0),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text('You' , style: TextStyle( color: Colors.black , fontSize : 30.0,
+                    fontWeight: FontWeight.bold), textAlign: TextAlign.left,)
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0 ),
+            child: Center(
+              child : Hero(
+                tag: "profile",
+                child: CircleAvatar(
+                  radius: 38.0,
+                  backgroundColor: Colors.lightBlueAccent,
+                  child: Text(
+                    (global_store.state.user.firstName)[0].toString(),
+                    style: TextStyle(fontSize: 40.0),
                   ),
                 ),
-                Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Text(
-                          global_store.state.user.firstName +
-                              " " +
-                              global_store.state.user.lastName,
-                          style: TextStyle(
-                              fontSize: 20.0, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Text(global_store.state.user.email),
-                      Text(global_store.state.user.mobile),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: Divider(
-              color: Colors.grey,
-              thickness: 1.0,
-            ),
-          ),
-          Center(
-            child: Text(
-              "Posts",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
               ),
             ),
           ),
-          Divider(
-            color: Colors.grey,
-            thickness: 1.0,
+
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 15, 0,  0),
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Text(
+                      global_store.state.user.firstName +
+                          " " +
+                          global_store.state.user.lastName,
+                      style: TextStyle(
+                          fontSize: 25.0, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Text(global_store.state.user.email,  style: TextStyle(
+                      fontSize: 15.0, fontWeight: FontWeight.bold),
+
+                  ),
+//                        Text(global_store.state.user.mobile),
+                ],
+              ),
+            ),
           ),
+
+          Padding(
+            padding: const EdgeInsets.fromLTRB(70, 20, 70, 10),
+            child: Center(
+              child: Table(
+                border : TableBorder(
+                    horizontalInside: BorderSide(color: Colors.black),
+                    verticalInside: BorderSide(color: Colors.black)
+                ),
+                children: [
+                  TableRow(
+                      children: [
+
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                          child: Center(child:
+                          CircleAvatar(
+                            radius: 18.0,
+                            backgroundColor: Colors.red,
+                            child: Icon(
+
+                              FontAwesomeIcons.solidTrashAlt,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                          child: Center(child:
+                          CircleAvatar(
+                            radius: 18.0,
+                            backgroundColor: Colors.yellow,
+                            child: Icon(
+
+                              FontAwesomeIcons.solidTrashAlt,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                          child: Center(child:
+                          CircleAvatar(
+                            radius: 18.0,
+                            backgroundColor: Colors.green,
+                            child: Icon(
+
+                              FontAwesomeIcons.solidTrashAlt,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ),
+                          ),
+                        ),
+                      ]
+                  ),
+                  TableRow(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(child: Text(global_store.state.user.posts.toString())),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(child: Text(global_store.state.user.collections.toString())),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(child: Text(global_store.state.user.verifications.toString())),
+                        ),
+                      ]
+                  ),
+
+                ],
+              ),
+            ),
+          ),
+
+
+
+
+
           Expanded(
             flex: 1,
             child: ListView.builder(
@@ -146,7 +226,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+//        title: Text('Profile'),
+          backgroundColor: Color.fromRGBO(250,250, 250, 1),
+          elevation: 0,
+          leading : BackButton(
+              color: Colors.black
+          )
       ),
       body: Stack(
         children: <Widget>[

@@ -36,7 +36,8 @@ class User{
   }
 
 
-  User copyWith({ String firstName, String lastName , String userName , String email, String mobile , String password ,int id}) {
+  User copyWith({ String firstName, String lastName , String userName , String email, String mobile , String password ,
+    int id, int score, int collections, int posts, int verifications}) {
     return new User(
         firstName: firstName ?? this.firstName ,
         lastName : lastName ?? this.lastName ,

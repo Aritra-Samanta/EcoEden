@@ -50,38 +50,33 @@ class _PostState extends State<Post> {
 
   @override
   void initState() {
-    // ignore: todo
-    // TODO: implement initState
     super.initState();
     set_function();
+  }
+
+  String getImg() {
+    print("Trashed : " + widget.trashed.toString());
+    print("Upvotes : " + widget.upvotes.toString());
+    return widget.imageUrl;
   }
 
   // ignore: non_constant_identifier_names
   void set_function() async {
     if (widget.activity.length == 0 || widget.activity[0]['vote'] == 0) {
-      setState(() {
-        widget.disliked = false;
-        widget.trashed = false;
-      });
+      widget.disliked = false;
+      widget.trashed = false;
     } else if (widget.activity[0]['vote'] > 0) {
-      setState(() {
-        widget.disliked = false;
-        widget.trashed = true;
-      });
+      widget.disliked = false;
+      widget.trashed = true;
     } else {
-      setState(() {
-        widget.disliked = true;
-        widget.trashed = false;
-      });
+      widget.disliked = true;
+      widget.trashed = false;
     }
-    bool temp = await setWidget(double.parse(widget.lat), double.parse(widget.lng));
-    setState(() {
-      render = temp;
-    });
+    render = await ifCollect(double.parse(widget.lat), double.parse(widget.lng));
   }
 
   // ignore: non_constant_identifier_names
-  void vote_function() async {
+  Future<void> vote_function() async {
     print("inside vote");
     var json = new Map<String, dynamic>();
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -92,30 +87,28 @@ class _PostState extends State<Post> {
       json['vote'] = "1";
     else if (widget.disliked == true && widget.trashed == false)
       json['vote'] = "-1";
-//    String json = '{"upvotes": "${widget.upvotes}","downvotes":"${widget.downvotes}"}';
     if (widget.activity.length != 0) {
       String url = base_url + widget.activity[0]['id'].toString() + "/";
       var response = await http.patch(url,
           headers: {HttpHeaders.authorizationHeader: "Token " + jwt},
           body: json);
       print(response.body.toString());
-      if (response.statusCode == 200) print("Patch successful");
+      if (response.statusCode >= 200 && response.statusCode < 400) print("Patch successful");
     } else {
       json['user'] = "http://api.ecoeden.xyz/users/" +
           global_store.state.user.id.toString() +
           "/";
       json['photo'] =
-          "http://api.ecoeden.xyz/photos/" + widget.id.toString() + "/";
+          "http://api.ecoeen.xyz/photos/" + widget.id.toString() + "/";
       var response = await http.post(base_url,
           headers: {HttpHeaders.authorizationHeader: "Token " + jwt},
           body: json);
       print(response.body.toString());
-      if (response.statusCode == 200) print("Post successful");
+      if (response.statusCode >= 200 && response.statusCode < 400) print("Post successful");
     }
-    set_function();
   }
 
-  void collect() async {
+  Future<void> collect() async {
     var json = new Map<String, dynamic>();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String jwt = prefs.getString('user');
@@ -124,10 +117,9 @@ class _PostState extends State<Post> {
     json['photo'] =
         "http://api.ecoeden.xyz/photos/" + widget.id.toString() + "/";
     var response = await http.post('https://api.ecoeden.xyz/trash_collection/',
-        headers: {HttpHeaders.authorizationHeader: "Token " + jwt},
-        body: json);
+        headers: {HttpHeaders.authorizationHeader: "Token " + jwt}, body: json);
     print(response.statusCode);
-    if(response.statusCode == 400) {
+    if (response.statusCode == 201) {
       setState(() {
         showRow = true;
       });
@@ -142,14 +134,14 @@ class _PostState extends State<Post> {
     }
   }
 
-  Future<bool> setWidget(double lat, double long) async {
+  Future<bool> ifCollect(double lat, double long) async {
     res = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     double lat2 = res.latitude;
     double long2 = res.longitude;
     print("Latitude : " + lat2.toString());
     print("Longitude : " + long2.toString());
-    if((lat - lat2).abs() <= 1.0 && (long - long2).abs() <= 1.0) return true;
+    if ((lat - lat2).abs() <= 1.0 && (long - long2).abs() <= 1.0) return true;
     return false;
   }
 
@@ -287,16 +279,12 @@ class _PostState extends State<Post> {
               ),
               SizedBox(height: 8),
               GestureDetector(
-                onDoubleTap: () {
-                  setState(() {
-                    widget.upvotes =
-                        widget.trashed ? widget.upvotes : widget.upvotes + 1;
-                    widget.downvotes = widget.disliked
-                        ? widget.downvotes - 1
-                        : widget.downvotes;
+                onDoubleTap: () async {
+                  setState(() async {
+                    widget.upvotes = widget.trashed ? widget.upvotes : widget.upvotes + 1;
+                    widget.downvotes = widget.disliked ? widget.downvotes - 1 : widget.downvotes;
                     widget.trashed = true;
-                    widget.disliked =
-                        widget.disliked ? !widget.disliked : false;
+                    widget.disliked = false;
                     widget.showHeartOverlay = true;
                     if (widget.showHeartOverlay) {
                       Timer(const Duration(milliseconds: 180), () {
@@ -305,16 +293,17 @@ class _PostState extends State<Post> {
                         });
                       });
                     }
-                    vote_function();
+                    await vote_function();
                   });
                 },
                 child: Stack(
                   alignment: Alignment.center,
                   children: <Widget>[
+                    Image.network(getImg()),
                     //Image.asset('assets/profile.jpg'),
-                    widget.imageUrl == null
-                        ? Image.asset('assets/profile.jpg')
-                        : CachedNetworkImage(imageUrl: widget.imageUrl),
+//                    widget.imageUrl == null
+//                        ? Image.asset(getImg())
+//                        : CachedNetworkImage(imageUrl: widget.imageUrl),
                     widget.showHeartOverlay
                         ? Icon(
                             FontAwesomeIcons.solidTrashAlt,
@@ -328,16 +317,6 @@ class _PostState extends State<Post> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-//                ListTile(
-//                  contentPadding: EdgeInsets.symmetric(horizontal: 5.0 , vertical: 2.0),
-//                  leading: Wrap(
-//                    spacing: 6.0,
-//                    children: <Widget>[
-//                      Text(" ${widget.upvotes} upvotes",style: TextStyle(fontWeight: FontWeight.w400),),
-//                      Text(" ${widget.downvotes} downvotes",style: TextStyle(fontWeight: FontWeight.w400),),
-//                    ],
-//                  ),
-//                ),
                   SizedBox(
                     height: 0.0,
                     child: Divider(
@@ -351,7 +330,6 @@ class _PostState extends State<Post> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Wrap(
-                            //mainAxisSize: MainAxisSize.min,
                             spacing: 1.0,
                             children: <Widget>[
                               Padding(
@@ -359,7 +337,8 @@ class _PostState extends State<Post> {
                                 child: Text(
                                   " ${widget.upvotes}",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w400, fontSize: 18),
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18),
                                 ),
                               ),
                               IconButton(
@@ -371,27 +350,22 @@ class _PostState extends State<Post> {
                                       color: widget.trashed
                                           ? Colors.green
                                           : Colors.grey),
-                                  onPressed: () {
+                                  onPressed: () async {
                                     setState(() {
-                                      widget.upvotes = widget.trashed
-                                          ? widget.upvotes - 1
-                                          : widget.upvotes + 1;
-                                      widget.downvotes = widget.disliked
-                                          ? widget.downvotes - 1
-                                          : widget.downvotes;
+                                      widget.upvotes = widget.trashed ? widget.upvotes - 1 : widget.upvotes + 1;
+                                      widget.downvotes = widget.disliked ? widget.downvotes - 1 : widget.downvotes;
                                       widget.trashed = !widget.trashed;
-                                      widget.disliked = widget.disliked
-                                          ? !widget.disliked
-                                          : false;
-                                      vote_function();
+                                      widget.disliked = false;
                                     });
+                                    await vote_function();
                                   }),
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
                                 child: Text(
                                   " ${widget.downvotes}",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w400, fontSize: 18),
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18),
                                 ),
                               ),
                               IconButton(
@@ -403,31 +377,27 @@ class _PostState extends State<Post> {
                                       color: widget.disliked
                                           ? Colors.red
                                           : Colors.grey),
-                                  onPressed: () {
+                                  onPressed: () async {
                                     setState(() {
-                                      widget.downvotes = widget.disliked
-                                          ? widget.downvotes - 1
-                                          : widget.downvotes + 1;
-                                      widget.upvotes = widget.trashed
-                                          ? widget.upvotes - 1
-                                          : widget.upvotes;
+                                      widget.downvotes = widget.disliked ? widget.downvotes - 1 : widget.downvotes + 1;
+                                      widget.upvotes = widget.trashed ? widget.upvotes - 1 : widget.upvotes;
                                       widget.disliked = !widget.disliked;
-                                      widget.trashed =
-                                          widget.trashed ? !widget.trashed : false;
-                                      vote_function();
+                                      widget.trashed = false;
                                     });
+                                    await vote_function();
                                   }),
                             ],
                           ),
                           GestureDetector(
-                            child: render ? Image.asset("assets/splash.jpg", height: 60, width: 120) : Image.asset("assets/maps.png", height: 60, width: 120),
+                            child: render
+                                ? Image.asset("assets/splash.jpg", height: 60, width: 120)
+                                : Image.asset("assets/maps.png", height: 60, width: 120),
                             onTap: () async {
-                              if(render) {
+                              if (render) {
                                 await collect();
                                 print("Tapped");
                                 print(showRow);
-                              }
-                              else {
+                              } else {
                                 global_store.dispatch(new LatAction(widget.lat));
                                 global_store.dispatch(new LngAction(widget.lng));
                                 global_store.dispatch(new NavigatePushAction(AppRoutes.map));

@@ -79,6 +79,7 @@ class HomePageState extends State<HomePage> {
       global_store.dispatch(new userAction(user));
       print("User" + user.id.toString());
       print("User" + user.firstName.toString());
+      print("User score : " + user.verifications.toString());
     } else {
       print("Exception !!!");
       throw Exception('Failed to load data!');

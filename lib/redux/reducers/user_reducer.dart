@@ -19,6 +19,10 @@ User _user(User prev_user, userAction action){
       email: action.user.email,
       mobile: action.user.mobile ,
       password :null ,
+      verifications: action.user.verifications,
+      collections: action.user.collections,
+      score: action.user.score,
+      posts: action.user.posts,
       id :action.user.id
   );
 }
