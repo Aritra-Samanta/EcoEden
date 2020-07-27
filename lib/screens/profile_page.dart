@@ -63,14 +63,15 @@ class _ProfilePageState extends State<ProfilePage> {
 //        mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+            padding: const EdgeInsets.fromLTRB(5, 25, 0, 0),
 
             child: Align(
               alignment: Alignment.centerLeft,
               child: IconButton(
                 icon :Icon(
                     Icons.arrow_back,
-                    size : 30
+                    color: Colors.black,
+                    size : 28
                 ),
                 onPressed: (){
                   Navigator.of(context).pop();
@@ -81,16 +82,16 @@ class _ProfilePageState extends State<ProfilePage> {
 
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+            padding: const EdgeInsets.fromLTRB(40, 10, 0, 0),
             child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text('You' , style: TextStyle( color: Colors.black , fontSize : 40.0,
+                child: Text('Profile' , style: TextStyle( color: Colors.black , fontSize : 40.0,
                     fontWeight: FontWeight.bold), textAlign: TextAlign.left,)
             ),
           ),
 
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0 ),
+            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0 ),
             child: Center(
               child : Hero(
                 tag: "profile",

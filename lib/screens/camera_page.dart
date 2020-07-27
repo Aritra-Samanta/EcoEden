@@ -60,12 +60,6 @@ class _ImageInput extends State<ImageInput> {
     final file = await http.MultipartFile.fromPath('image', image.path,
         contentType: MediaType(mimeTypeData[0], mimeTypeData[1]));
 
-    // Explicitly pass the extension of the image with request body
-    // Since image_picker has some bugs due which it mixes up
-    // image extension with file name like this filenamejpge
-    // Which creates some problem at the server side to manage
-    // or verify the file extension
-//    imageUploadRequest.fields['ext'] = mimeTypeData[1];
     imageUploadRequest.headers['Authorization'] = 'Token ' + jwt;
     imageUploadRequest.fields['user'] = 'http://api.ecoeden.xyz/users/' +
         global_store.state.user.id.toString() +
@@ -164,13 +158,9 @@ class _ImageInput extends State<ImageInput> {
       // If image is picked by the user then show a upload btn
 
       btnWidget = FlatButton(
-        onPressed: () =>
-        {_startUploading},
-        child: Text(
-          '+ UPLOAD',
-          style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 20),
+        onPressed: () => {_startUploading},
+        child: Expanded(
+          child: Image.asset("assets/upload_button.png"),
         ),
       );
     }
@@ -185,39 +175,32 @@ class _ImageInput extends State<ImageInput> {
       // File is being uploaded then show a progress indicator
       btnWidget = Container();
     } else if (!_isUploading && _imageFile != null) {
-      btnWidget = Padding(
-        padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
-        child: TextFormField(
-          controller: _descriptionController,
-          maxLines: 1,
-          //keyboardType: TextInputType.emailAddress,
-          autofocus: false,
-          decoration: InputDecoration(
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.black),
-            ),
-            hintText: 'Add a description to your image',
-//          icon: Icon(
-//            Icons.account_circle,
-//            color: Colors.grey,
-//          ),
-          ),
-//          validator: (value) =>
-//          value.isEmpty
-//              ? 'Email cant\'t be empty.'
-//              : null,
-          //onSaved: (value) => _email = value.trim(),
-        ),
+      btnWidget = TextFormField(
+        cursorColor: Colors.black54,
+        controller: _descriptionController,
+        maxLines: 2,
+        autofocus: false,
+        maxLengthEnforced: true,
+        decoration: new InputDecoration(
+            hintStyle: TextStyle(fontSize: 17),
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            contentPadding:
+            EdgeInsets.only(left: 10, bottom: 0, top: 10, right: 10),
+            hintText: "Add a description to your image"),
       );
     }
     return btnWidget;
   }
 
-  Widget showUploadButton(BuildContext context) {
+  Widget cameraWidget(BuildContext context) {
     return Column(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+          padding: const EdgeInsets.fromLTRB(5, 25, 0, 0),
           child: Align(
             alignment: Alignment.centerLeft,
             child: IconButton(
@@ -228,14 +211,14 @@ class _ImageInput extends State<ImageInput> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+          padding: const EdgeInsets.fromLTRB(35, 10, 0, 0),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
               'Photos',
               style: TextStyle(
                   color: Colors.black,
-                  fontSize: 54.0,
+                  fontSize: 50.0,
                   fontWeight: FontWeight.bold),
             ),
           ),
@@ -259,22 +242,21 @@ class _ImageInput extends State<ImageInput> {
               child: Column(
                 children: <Widget>[
                   Container(
-                    height: 420,
+                    height: MediaQuery.of(context).size.height / 1.55,
                     width: 350,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.blueGrey[200]),
                     child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Container(
-                        color: Colors.transparent,
-                        child: CustomPaint(
-                          painter: RectPainter(),
-                          child: Column(
-                            children: <Widget>[
-                              descriptionField(),
-                              _imageFile == null
-                                  ? Align(
+                      padding: EdgeInsets.fromLTRB(14.0, 14.0, 14.0, 9.0),
+                      child: _imageFile == null
+                          ? Container(
+                              color: Colors.transparent,
+                              child: CustomPaint(
+                                painter: RectPainter(),
+                                child: Column(
+                                  children: <Widget>[
+                                    Align(
                                       heightFactor: 2.3,
                                       child: Container(
                                         width: 140,
@@ -282,43 +264,75 @@ class _ImageInput extends State<ImageInput> {
                                         child: Image.asset(
                                             'assets/add-image-symbol.jpg'),
                                       ),
-                                    )
-                                  : Image.file(
-                                      _imageFile,
-                                      fit: BoxFit.cover,
-                                      height: 300.0,
-                                      alignment: Alignment.topCenter,
-                                      width: MediaQuery.of(context).size.width,
                                     ),
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Container(
-                                      width: 150,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10),
-                                          color: Colors.white),
-                                      child: _imageFile == null ? FlatButton(
-                                        onPressed: () =>
-                                            {_openImagePickerModal(context)},
-                                        child: Text(
-                                          '+ IMAGE',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 20),
+                                    Expanded(
+                                      child: Align(
+                                        alignment: Alignment.bottomCenter,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: Container(
+                                            width: 150,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: Colors.white),
+                                            child: FlatButton(
+                                              onPressed: () => {
+                                                _openImagePickerModal(context)
+                                              },
+                                              child: Text(
+                                                '+ IMAGE',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 20),
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                      )
-                                      : _buildUploadBtn(),
-                                    ),
-                                  ),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                              ),
+                            )
+                          : Container(
+                              color: Colors.transparent,
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(10),
+                                        color: Colors.white),
+                                    height: MediaQuery.of(context).size.height / 11.0,
+                                    width: MediaQuery.of(context).size.width,
+                                    child : descriptionField(),
+                                  ),
+                                  SizedBox(height: 8.0),
+                                  Image.file(
+                                    _imageFile,
+                                    fit: BoxFit.cover,
+                                    height: MediaQuery.of(context).size.height / 2.25,
+                                    alignment: Alignment.topCenter,
+                                    width: MediaQuery.of(context).size.width,
+                                  ),
+                                  Expanded(
+                                    child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(10),
+                                              color: Colors.white),
+                                          child: _buildUploadBtn(),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                     ),
                   ),
                 ],
@@ -333,14 +347,16 @@ class _ImageInput extends State<ImageInput> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: <Widget>[
-        Positioned(
-            child: Image.asset(
-          'assets/wave.png',
-          fit: BoxFit.fitWidth,
-        )),
-        showUploadButton(context),
-      ]),
+      body: SingleChildScrollView(
+        child: Stack(children: <Widget>[
+          Positioned(
+              child: Image.asset(
+            'assets/wave.png',
+            fit: BoxFit.fitWidth,
+          )),
+          cameraWidget(context),
+        ]),
+      ),
     );
   }
 }

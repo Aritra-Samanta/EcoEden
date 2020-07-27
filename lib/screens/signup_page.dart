@@ -29,7 +29,7 @@ class RegisterPage extends StatelessWidget{
 
     Widget showNameInput() {
       return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 80.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -44,12 +44,14 @@ class RegisterPage extends StatelessWidget{
                     Icons.face,
                     color: Colors.grey,
                   ),
+                  contentPadding: EdgeInsets.only(top: 0.0, bottom: 10.0),
+                  isDense: true,
                 ),
                 validator: (value) => value.isEmpty ? 'First Name cant\'t be empty.' : null,
                 //onSaved: (value) => firstName = value.trim(),
               ),
             ),
-
+            SizedBox(width: 16.0,),
             Flexible(
               child: TextFormField(
                 controller: lastName,
@@ -57,11 +59,14 @@ class RegisterPage extends StatelessWidget{
                 autofocus: false,
                 decoration: InputDecoration(
                   hintText: 'Last Name',
+                  contentPadding: EdgeInsets.only(top: 0.0, bottom: 10.0),
+                  isDense: true,
                 ),
                 validator: (value) => value.isEmpty ? 'Last Name cant\'t be empty.' : null,
                 //onSaved: (value) => lastName = value.trim(),
               ),
             ),
+            SizedBox(width: 16.0,),
           ],
         ),
       );
@@ -72,7 +77,7 @@ class RegisterPage extends StatelessWidget{
       return Hero(
         tag: 'hero',
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
+          padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
           child: CircleAvatar(
             backgroundColor: Colors.transparent,
             radius: 80.0,
@@ -84,7 +89,7 @@ class RegisterPage extends StatelessWidget{
 
     Widget showUserNameInput() {
       return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
         child: TextFormField(
           controller: userName,
           maxLines: 1,
@@ -96,6 +101,8 @@ class RegisterPage extends StatelessWidget{
               Icons.account_circle,
               color: Colors.grey,
             ),
+            contentPadding: EdgeInsets.only(top: 11.0, bottom: 10.0),
+            isDense: true,
           ),
           validator: (value) => value.isEmpty ? 'Email cant\'t be empty.' : null,
           //onSaved: (value) => userName = value.trim(),
@@ -105,7 +112,7 @@ class RegisterPage extends StatelessWidget{
 
     Widget showMobileNumberInput() {
       return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
         child: TextFormField(
           controller: mobile,
           maxLines: 1,
@@ -117,6 +124,8 @@ class RegisterPage extends StatelessWidget{
               Icons.phone,
               color: Colors.grey,
             ),
+            contentPadding: EdgeInsets.only(top: 11.0, bottom: 10.0),
+            isDense: true,
           ),
           validator: (value) => value.isEmpty ? 'Email cant\'t be empty.' : null,
           //onSaved: (value) => mobile = value.trim(),
@@ -126,7 +135,7 @@ class RegisterPage extends StatelessWidget{
 
     Widget showEmailInput() {
       return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
         child: TextFormField(
           controller: email,
           maxLines: 1,
@@ -138,6 +147,8 @@ class RegisterPage extends StatelessWidget{
               Icons.mail,
               color: Colors.grey,
             ),
+            contentPadding: EdgeInsets.only(top: 11.0, bottom: 10.0),
+            isDense: true,
           ),
           validator: (value) => value.isEmpty ? 'Email cant\'t be empty.' : null,
           //onSaved: (value) => email = value.trim(),
@@ -147,7 +158,7 @@ class RegisterPage extends StatelessWidget{
 
     Widget showPasswordInput() {
       return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
         child: TextFormField(
           controller: password,
           maxLines: 1,
@@ -159,6 +170,8 @@ class RegisterPage extends StatelessWidget{
               Icons.lock,
               color: Colors.grey,
             ),
+            contentPadding: EdgeInsets.only(top: 11.0, bottom: 10.0),
+            isDense: true,
           ),
           validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
           //onSaved: (value) => password = value.trim(),
@@ -168,7 +181,7 @@ class RegisterPage extends StatelessWidget{
 
     Widget showConfirmPasswordInput() {
       return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
         child: TextFormField(
           controller: confirmPassword,
           maxLines: 1,
@@ -180,6 +193,8 @@ class RegisterPage extends StatelessWidget{
               Icons.lock,
               color: Colors.grey,
             ),
+            contentPadding: EdgeInsets.only(top: 11.0, bottom: 10.0),
+            isDense: true,
           ),
           validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
           //onSaved: (value) => confirmPassword = value.trim(),
@@ -189,7 +204,7 @@ class RegisterPage extends StatelessWidget{
 
     Widget showPrimaryButton(_ViewModel vm) {
       return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
         child: SizedBox(
           width: 30.0,
           height: 50.0,
