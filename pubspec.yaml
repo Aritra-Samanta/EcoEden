@@ -47,6 +47,7 @@ dependencies:
   mime: ^0.9.6+3
   toast: ^0.1.5
   cached_network_image: ^2.2.0+1
+  path_drawing: ^0.4.1
 
 
 dev_dependencies:

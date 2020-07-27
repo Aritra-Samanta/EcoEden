@@ -7,19 +7,16 @@ import '../app_routes.dart';
 import '../main.dart';
 import '../models/feedsArticle.dart';
 import '../redux/actions.dart';
-import 'login_page.dart';
 import 'package:intl/intl.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:ecoeden/models/user.dart';
 import 'package:ecoeden/services/webservice.dart';
-import 'camera_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ecoeden/models/feedsArticle.dart';
 import 'package:ecoeden/screens/feeds_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:http/http.dart';
 
 final get_User = 'https://api.ecoeden.xyz/users/';
 
@@ -103,7 +100,7 @@ class HomePageState extends State<HomePage> {
 
   Future<String> getAddress(double latitude, double longitude) async {
     placemark =
-        await Geolocator().placemarkFromCoordinates(latitude, longitude);
+    await Geolocator().placemarkFromCoordinates(latitude, longitude);
     String ad = placemark[0].name.toString() +
         ", " +
         placemark[0].locality.toString() +
@@ -152,76 +149,128 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(
-          'EcoEden',
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: IconThemeData(
+          color: Colors.black,
+          size: 50,
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              FontAwesomeIcons.search,
-            ),
-            padding: EdgeInsets.only(right: 20.0),
-            splashColor: Color(0xFF4285f4),
-            onPressed: () {
-              print('Search is pressed');
-            },
-          ),
-        ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text(global_store.state.user.userName),
-              accountEmail: Text(global_store.state.user.email),
-              currentAccountPicture: GestureDetector(
-                child: Hero(
-                  tag: "profile",
-                  child: CircleAvatar(
-                    backgroundColor: Colors.lightBlueAccent,
-                    child: Text(
-                      sendData(),
-                      style: TextStyle(fontSize: 40.0),
+      drawer: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(10.0),
+          bottomRight: Radius.circular(10.0),
+        ),
+        child: Drawer(
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: ListView(
+                  children: <Widget>[
+                    UserAccountsDrawerHeader(
+                      decoration: BoxDecoration(
+                        color: Colors.greenAccent[100],
+//                        color: Color.fromRGBO(250,250, 250, 1),
+                      ),
+                      accountName: Text(global_store.state.user.userName ,
+                          style:TextStyle( color:Colors.black , fontSize: 20)),
+                      accountEmail: Text(global_store.state.user.email,
+                          style:TextStyle( color:Colors.black , fontSize: 20)),
+                      currentAccountPicture: GestureDetector(
+                        child: Hero(
+                          tag: "profile",
+                          child: CircleAvatar(
+                            backgroundColor: Colors.lightBlueAccent,
+                            child: Text(sendData(), style: TextStyle(fontSize: 40.0),),
+                          ),
+                        ),
+                        onTap: () {
+                          global_store.dispatch(new NavigatePushAction(AppRoutes.profile));
+                        },
+                      ),
                     ),
-                  ),
+                    GestureDetector(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 5.0),
+                        child: Text('Profile', style: TextStyle(fontSize: 20.0),
+                        ),
+                      ),
+                      onTap: () {
+                        global_store.dispatch(new NavigatePushAction(AppRoutes.profile));
+                      },
+                    ),
+                    Divider(indent: 15.0, endIndent: 20.0, color: Colors.black),
+                    GestureDetector(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 5.0),
+                        child: Text('About Us', style: TextStyle(fontSize: 20.0),),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    Divider(indent: 15.0, endIndent: 20.0, color: Colors.black),
+                    GestureDetector(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 5.0),
+                        child: Text('Privacy Policy', style: TextStyle(fontSize: 20.0),),
+                      ),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    Divider(indent: 15.0, endIndent: 20.0, color: Colors.black),
+                    GestureDetector(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 5.0),
+                        child: Text('Logout', style: TextStyle(fontSize: 20.0),),
+                      ),
+                      onTap: () {
+                        global_store.dispatch(new LogoutAction().logout());
+                      },
+                    ),
+                    Divider(indent: 15.0, endIndent: 20.0, color: Colors.black),
+                  ],
                 ),
-                onTap: () {
-                  global_store
-                      .dispatch(new NavigatePushAction(AppRoutes.profile));
-                },
               ),
-            ),
-            ListTile(
-              title: Text(
-                "Item 1",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              trailing: Icon(Icons.arrow_forward),
-              onTap: () {
-                Navigator.pop(context); //Push Method will be added later
-              },
-            ),
-            ListTile(
-              title: Text(
-                "Item 2",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              trailing: Icon(Icons.arrow_forward),
-              onTap: () {
-                Navigator.pop(context); //Push Method will be added later
-              },
-            ),
-            showPrimaryButton(context),
-          ],
+              Container(
+//                color: Colors.greenAccent[100],
+                // This align moves the children to the bottom
+                  child: Align(
+                      alignment: FractionalOffset.bottomCenter,
+                      // This container holds all the children that will be aligned
+                      // on the bottom and should not scroll with the above ListView
+                      child: Container(
+                          padding: EdgeInsets.only(bottom: 50.0),
+                          child: Column(
+                            children: <Widget>[
+                              //Divider(),
+                              Image.asset("assets/EcoEden-Logo-withoutText.png",height: 150.0,width:200.0),
+                              Text("\u00a9 EcoEden 2020"),
+                              Text("All Rights Reserved."),
+//                            ListTile(
+//                                leading: Icon(Icons.settings),
+//                                title: Text('Settings')),
+//                            ListTile(
+//                                leading: Icon(Icons.help),
+//                                title: Text('Help and Feedback'))
+                            ],
+                          )
+                      )
+                  )
+              )
+            ],
+          ),
         ),
       ),
       body: _child,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add_a_photo),
-        backgroundColor: Colors.lightBlue,
-        elevation: 2.0,
+        child: Icon(Icons.add_a_photo, color: Colors.black,),
+        backgroundColor: Colors.blueGrey[100],
+        elevation: 0.0,
         onPressed: () {
           global_store.dispatch(new NavigatePushAction(AppRoutes.camera));
         },
@@ -229,7 +278,7 @@ class HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomAppBar(
         child: Container(
           height: 40.0,
-          color: Color(0xEF4285f4),
+          color: Color(0xff22AA8D),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(40.0, 0.0, 40.0, 0.0),
             child: Row(
@@ -250,74 +299,35 @@ class HomePageState extends State<HomePage> {
                             ScrollController scrollController) {
                           return ClipRRect(
                             borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30),
+                              topLeft: Radius.circular(15),
+                              topRight: Radius.circular(15),
                             ),
                             child: Container(
-
                               color: Colors.white,
                               child: CustomScrollView(
                                 controller: scrollController,
                                 slivers: <Widget>[
                                   SliverAppBar(
-                                    elevation : 20.0,
-                                    expandedHeight: 75.0,
-
+                                    expandedHeight: 0.0,
+                                    backgroundColor: Colors.transparent,
                                     title: Column(
                                       children: <Widget>[
-                                        SizedBox( height: 5) ,
-                                        Text("Leaderboard", style: TextStyle(color: Colors.black , fontSize: 22), ),
-                                        SizedBox(height: 10 ),
-
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: <Widget>[
-                                            Expanded(
-                                              child: Text("Rank",
-                                                  style: TextStyle(fontSize: 15, color: Colors.black)),
-                                              flex: 8,
-                                            ),
-                                            Expanded(
-                                              child: Text(
-                                                "Username",
-                                                style: TextStyle(fontSize: 15, color: Colors.black),
-                                              ),
-                                              flex: 10,
-                                            ),
-                                            Expanded(
-                                              child: Text(
-                                                "Score",
-                                                style: TextStyle(fontSize: 15, color: Colors.black),
-                                              ),
-                                              flex: 3,
-                                            ),
-                                          ],
+                                        SizedBox(height: 5),
+                                        Text(
+                                          "\nLeaderboard",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 22),
                                         ),
-
+                                        SizedBox(height: 10),
                                       ],
                                     ),
-                                    backgroundColor: Colors.lightGreen,
-                                    automaticallyImplyLeading: false,
-                                    primary: false,
-                                    floating: true,
-                                    pinned: true,
-                                    stretch: true ,
-
-
-//                                  shape :  RoundedRectangleBorder(
-//                                    borderRadius: BorderRadius.only(
-//                                      topLeft: Radius.circular(30.0),
-//                                      topRight: Radius.circular(30.0),
-//                                    )
-////                                    borderRadius: BorderRadius.circular(15.0),
-//                                  ),
-
                                   ),
                                   SliverList(
                                     delegate: SliverChildBuilderDelegate(
-                                      (context, index) => Padding(
-                                        padding: EdgeInsets.fromLTRB(8, 6, 8, 2),
+                                          (context, index) => Padding(
+                                        padding:
+                                        EdgeInsets.fromLTRB(8, 10, 8, 2),
                                         child: Container(
                                           decoration: BoxDecoration(
                                               color: renderColors(index + 1),
@@ -328,19 +338,38 @@ class HomePageState extends State<HomePage> {
                                                 top: 20.0, bottom: 20.0),
                                             child: Row(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                              MainAxisAlignment.start,
                                               children: <Widget>[
-                                                Text(" " * 5 +
-                                                    (index + 1).toString()),
+                                                Text(
+                                                  " " * 5 +
+                                                      (index + 1)
+                                                          .toString()
+                                                          .padLeft(2, '0'),
+                                                  style:
+                                                  TextStyle(fontSize: 24.0),
+                                                ),
                                                 Expanded(
-                                                  child: Text(" " * 14 +
-                                                      _army[index].userName),
+                                                  child: Text(
+                                                      " " * 14 +
+                                                          _army[index]
+                                                              .userName
+                                                              .substring(0, 6),
+                                                      style: TextStyle(
+                                                          fontSize: 24.0,
+                                                          fontFamily:
+                                                          "Segoe UI")),
                                                   flex: 9,
                                                 ),
                                                 Expanded(
-                                                  child: Text(_army[index]
-                                                      .score
-                                                      .toString(), style: TextStyle(fontWeight: FontWeight.bold),),
+                                                  child: Text(
+                                                    _army[index]
+                                                        .score
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        fontSize: 24.0),
+                                                  ),
                                                   flex: 2,
                                                 ),
                                               ],
@@ -363,7 +392,7 @@ class HomePageState extends State<HomePage> {
                 IconButton(
 //                color: Colors.black,
                   icon: Icon(
-                    FontAwesomeIcons.newspaper,
+                    FontAwesomeIcons.listAlt,
                   ),
                   onPressed: () {
                     global_store
@@ -391,7 +420,7 @@ class HomePageState extends State<HomePage> {
   void _createMarker(List<FeedsArticle> articles) async {
     for (FeedsArticle x in articles) {
       String markerAddress =
-          await getAddress(double.parse(x.lat), double.parse(x.lng));
+      await getAddress(double.parse(x.lat), double.parse(x.lng));
       Marker marker = Marker(
           markerId: MarkerId(x.lat + "," + x.lng),
           position: LatLng(double.parse(x.lat), double.parse(x.lng)),
@@ -420,7 +449,7 @@ class HomePageState extends State<HomePage> {
   Widget popUpPage(String date, String url, String description) {
     date = date.substring(0, date.indexOf('T'));
     final String dateFormat =
-        DateFormat("dd-MM-yyyy").format(DateTime.parse(date));
+    DateFormat("dd-MM-yyyy").format(DateTime.parse(date));
     DateTime dateTimeCreatedAt = DateTime.parse(date);
     DateTime dateTimeNow = DateTime.now();
     final differenceInDays = dateTimeNow.difference(dateTimeCreatedAt).inDays;
@@ -460,9 +489,7 @@ class HomePageState extends State<HomePage> {
                   fontStyle: FontStyle.normal, fontWeight: FontWeight.w900),
             ),
             Text(
-              "- $differenceInDays days ago",
-              style: TextStyle(
-                  fontStyle: FontStyle.normal, fontWeight: FontWeight.w300),
+              "- $differenceInDays days ago", style: TextStyle(fontStyle: FontStyle.normal, fontWeight: FontWeight.w300),
             ),
           ],
         ),
@@ -483,29 +510,4 @@ class HomePageState extends State<HomePage> {
       },
     );
   }
-}
-
-Widget showPrimaryButton(BuildContext context) {
-  return Padding(
-    padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
-    child: SizedBox(
-      width: 30.0,
-      height: 50.0,
-      child: RaisedButton(
-        elevation: 5.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
-        ),
-        color: Colors.blue,
-        child: Text(
-          'Log Out',
-          style: TextStyle(color: Colors.white, fontSize: 20.0),
-        ),
-        onPressed: () {
-          global_store.dispatch(new LogoutAction().logout());
-//          global_store.dispatch(new NavigateClearAction());
-        },
-      ),
-    ),
-  );
 }

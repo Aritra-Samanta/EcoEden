@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ecoeden/main.dart';
 import 'package:ecoeden/screens/feeds_page.dart';
@@ -56,22 +57,40 @@ class _ProfilePageState extends State<ProfilePage> {
 //  Porny & Bati Productions
   @override
   Widget build(BuildContext context) {
-    Widget showProfile() {
+    Widget showProfile(BuildContext context) {
       print("In Profile");
       return Column(
 //        mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 6, 0, 0),
+            padding: const EdgeInsets.fromLTRB(10, 20, 0, 0),
+
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: IconButton(
+                icon :Icon(
+                    Icons.arrow_back,
+                    size : 30
+                ),
+                onPressed: (){
+                  Navigator.of(context).pop();
+                },
+
+              ),
+            ),
+
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
             child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text('You' , style: TextStyle( color: Colors.black , fontSize : 30.0,
+                child: Text('You' , style: TextStyle( color: Colors.black , fontSize : 40.0,
                     fontWeight: FontWeight.bold), textAlign: TextAlign.left,)
             ),
           ),
 
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0 ),
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0 ),
             child: Center(
               child : Hero(
                 tag: "profile",
@@ -225,19 +244,28 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-//        title: Text('Profile'),
-          backgroundColor: Color.fromRGBO(250,250, 250, 1),
-          elevation: 0,
-          leading : BackButton(
-              color: Colors.black
-          )
-      ),
+//      appBar: AppBar(
+////        title: Text('Profile'),
+//          backgroundColor: Color.fromRGBO(250,250, 250, 1),
+//          elevation: 0,
+//          leading : BackButton(
+//              color: Colors.black
+//          )
+//      ),
       body: Stack(
-        children: <Widget>[
-          showProfile(),
-        ],
+          children: <Widget>[
+            Positioned(
+                child : Image.asset(
+                  'assets/wave.png' ,
+                  fit: BoxFit.fitWidth,
+                )
+            ),
+            showProfile(context)
+          ]
       ),
+
     );
+
+
   }
 }
