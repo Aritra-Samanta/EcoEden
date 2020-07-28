@@ -3,6 +3,7 @@ import 'package:ecoeden/models/user.dart';
 import 'package:ecoeden/redux/actions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:redux/redux.dart';
 import 'package:ecoeden/redux/app_state.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -167,7 +168,7 @@ class RegisterPage extends StatelessWidget{
           decoration: InputDecoration(
             hintText: 'Password',
             icon: Icon(
-              Icons.lock,
+              FontAwesomeIcons.lock,
               color: Colors.grey,
             ),
             contentPadding: EdgeInsets.only(top: 11.0, bottom: 10.0),
@@ -245,7 +246,8 @@ class RegisterPage extends StatelessWidget{
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300),
         ),
         onPressed: () {
-          StoreProvider.of<AppState>(context).dispatch(NavigatePopAction());
+//          StoreProvider.of<AppState>(context).dispatch(NavigatePopAction());
+            Navigator.pop(context);
         },
       );
     }

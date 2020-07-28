@@ -1,8 +1,7 @@
-import 'package:meta/meta.dart';
 import 'dart:convert';
 import 'package:ecoeden/services/webservice.dart';
 import 'package:ecoeden/screens/home_page.dart';
-
+import 'package:ecoeden/screens/leaderboard.dart';
 
 class User{
   final String firstName;
@@ -83,13 +82,13 @@ class User{
     return map;
   }
 
-  static Resource<List<User>> get all {
+  static Resource<List<User>> get leader {
 
     return Resource(
-        url: HomePageState.nextPage,
+        url: LeaderBoard.nextPage,
         parse: (response) {
           final result = json.decode(response.body);
-          HomePageState.nextPage = result['next'];
+          LeaderBoard.nextPage = result['next'];
           List list = result['results'];
           return list.map((model) => User.fromJson(model)).toList();
         }

@@ -158,10 +158,8 @@ class _ImageInput extends State<ImageInput> {
       // If image is picked by the user then show a upload btn
 
       btnWidget = FlatButton(
-        onPressed: () => {_startUploading},
-        child: Expanded(
-          child: Image.asset("assets/upload_button.png"),
-        ),
+        onPressed: () => {_startUploading()},
+        child: Image.asset("assets/upload_button.png"),
       );
     }
 
@@ -206,7 +204,9 @@ class _ImageInput extends State<ImageInput> {
             child: IconButton(
               color: Colors.white,
               icon: Icon(Icons.arrow_back, size: 30),
-              onPressed: () => {},
+              onPressed: () => {
+              Navigator.pop(context),
+              },
             ),
           ),
         ),
@@ -238,94 +238,54 @@ class _ImageInput extends State<ImageInput> {
           padding: EdgeInsets.all(0.0),
           child: Align(
             alignment: Alignment.center,
-            child: Center(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    height: MediaQuery.of(context).size.height / 1.55,
-                    width: 350,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.blueGrey[200]),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(14.0, 14.0, 14.0, 9.0),
-                      child: _imageFile == null
-                          ? Container(
-                              color: Colors.transparent,
-                              child: CustomPaint(
-                                painter: RectPainter(),
-                                child: Column(
-                                  children: <Widget>[
-                                    Align(
-                                      heightFactor: 2.3,
-                                      child: Container(
-                                        width: 140,
-                                        height: 140,
-                                        child: Image.asset(
-                                            'assets/add-image-symbol.jpg'),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Container(
-                                            width: 150,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                color: Colors.white),
-                                            child: FlatButton(
-                                              onPressed: () => {
-                                                _openImagePickerModal(context)
-                                              },
-                                              child: Text(
-                                                '+ IMAGE',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 20),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )
-                          : Container(
-                              color: Colors.transparent,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: MediaQuery.of(context).size.height / 1.55,
+                  width: 350,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.blueGrey[200]),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(14.0, 14.0, 14.0, 9.0),
+                    child: _imageFile == null
+                        ? Container(
+                            color: Colors.transparent,
+                            child: CustomPaint(
+                              painter: RectPainter(),
                               child: Column(
                                 children: <Widget>[
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                        BorderRadius.circular(10),
-                                        color: Colors.white),
-                                    height: MediaQuery.of(context).size.height / 11.0,
-                                    width: MediaQuery.of(context).size.width,
-                                    child : descriptionField(),
-                                  ),
-                                  SizedBox(height: 8.0),
-                                  Image.file(
-                                    _imageFile,
-                                    fit: BoxFit.cover,
-                                    height: MediaQuery.of(context).size.height / 2.25,
-                                    alignment: Alignment.topCenter,
-                                    width: MediaQuery.of(context).size.width,
+                                  Align(
+                                    heightFactor: 2.3,
+                                    child: Container(
+                                      width: 140,
+                                      height: 140,
+                                      child: Image.asset(
+                                          'assets/add-image-symbol.jpg'),
+                                    ),
                                   ),
                                   Expanded(
                                     child: Align(
                                       alignment: Alignment.bottomCenter,
                                       child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                                        padding: const EdgeInsets.all(10.0),
                                         child: Container(
+                                          width: 150,
                                           decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(10),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
                                               color: Colors.white),
-                                          child: _buildUploadBtn(),
+                                          child: FlatButton(
+                                            onPressed: () => {
+                                              _openImagePickerModal(context)
+                                            },
+                                            child: Text(
+                                              '+ IMAGE',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 20),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -333,10 +293,48 @@ class _ImageInput extends State<ImageInput> {
                                 ],
                               ),
                             ),
-                    ),
+                          )
+                        : Container(
+                            color: Colors.transparent,
+                            child: Column(
+                              children: <Widget>[
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.circular(10),
+                                      color: Colors.white),
+                                  height: MediaQuery.of(context).size.height / 11.0,
+                                  width: MediaQuery.of(context).size.width,
+                                  child : descriptionField(),
+                                ),
+                                SizedBox(height: 8.0),
+                                Image.file(
+                                  _imageFile,
+                                  fit: BoxFit.cover,
+                                  height: MediaQuery.of(context).size.height / 2.25,
+                                  alignment: Alignment.topCenter,
+                                  width: MediaQuery.of(context).size.width,
+                                ),
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            color: Colors.white),
+                                        child: _buildUploadBtn(),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         )

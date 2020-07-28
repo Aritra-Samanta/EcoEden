@@ -386,7 +386,7 @@ packages:
       name: redux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0+2"
+    version: "4.0.0+3"
   redux_thunk:
     dependency: "direct main"
     description:

@@ -3,6 +3,7 @@ import 'package:ecoeden/screens/login_page.dart';
 import 'package:ecoeden/screens/signup_page.dart';
 import 'package:ecoeden/screens/splashScreen.dart';
 import 'package:ecoeden/screens/profile_page.dart';
+import 'package:ecoeden/screens/leaderboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -56,6 +57,8 @@ class MyApp extends StatelessWidget {
         return MainRoute(MapPage(), settings: settings);
       case AppRoutes.profile:
         return MainRoute(ProfilePage(), settings: settings);
+      case AppRoutes.leaderboard:
+        return MainRoute(LeaderBoard(), settings: settings);
       default:
         return MainRoute(LoginPage(), settings: settings);
     }

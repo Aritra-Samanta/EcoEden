@@ -249,24 +249,27 @@ class _PostState extends State<Post> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Container(
-                        width: MediaQuery.of(context).size.width / 1.6,
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0))),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: Text(
-                              widget.description,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500),
-                              textAlign: TextAlign.center,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5.0),
+                      child: Container(
+                          width: MediaQuery.of(context).size.width / 1.6,
+                          decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0))),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text(
+                                widget.description,
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
-                          ),
-                        )),
+                          )),
+                    ),
                     CircleAvatar(
                       backgroundColor: getColor(),
                       child: Icon(
@@ -447,7 +450,7 @@ class PostHeader extends StatelessWidget {
               backgroundColor: Colors.lightBlueAccent,
               child: Text(
                 _sendData(),
-                style: TextStyle(fontSize: 40.0),
+                style: TextStyle(fontSize: 36.0),
               ),
             ),
           ),
