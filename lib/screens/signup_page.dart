@@ -217,7 +217,7 @@ class RegisterPage extends StatelessWidget{
             color: Colors.blue,
             child: Text(
               'Register',
-              style: TextStyle(color: Colors.white, fontSize: 20.0),
+              style: TextStyle(color: Colors.white, fontSize: 20.0, fontFamily: "SegoeUI", fontWeight: FontWeight.w600, fontStyle: FontStyle.italic),
             ),
             onPressed: () {
 

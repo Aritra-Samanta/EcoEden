@@ -90,11 +90,12 @@ class _LeaderBoardState extends State<LeaderBoard> {
             child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'LeaderBoard',
+                  'Leaderboard',
                   style: TextStyle(
                       color: Colors.black,
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.bold),
+                      fontSize: 48.0,
+                      fontFamily: "SegoeUI",
+                      fontWeight: FontWeight.w700),
                   textAlign: TextAlign.left,
                 )),
           ),
@@ -129,24 +130,24 @@ class _LeaderBoardState extends State<LeaderBoard> {
                           MainAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              " " * 5 +
+                              " " * 2 +
                                   (index + 1)
                                       .toString()
-                                      .padLeft(2, '0') + " " * 5,
+                                      .padLeft(2, '0') + " " * 3,
                               style:
-                              TextStyle(fontSize: 20.0),
+                              TextStyle(fontSize: 24.0, fontFamily: "SegoeUI", fontWeight: FontWeight.w300),
                             ),
                             CircleAvatar(
                               radius: 26.0,
                               backgroundColor: Colors.lightBlueAccent,
                               child: Text(
                                 (widget._army[index].firstName)[0].toString(),
-                                style: TextStyle(fontSize: 28.0),
+                                style: TextStyle(fontSize: 21.0),
                               ),
                             ),
                             Expanded(
                               child: Text(
-                                  " " * 6 +
+                                  " " * 3 +
                                       widget._army[index]
                                           .userName
                                           .substring(0, 6),
@@ -154,7 +155,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                       fontSize: 20.0,
                                       fontFamily:
                                       "Segoe UI")),
-                              flex: 9,
+                              flex: 7,
                             ),
                             Expanded(
                               child: Text(
@@ -162,9 +163,9 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                     .score
                                     .toString(),
                                 style: TextStyle(
-                                    fontWeight:
-                                    FontWeight.bold,
-                                    fontSize: 20.0),
+                                    fontFamily: "SegoeUI",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 24.0),
                               ),
                               flex: 2,
                             ),

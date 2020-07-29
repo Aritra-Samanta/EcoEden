@@ -180,7 +180,9 @@ class _ImageInput extends State<ImageInput> {
         autofocus: false,
         maxLengthEnforced: true,
         decoration: new InputDecoration(
-            hintStyle: TextStyle(fontSize: 17),
+            hintStyle: TextStyle(
+                fontSize: 18.0,
+                fontFamily: "SegoeUI"),
             border: InputBorder.none,
             focusedBorder: InputBorder.none,
             enabledBorder: InputBorder.none,
@@ -218,8 +220,9 @@ class _ImageInput extends State<ImageInput> {
               'Photos',
               style: TextStyle(
                   color: Colors.black,
-                  fontSize: 50.0,
-                  fontWeight: FontWeight.bold),
+                  fontSize: 48.0,
+                  fontFamily: "SegoeUI",
+                  fontWeight: FontWeight.w700),
             ),
           ),
         ),
@@ -241,11 +244,11 @@ class _ImageInput extends State<ImageInput> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: MediaQuery.of(context).size.height / 1.55,
+                  height: MediaQuery.of(context).size.height / 1.53,
                   width: 350,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Colors.blueGrey[200]),
+                      color: Color(0xFFDADADA)),
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(14.0, 14.0, 14.0, 9.0),
                     child: _imageFile == null
@@ -282,14 +285,16 @@ class _ImageInput extends State<ImageInput> {
                                             child: Text(
                                               '+ IMAGE',
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 20),
+                                                  fontSize: 20.0,
+                                                  fontFamily: "SegoeUI",
+                                                  fontWeight: FontWeight.w600),
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  )
+                                  ),
+                                  SizedBox(height: 18.0,),
                                 ],
                               ),
                             ),
@@ -307,7 +312,7 @@ class _ImageInput extends State<ImageInput> {
                                   width: MediaQuery.of(context).size.width,
                                   child : descriptionField(),
                                 ),
-                                SizedBox(height: 8.0),
+                                SizedBox(height: 10.0),
                                 Image.file(
                                   _imageFile,
                                   fit: BoxFit.cover,
@@ -319,7 +324,7 @@ class _ImageInput extends State<ImageInput> {
                                   child: Align(
                                     alignment: Alignment.bottomCenter,
                                     child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0.0),
+                                      padding: const EdgeInsets.fromLTRB(10.0, 12.0, 10.0, 0.0),
                                       child: Container(
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(10),

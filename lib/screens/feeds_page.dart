@@ -70,7 +70,7 @@ class FeedsPageState extends State<FeedsPage> {
     //print(_newsArticles[0].description);
     return Scaffold(
         appBar: AppBar(
-          title: Text('Feeds'),
+          title: Text('Feed'),
         ),
         body: Container(
           child: Column(

@@ -40,9 +40,9 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   TextStyle labelStyle =
-  TextStyle(color: Colors.grey, fontSize: 8, fontWeight: FontWeight.w500);
+      TextStyle(color: Colors.grey, fontSize: 8, fontWeight: FontWeight.w500);
   TextStyle normalStyle =
-  TextStyle(color: Colors.black, fontSize: 8, fontWeight: FontWeight.w500);
+      TextStyle(color: Colors.black, fontSize: 8, fontWeight: FontWeight.w500);
 
   TextStyle selectStyle(String status) {
     if (status.compareTo('verified') == 0) {
@@ -54,19 +54,21 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  List<Widget> getPosts(){
-    return _newsArticles.map(( article) => Post(
-      showHeartOverlay: false,
-      description: article.description,
-      imageUrl: article.image,
-      upvotes: article.upvotes,
-      downvotes: article.downvotes,
-      lat: article.lat,
-      lng: article.lng,
-      id: article.id,
-      user: article.user,
-      activity: article.activity,
-    )).toList();
+  List<Widget> getPosts() {
+    return _newsArticles
+        .map((article) => Post(
+              showHeartOverlay: false,
+              description: article.description,
+              imageUrl: article.image,
+              upvotes: article.upvotes,
+              downvotes: article.downvotes,
+              lat: article.lat,
+              lng: article.lng,
+              id: article.id,
+              user: article.user,
+              activity: article.activity,
+            ))
+        .toList();
   }
 
 //  Porny & Bati Productions
@@ -85,7 +87,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: IconButton(
-                        icon: Icon(Icons.arrow_back, size: 28, color: Colors.white),
+                        icon: Icon(Icons.arrow_back,
+                            size: 28, color: Colors.white),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
@@ -93,15 +96,16 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(40, 10, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
                     child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'Profile',
                           style: TextStyle(
                               color: Colors.black,
-                              fontSize: 40.0,
-                              fontWeight: FontWeight.bold),
+                              fontSize: 48.0,
+                              fontFamily: "SegoeUI",
+                              fontWeight: FontWeight.w700),
                           textAlign: TextAlign.left,
                         )),
                   ),
@@ -122,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(0, 2, 0, 0),
                     child: Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
@@ -135,13 +139,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                   " " +
                                   global_store.state.user.lastName,
                               style: TextStyle(
-                                  fontSize: 25.0, fontWeight: FontWeight.bold),
+                                  fontSize: 28.0,
+                                  fontFamily: "SegoeUI",
+                                  fontWeight: FontWeight.w700),
                             ),
                           ),
                           Text(
                             global_store.state.user.email,
                             style: TextStyle(
-                                fontSize: 15.0, fontWeight: FontWeight.bold),
+                                fontSize: 18.0,
+                                fontFamily: "SegoeUI",
+                                fontWeight: FontWeight.w700),
                           ),
 //                        Text(global_store.state.user.mobile),
                         ],
@@ -204,21 +212,32 @@ class _ProfilePageState extends State<ProfilePage> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Center(
-                                  child: Text(
-                                      global_store.state.user.posts.toString())),
+                                child: Text(
+                                  global_store.state.user.posts.toString().padLeft(2, '0'),
+                                  style: TextStyle(
+                                      fontSize: 21.0, fontFamily: "SegoeUI", fontWeight: FontWeight.w300),
+                                ),
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Center(
-                                  child: Text(global_store.state.user.collections
-                                      .toString())),
+                                child: Text(
+                                  global_store.state.user.collections.toString().padLeft(2, '0'),
+                                  style: TextStyle(
+                                      fontSize: 21.0, fontFamily: "SegoeUI", fontWeight: FontWeight.w300),
+                                ),
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Center(
-                                  child: Text(global_store
-                                      .state.user.verifications
-                                      .toString())),
+                                child: Text(
+                                  global_store.state.user.verifications.toString().padLeft(2, '0'),
+                                  style: TextStyle(
+                                      fontSize: 21.0, fontFamily: "SegoeUI", fontWeight: FontWeight.w300),
+                                ),
+                              ),
                             ),
                           ]),
                         ],
@@ -242,13 +261,11 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Stack(children: <Widget>[
         Positioned(
             child: Image.asset(
-              'assets/wave.png',
-              fit: BoxFit.fitWidth,
-            )),
+          'assets/wave.png',
+          fit: BoxFit.fitWidth,
+        )),
         showProfile(context),
       ]),
-
-
     );
   }
 }
