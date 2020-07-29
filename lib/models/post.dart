@@ -21,17 +21,22 @@ class Post extends StatefulWidget {
   final int id;
   final Map<String, dynamic> user;
   final List<dynamic> activity;
+  final Map<String, dynamic> trash_collection;
   HasVoted voted;
+  HasVerified verified;
+
   Post(
       {this.activity,
-      this.id,
-      this.showHeartOverlay,
-      this.lat,
-      this.lng,
-      this.description,
-      this.imageUrl,
-      this.user,
-      this.voted});
+        this.id,
+        this.showHeartOverlay,
+        this.lat,
+        this.lng,
+        this.description,
+        this.imageUrl,
+        this.user,
+        this.voted,
+        this.trash_collection,
+        this.verified});
 
   @override
   _PostState createState() => _PostState();
@@ -40,6 +45,7 @@ class Post extends StatefulWidget {
 class _PostState extends State<Post> {
   // ignore: non_constant_identifier_names
   static String base_url = 'https://api.ecoeden.xyz/activity/';
+  static String base_url_trash = 'https://api.ecoeden.xyz/trash_collection_activity/';
   Position pos;
   bool render = false;
   bool showRow = false;
@@ -47,10 +53,9 @@ class _PostState extends State<Post> {
   @override
   void initState() {
     super.initState();
-    if(setter() == true) {
+    if (setter() == true) {
       print("It's working !!");
-    }
-    else {
+    } else {
       print("Executed too early");
     }
   }
@@ -67,7 +72,8 @@ class _PostState extends State<Post> {
   }
 
   void setFunction() async {
-    render = await ifCollect(double.parse(widget.lat), double.parse(widget.lng));
+    render =
+    await ifCollect(double.parse(widget.lat), double.parse(widget.lng));
   }
 
   Future<void> vote_function() async {
@@ -87,7 +93,8 @@ class _PostState extends State<Post> {
           headers: {HttpHeaders.authorizationHeader: "Token " + jwt},
           body: json);
       print(response.body.toString());
-      if (response.statusCode >= 200 && response.statusCode < 400) print("Patch successful");
+      if (response.statusCode >= 200 && response.statusCode < 400)
+        print("Patch successful");
     } else {
       json['user'] = "http://api.ecoeden.xyz/users/" +
           global_store.state.user.id.toString() +
@@ -98,7 +105,42 @@ class _PostState extends State<Post> {
           headers: {HttpHeaders.authorizationHeader: "Token " + jwt},
           body: json);
       print(response.body.toString());
-      if (response.statusCode >= 200 && response.statusCode < 400) print("Post successful");
+      if (response.statusCode >= 200 && response.statusCode < 400)
+        print("Post successful");
+    }
+  }
+
+  Future<void> verify_function() async {
+    print("inside verify");
+    var json = new Map<String, dynamic>();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String jwt = prefs.getString('user');
+    if (widget.voted.disliked == false && widget.voted.trashed == false)
+      json['vote'] = "0";
+    else if (widget.voted.disliked == false && widget.voted.trashed == true)
+      json['vote'] = "1";
+    else if (widget.voted.disliked == true && widget.voted.trashed == false)
+      json['vote'] = "-1";
+    if (widget.activity.length != 0) {
+      String url = base_url_trash + widget.trash_collection['activity'][0]['id'].toString() + "/";
+      var response = await http.patch(url,
+          headers: {HttpHeaders.authorizationHeader: "Token " + jwt},
+          body: json);
+      print(response.body.toString());
+      if (response.statusCode >= 200 && response.statusCode < 400)
+        print("Patch successful in verification");
+    } else {
+      json['user'] = "http://api.ecoeden.xyz/users/" +
+          global_store.state.user.id.toString() +
+          "/";
+      json['trash_collection'] =
+          "http://api.ecoeen.xyz/trash_collection/" + widget.trash_collection['id'].toString() + "/";
+      var response = await http.post(base_url_trash,
+          headers: {HttpHeaders.authorizationHeader: "Token " + jwt},
+          body: json);
+      print(response.body.toString());
+      if (response.statusCode >= 200 && response.statusCode < 400)
+        print("Post successful in verfication");
     }
   }
 
@@ -107,7 +149,8 @@ class _PostState extends State<Post> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String jwt = prefs.getString('user');
     json['collector'] = "http://api.ecoeden.xyz/users/" +
-        global_store.state.user.id.toString() + "/";
+        global_store.state.user.id.toString() +
+        "/";
     json['photo'] =
         "http://api.ecoeden.xyz/photos/" + widget.id.toString() + "/";
     var response = await http.post('https://api.ecoeden.xyz/trash_collection/',
@@ -142,87 +185,90 @@ class _PostState extends State<Post> {
   Widget getCollect(BuildContext context) {
     return Container(
         child: Padding(
-      padding: const EdgeInsets.fromLTRB(14.0, 0.0, 8.0, 4.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(
-              width: MediaQuery.of(context).size.width / 2.5,
-              decoration: BoxDecoration(
-                  color: Colors.yellow[400],
-                  borderRadius: BorderRadius.all(Radius.circular(20.0))),
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
-                child: Text(
-                  "Collected",
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.w500),
-                  textAlign: TextAlign.center,
-                ),
-              )),
-          Wrap(
+          padding: const EdgeInsets.fromLTRB(14.0, 0.0, 8.0, 4.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-                child: Text(
-                  " ${widget.voted.upvotes}",
-                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
-                ),
+              Container(
+                  width: MediaQuery.of(context).size.width / 2.5,
+                  decoration: BoxDecoration(
+                    color: Colors.yellow[400],
+                    borderRadius: BorderRadius.all(Radius.circular(20.0),),),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
+                    child: Text(
+                      "Collected",
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
+                    ),
+                  )),
+              Wrap(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                    child: Text(
+                      " ${widget.verified.upvotes}",
+                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                    ),
+                  ),
+                  IconButton(
+                      padding: EdgeInsets.symmetric(horizontal: 0.0),
+                      iconSize: widget.verified.trashed ? 25.0 : 20.0,
+                      icon: Icon(
+                          widget.verified.trashed
+                              ? FontAwesomeIcons.solidArrowAltCircleUp
+                              : FontAwesomeIcons.arrowUp,
+                          color: widget.verified.trashed ? Colors.green : Colors.grey),
+                      onPressed: () {
+                        setState(() {
+                          widget.verified.upvotes = widget.verified.trashed
+                              ? widget.verified.upvotes - 1
+                              : widget.verified.upvotes + 1;
+                          widget.verified.downvotes = widget.verified.disliked
+                              ? widget.verified.downvotes - 1
+                              : widget.verified.downvotes;
+                          widget.verified.trashed = !widget.verified.trashed;
+                          widget.verified.disliked = widget.verified.disliked
+                              ? !widget.verified.disliked
+                              : false;
+                          verify_function();
+                        });
+                      }),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                    child: Text(
+                      " ${widget.verified.downvotes}",
+                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                    ),
+                  ),
+                  IconButton(
+                      padding: EdgeInsets.symmetric(horizontal: 0.0),
+                      iconSize: widget.verified.trashed ? 25.0 : 20.0,
+                      icon: Icon(
+                          widget.verified.disliked
+                              ? FontAwesomeIcons.solidArrowAltCircleDown
+                              : FontAwesomeIcons.arrowDown,
+                          color: widget.verified.disliked ? Colors.red : Colors.grey),
+                      onPressed: () {
+                        setState(() {
+                          widget.verified.downvotes = widget.verified.disliked
+                              ? widget.verified.downvotes - 1
+                              : widget.verified.downvotes + 1;
+                          widget.verified.upvotes = widget.verified.trashed
+                              ? widget.verified.upvotes - 1
+                              : widget.verified.upvotes;
+                          widget.verified.disliked = !widget.verified.disliked;
+                          widget.verified.trashed =
+                          widget.verified.trashed ? !widget.verified.trashed : false;
+                          verify_function();
+                        });
+                      }),
+                ],
               ),
-              IconButton(
-                  padding: EdgeInsets.symmetric(horizontal: 0.0),
-                  iconSize: widget.voted.trashed ? 25.0 : 20.0,
-                  icon: Icon(
-                      widget.voted.trashed
-                          ? FontAwesomeIcons.solidArrowAltCircleUp
-                          : FontAwesomeIcons.arrowUp,
-                      color: widget.voted.trashed ? Colors.green : Colors.grey),
-                  onPressed: () {
-                    setState(() {
-                      widget.voted.upvotes = widget.voted.trashed
-                          ? widget.voted.upvotes - 1
-                          : widget.voted.upvotes + 1;
-                      widget.voted.downvotes = widget.voted.disliked
-                          ? widget.voted.downvotes - 1
-                          : widget.voted.downvotes;
-                      widget.voted.trashed = !widget.voted.trashed;
-                      widget.voted.disliked =
-                          widget.voted.disliked ? !widget.voted.disliked : false;
-                      vote_function();
-                    });
-                  }),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-                child: Text(
-                  " ${widget.voted.downvotes}",
-                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
-                ),
-              ),
-              IconButton(
-                  padding: EdgeInsets.symmetric(horizontal: 0.0),
-                  iconSize: widget.voted.trashed ? 25.0 : 20.0,
-                  icon: Icon(
-                      widget.voted.disliked
-                          ? FontAwesomeIcons.solidArrowAltCircleDown
-                          : FontAwesomeIcons.arrowDown,
-                      color: widget.voted.disliked ? Colors.red : Colors.grey),
-                  onPressed: () {
-                    setState(() {
-                      widget.voted.downvotes = widget.voted.disliked
-                          ? widget.voted.downvotes - 1
-                          : widget.voted.downvotes + 1;
-                      widget.voted.upvotes =
-                          widget.voted.trashed ? widget.voted.upvotes - 1 : widget.voted.upvotes;
-                      widget.voted.disliked = !widget.voted.disliked;
-                      widget.voted.trashed = widget.voted.trashed ? !widget.voted.trashed : false;
-                      vote_function();
-                    });
-                  }),
             ],
           ),
-        ],
-      ),
-    ));
+        ));
   }
 
   @override
@@ -250,7 +296,7 @@ class _PostState extends State<Post> {
                           decoration: BoxDecoration(
                               color: Colors.green,
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0))),
+                              BorderRadius.all(Radius.circular(10.0))),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Center(
@@ -278,8 +324,12 @@ class _PostState extends State<Post> {
               GestureDetector(
                 onDoubleTap: () async {
                   setState(() async {
-                    widget.voted.upvotes = widget.voted.trashed ? widget.voted.upvotes : widget.voted.upvotes + 1;
-                    widget.voted.downvotes = widget.voted.disliked ? widget.voted.downvotes - 1 : widget.voted.downvotes;
+                    widget.voted.upvotes = widget.voted.trashed
+                        ? widget.voted.upvotes
+                        : widget.voted.upvotes + 1;
+                    widget.voted.downvotes = widget.voted.disliked
+                        ? widget.voted.downvotes - 1
+                        : widget.voted.downvotes;
                     widget.voted.trashed = true;
                     widget.voted.disliked = false;
                     widget.showHeartOverlay = true;
@@ -303,10 +353,10 @@ class _PostState extends State<Post> {
                         : CachedNetworkImage(imageUrl: widget.imageUrl),
                     widget.showHeartOverlay
                         ? Icon(
-                            FontAwesomeIcons.solidTrashAlt,
-                            color: Colors.white54,
-                            size: 80.0,
-                          )
+                      FontAwesomeIcons.solidTrashAlt,
+                      color: Colors.white54,
+                      size: 80.0,
+                    )
                         : Container(),
                   ],
                 ),
@@ -349,9 +399,16 @@ class _PostState extends State<Post> {
                                           : Colors.grey),
                                   onPressed: () async {
                                     setState(() {
-                                      widget.voted.upvotes = widget.voted.trashed ? widget.voted.upvotes - 1 : widget.voted.upvotes + 1;
-                                      widget.voted.downvotes = widget.voted.disliked ? widget.voted.downvotes - 1 : widget.voted.downvotes;
-                                      widget.voted.trashed = !widget.voted.trashed;
+                                      widget.voted.upvotes =
+                                      widget.voted.trashed
+                                          ? widget.voted.upvotes - 1
+                                          : widget.voted.upvotes + 1;
+                                      widget.voted.downvotes =
+                                      widget.voted.disliked
+                                          ? widget.voted.downvotes - 1
+                                          : widget.voted.downvotes;
+                                      widget.voted.trashed =
+                                      !widget.voted.trashed;
                                       widget.voted.disliked = false;
                                     });
                                     await vote_function();
@@ -376,9 +433,16 @@ class _PostState extends State<Post> {
                                           : Colors.grey),
                                   onPressed: () async {
                                     setState(() {
-                                      widget.voted.downvotes = widget.voted.disliked ? widget.voted.downvotes - 1 : widget.voted.downvotes + 1;
-                                      widget.voted.upvotes = widget.voted.trashed ? widget.voted.upvotes - 1 : widget.voted.upvotes;
-                                      widget.voted.disliked = !widget.voted.disliked;
+                                      widget.voted.downvotes =
+                                      widget.voted.disliked
+                                          ? widget.voted.downvotes - 1
+                                          : widget.voted.downvotes + 1;
+                                      widget.voted.upvotes =
+                                      widget.voted.trashed
+                                          ? widget.voted.upvotes - 1
+                                          : widget.voted.upvotes;
+                                      widget.voted.disliked =
+                                      !widget.voted.disliked;
                                       widget.voted.trashed = false;
                                     });
                                     await vote_function();
@@ -387,17 +451,22 @@ class _PostState extends State<Post> {
                           ),
                           GestureDetector(
                             child: render
-                                ? Image.asset("assets/splash.jpg", height: 60, width: 120)
-                                : Image.asset("assets/maps.png", height: 60, width: 120),
+                                ? Image.asset("assets/Collect Button.png",
+                                height: 60, width: 120)
+                                : Image.asset("assets/maps.png",
+                                height: 60, width: 120),
                             onTap: () async {
                               if (render) {
                                 await collect();
                                 print("Tapped");
                                 print(showRow);
                               } else {
-                                global_store.dispatch(new LatAction(widget.lat));
-                                global_store.dispatch(new LngAction(widget.lng));
-                                global_store.dispatch(new NavigatePushAction(AppRoutes.map));
+                                global_store
+                                    .dispatch(new LatAction(widget.lat));
+                                global_store
+                                    .dispatch(new LngAction(widget.lng));
+                                global_store.dispatch(
+                                    new NavigatePushAction(AppRoutes.map));
                               }
                             },
                           ),

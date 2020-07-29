@@ -15,7 +15,9 @@ class FeedsArticle {
   final int downvotes;
   final Map<String,dynamic> user;
   final List<dynamic> activity;
+  final Map<String,dynamic> trash_collection;
   HasVoted voted;
+  HasVerified verified;
 
   FeedsArticle({this.id,
     this.image,
@@ -28,7 +30,9 @@ class FeedsArticle {
     this.upvotes,
     this.user,
     this.activity,
-    this.voted
+    this.voted,
+    this.trash_collection,
+    this.verified
   });
 
   factory FeedsArticle.fromJson(Map<String,dynamic> json) {
@@ -44,7 +48,9 @@ class FeedsArticle {
       upvotes:  json['upvotes'],
       downvotes: json['downvotes'],
       activity: json['activity'],
-      voted: HasVoted(json['upvotes'], json['downvotes'], json['activity'])
+      voted: HasVoted(json['upvotes'], json['downvotes'], json['activity']),
+      trash_collection: json['trash_collection'],
+      verified: (json['trash_collection'].length == 0) ? HasVerified(0, 0, []) : HasVerified(json['trash_collection']['upvotes'],json['trash_collection']['downvotes'],json['trash_collection']['activity']),
     );
 
   }
@@ -69,6 +75,25 @@ class HasVoted {
   bool trashed, disliked;
   int upvotes, downvotes;
   HasVoted(up, down, act) {
+    upvotes = up;
+    downvotes = down;
+    if (act.length == 0 || act[0]['vote'] == 0) {
+      disliked = false;
+      trashed = false;
+    } else if (act[0]['vote'] > 0) {
+      disliked = false;
+      trashed = true;
+    } else {
+      disliked = true;
+      trashed = false;
+    }
+  }
+}
+
+class HasVerified {
+  bool trashed, disliked;
+  int upvotes, downvotes;
+  HasVerified(up, down, act) {
     upvotes = up;
     downvotes = down;
     if (act.length == 0 || act[0]['vote'] == 0) {

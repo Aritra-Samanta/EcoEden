@@ -157,31 +157,24 @@ class _LoginPageState extends State<LoginPage> {
           style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),
         ),
         onPressed: () {
-          StoreProvider.of<AppState>(context)
-              .dispatch(NavigatePushAction(AppRoutes.signup));
-//            store.dispatch(NavigatePushAction(AppRoutes.signup));
+          StoreProvider.of<AppState>(context).dispatch(NavigatePushAction(AppRoutes.signup));
         },
       );
     }
 
     // User login form
     Widget showForm(BuildContext c, _ViewModel vm) {
-      return LoadingOverlay(
-        isLoading: global_store.state.isLoading,
-        opacity: 0.5,
-        progressIndicator: CircularProgressIndicator(),
-        child: Container(
-          height: height * 0.46,
-          padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-          child: Column(
-            children: <Widget>[
-              showUserNameInput(),
-              showPasswordInput(),
-              showForgotButton(),
-              showPrimaryButton(vm),
-              showSecondaryButton(c),
-            ],
-          ),
+      return Container(
+        height: height * 0.46,
+        padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+        child: Column(
+          children: <Widget>[
+            showUserNameInput(),
+            showPasswordInput(),
+            showForgotButton(),
+            showPrimaryButton(vm),
+            showSecondaryButton(c),
+          ],
         ),
       );
     }
@@ -189,19 +182,21 @@ class _LoginPageState extends State<LoginPage> {
 
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Register'),
-      ),
       body: StoreConnector<AppState, _ViewModel>(
         converter: (store) => _ViewModel.create(store),
-        builder: (context, _ViewModel vm) => Container(
-          child: Form(
-            child: ListView(
-              shrinkWrap: true,
-              children: <Widget>[
-                showLogo(),
-                showForm(context, vm)
-              ],
+        builder: (context, _ViewModel vm) => LoadingOverlay(
+          isLoading: global_store.state.isLoading,
+          opacity: 0.5,
+          progressIndicator: CircularProgressIndicator(),
+          child: Container(
+            child: Form(
+              child: ListView(
+                shrinkWrap: true,
+                children: <Widget>[
+                  showLogo(),
+                  showForm(context, vm)
+                ],
+              ),
             ),
           ),
         ),

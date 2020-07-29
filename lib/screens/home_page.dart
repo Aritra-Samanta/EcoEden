@@ -20,6 +20,7 @@ import 'package:ecoeden/models/feedsArticle.dart';
 import 'package:ecoeden/screens/feeds_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:pie_chart/pie_chart.dart';
 import 'package:ecoeden/screens/corona_page.dart';
 
 import '../redux/actions.dart';
@@ -39,6 +40,11 @@ class HomePageState extends State<HomePage> {
   String _address;
   double _lat, _lng;
   Set<Marker> _markings = Set<Marker>();
+  Map<String , double > data = new Map();
+  List<Color> _colors = [
+    Colors.red,
+    Colors.green[400]
+  ];
 
   List<FeedsArticle> _newsArticles = List<FeedsArticle>();
   static String nextPage = 'https://api.ecoeden.xyz/leaderboard/';
@@ -90,6 +96,13 @@ class HomePageState extends State<HomePage> {
       _newsArticles.addAll(newsArticles);
     });
     _createMarker(newsArticles);
+    var len = _markings.length;
+    int trash = (0.7 * len).round();
+    int collected = len - trash;
+    data.addAll({
+      "Trash": trash.toDouble(),
+      "Collected": collected.toDouble()
+    });
   }
 
 
@@ -206,12 +219,70 @@ class HomePageState extends State<HomePage> {
                       ),
                       GestureDetector(
                         child: Container(
-                          padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 3.0),
-                          child: Text('Profile', style: TextStyle(fontFamily: "SegoeUI", fontSize: 20.0),
-                          ),
+                          padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 5.0),
+                          child: Text('Insights', style: TextStyle(fontSize: 20.0),),
                         ),
-                        onTap: () {
-                          global_store.dispatch(new NavigatePushAction(AppRoutes.profile));
+                        onTap: () async {
+                          await showModalBottomSheet<void>(
+                            backgroundColor: Colors.transparent,
+                            context:context,
+                            builder: (BuildContext context) {
+                              return ClipRRect(
+                                borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
+                                child: Container(
+                                    height: 300,
+                                    color: Colors.green[100],
+                                    child :Center(
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Text( 'Analytics' , style: TextStyle(color:Colors.black , fontSize: 30),),
+                                            ),
+
+                                            PieChart(
+                                              dataMap: data,
+                                              colorList: _colors, // if not declared, random colors will be chosen
+                                              animationDuration: Duration(milliseconds: 1500),
+                                              chartLegendSpacing: 32.0,
+                                              chartRadius: MediaQuery.of(context).size.width /
+                                                  2.7, //determines the size of the chart
+                                              showChartValuesInPercentage: true,
+                                              showChartValues: true,
+                                              showChartValuesOutside: false,
+                                              chartValueBackgroundColor: Colors.grey[100],
+                                              showLegends: true,
+                                              legendPosition: LegendPosition.right, //can be changed to top, left, bottom
+                                              decimalPlaces: 1,
+                                              showChartValueLabel: true,
+                                              initialAngle: 0,
+                                              chartValueStyle: defaultChartValueStyle.copyWith(
+                                                color: Colors.blueGrey[900].withOpacity(0.9),
+                                              ),
+                                              chartType: ChartType.disc, //can be changed to ChartType.ring
+                                            ),
+
+                                            RaisedButton(
+                                                child: const Text('Close'),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(10.0),
+                                                ),
+                                                color: Colors.blueGrey[300],
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                }
+                                            )
+                                          ],
+
+                                        )
+                                    )
+                                ),
+                              );
+                            },
+                            elevation: 20.0,
+                            isScrollControlled: true,
+                          );
                         },
                       ),
                       Divider(indent: 15.0, endIndent: 20.0, color: Colors.black),

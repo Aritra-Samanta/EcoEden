@@ -32,12 +32,15 @@ class _LeaderBoardState extends State<LeaderBoard> {
   }
 
   Future<void> _fetch() async {
-//    while (LeaderBoard.nextPage != null) {
     await _getLeaders();
     var val = widget._army.map((x) => x.id).toList();
     print("It's Show Time !!!");
     print(val);
-//    }
+  }
+
+  String _getName(String x) {
+    if(x.length < 10 ) return x;
+    else return x.substring(0, 15) + "...";
   }
 
   Color renderColors(int arg) {
@@ -147,15 +150,12 @@ class _LeaderBoardState extends State<LeaderBoard> {
                             ),
                             Expanded(
                               child: Text(
-                                  " " * 3 +
-                                      widget._army[index]
-                                          .userName
-                                          .substring(0, 6),
+                                  " " * 3 + _getName(widget._army[index].userName),
                                   style: TextStyle(
                                       fontSize: 20.0,
                                       fontFamily:
                                       "Segoe UI")),
-                              flex: 7,
+                              flex: 6,
                             ),
                             Expanded(
                               child: Text(

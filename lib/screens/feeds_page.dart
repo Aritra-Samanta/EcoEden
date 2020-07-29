@@ -5,25 +5,25 @@ import 'package:ecoeden/models/feedsArticle.dart';
 import 'package:ecoeden/services/webservice.dart';
 
 class FeedsPageState extends State<FeedsPage> {
-
   List<FeedsArticle> _newsArticles = List<FeedsArticle>();
-  bool showHeartOverlay  = false;
+  bool showHeartOverlay = false;
   bool isLoading = false;
 
   ScrollController _scrollController = new ScrollController();
-  static String nextPage =  'https://api.ecoeden.xyz/feed/';
+  static String nextPage = 'https://api.ecoeden.xyz/feed/';
   // ignore: non_constant_identifier_names
-  static final String NEWS_PLACEHOLDER_IMAGE_ASSET_URL = 'assets/placeholder.png';
+  static final String NEWS_PLACEHOLDER_IMAGE_ASSET_URL =
+      'assets/placeholder.png';
   @override
   void initState() {
     print("Inside Feed");
     super.initState();
-    nextPage =  'https://api.ecoeden.xyz/feed/';
+    nextPage = 'https://api.ecoeden.xyz/feed/';
     _populateNewsArticles();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent &&
-          FeedsPageState.nextPage!=null) {
+              _scrollController.position.maxScrollExtent &&
+          FeedsPageState.nextPage != null) {
         _populateNewsArticles();
         var val = _newsArticles.map((x) => x.id).toList();
         print("It's Feed Show Time !!!");
@@ -43,8 +43,8 @@ class FeedsPageState extends State<FeedsPage> {
       setState(() {
         isLoading = true;
       });
-      List<FeedsArticle> newsArticles = await Webservice().load(
-          FeedsArticle.all);
+      List<FeedsArticle> newsArticles =
+          await Webservice().load(FeedsArticle.all);
       setState(() {
         isLoading = false;
         _newsArticles.addAll(newsArticles);
@@ -63,6 +63,7 @@ class FeedsPageState extends State<FeedsPage> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     //print(_newsArticles[0].description);
@@ -84,16 +85,18 @@ class FeedsPageState extends State<FeedsPage> {
                     } else {
                       print("Index : " + index.toString());
                       return Post(
-                        showHeartOverlay:showHeartOverlay,
-                        description: _newsArticles[index].description,
-                        imageUrl: _newsArticles[index].image,
-                        lat: _newsArticles[index].lat,
-                        lng: _newsArticles[index].lng,
-                        id: _newsArticles[index].id,
-                        user: _newsArticles[index].user,
-                        activity: _newsArticles[index].activity,
-                        voted: _newsArticles[index].voted
-                      );
+                          showHeartOverlay: showHeartOverlay,
+                          description: _newsArticles[index].description,
+                          imageUrl: _newsArticles[index].image,
+                          lat: _newsArticles[index].lat,
+                          lng: _newsArticles[index].lng,
+                          id: _newsArticles[index].id,
+                          user: _newsArticles[index].user,
+                          activity: _newsArticles[index].activity,
+                          voted: _newsArticles[index].voted,
+                          trash_collection:
+                              _newsArticles[index].trash_collection,
+                          verified: _newsArticles[index].verified);
                     }
                   },
                   controller: _scrollController,
@@ -101,8 +104,7 @@ class FeedsPageState extends State<FeedsPage> {
               )
             ],
           ),
-        )
-    );
+        ));
   }
 }
 

@@ -31,7 +31,7 @@ class RegisterPage extends StatelessWidget {
           child: IconButton(
             color: Color.fromRGBO(90, 203, 146, 1),
             icon: Icon(Icons.arrow_back, size: 25),
-            onPressed: () => {},
+            onPressed: () => {Navigator.pop(context)},
           ),
         ),
       );
@@ -288,18 +288,17 @@ class RegisterPage extends StatelessWidget {
       );
     }
 
-//    Widget showSecondaryButton(BuildContext context) {
-//      return FlatButton(
-//        child: Text(
-//          'Have an account? Sign in.',
-//          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300),
-//        ),
-//        onPressed: () {
-////          StoreProvider.of<AppState>(context).dispatch(NavigatePopAction());
-//          Navigator.pop(context);
-//        },
-//      );
-//    }
+    Widget showSecondaryButton(BuildContext context) {
+      return FlatButton(
+        child: Text(
+          'Have an account? Sign in.',
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300),
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      );
+    }
 
     Widget showForm(BuildContext c, _ViewModel vm) {
       return LoadingOverlay(
@@ -321,7 +320,7 @@ class RegisterPage extends StatelessWidget {
                 showPasswordInput(),
                 showConfirmPasswordInput(),
                 showPrimaryButton(vm),
-//                showSecondaryButton(c),
+                showSecondaryButton(c),
               ],
             ),
           ),
@@ -330,9 +329,6 @@ class RegisterPage extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Register'),
-      ),
       body: StoreConnector<AppState, _ViewModel>(
         converter: (store) => _ViewModel.create(store),
         builder: (context, _ViewModel vm) => Stack(
