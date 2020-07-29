@@ -15,6 +15,7 @@ class FeedsArticle {
   final int downvotes;
   final Map<String,dynamic> user;
   final List<dynamic> activity;
+  HasVoted voted;
 
   FeedsArticle({this.id,
     this.image,
@@ -26,7 +27,8 @@ class FeedsArticle {
     this.downvotes,
     this.upvotes,
     this.user,
-    this.activity
+    this.activity,
+    this.voted
   });
 
   factory FeedsArticle.fromJson(Map<String,dynamic> json) {
@@ -41,7 +43,8 @@ class FeedsArticle {
       description : json['description'],
       upvotes:  json['upvotes'],
       downvotes: json['downvotes'],
-      activity: json['activity']
+      activity: json['activity'],
+      voted: HasVoted(json['upvotes'], json['downvotes'], json['activity'])
     );
 
   }
@@ -60,4 +63,23 @@ class FeedsArticle {
 
   }
 
+}
+
+class HasVoted {
+  bool trashed, disliked;
+  int upvotes, downvotes;
+  HasVoted(up, down, act) {
+    upvotes = up;
+    downvotes = down;
+    if (act.length == 0 || act[0]['vote'] == 0) {
+      disliked = false;
+      trashed = false;
+    } else if (act[0]['vote'] > 0) {
+      disliked = false;
+      trashed = true;
+    } else {
+      disliked = true;
+      trashed = false;
+    }
+  }
 }

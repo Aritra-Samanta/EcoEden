@@ -52,7 +52,7 @@ class _ImageInput extends State<ImageInput> {
     final mimeTypeData =
         lookupMimeType(image.path, headerBytes: [0xFF, 0xD8]).split('/');
 
-    // Intilize the multipart request
+    // Initialize the multipart request
     final imageUploadRequest =
         http.MultipartRequest('POST', Uri.parse(baseUrl));
 

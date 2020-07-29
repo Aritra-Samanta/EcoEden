@@ -60,13 +60,12 @@ class _ProfilePageState extends State<ProfilePage> {
               showHeartOverlay: false,
               description: article.description,
               imageUrl: article.image,
-              upvotes: article.upvotes,
-              downvotes: article.downvotes,
               lat: article.lat,
               lng: article.lng,
               id: article.id,
               user: article.user,
               activity: article.activity,
+              voted: article.voted
             ))
         .toList();
   }

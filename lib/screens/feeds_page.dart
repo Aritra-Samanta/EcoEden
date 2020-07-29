@@ -7,10 +7,8 @@ import 'package:ecoeden/services/webservice.dart';
 class FeedsPageState extends State<FeedsPage> {
 
   List<FeedsArticle> _newsArticles = List<FeedsArticle>();
-  bool disliked = false;
   bool showHeartOverlay  = false;
   bool isLoading = false;
-  bool trashed = false;
 
   ScrollController _scrollController = new ScrollController();
   static String nextPage =  'https://api.ecoeden.xyz/feed/';
@@ -89,13 +87,12 @@ class FeedsPageState extends State<FeedsPage> {
                         showHeartOverlay:showHeartOverlay,
                         description: _newsArticles[index].description,
                         imageUrl: _newsArticles[index].image,
-                        upvotes: _newsArticles[index].upvotes,
-                        downvotes: _newsArticles[index].downvotes,
                         lat: _newsArticles[index].lat,
                         lng: _newsArticles[index].lng,
                         id: _newsArticles[index].id,
                         user: _newsArticles[index].user,
                         activity: _newsArticles[index].activity,
+                        voted: _newsArticles[index].voted
                       );
                     }
                   },
