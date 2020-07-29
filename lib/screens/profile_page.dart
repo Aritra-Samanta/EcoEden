@@ -5,8 +5,6 @@ import 'package:ecoeden/screens/feeds_page.dart';
 import 'package:ecoeden/models/feedsArticle.dart';
 import 'package:ecoeden/services/webservice.dart';
 import 'package:ecoeden/models/post.dart';
-import 'package:http/http.dart' as http;
-import 'package:async/async.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // Profile Page

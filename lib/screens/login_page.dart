@@ -17,9 +17,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
-  //String _email;
-  //String _password;
-  bool _isLoading = false; // flag to denote if loading
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -30,110 +27,126 @@ class _LoginPageState extends State<LoginPage> {
     getState();
   }
 
-  void getState() async{
+  void getState() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(prefs.getString('user')!=null)
+    if (prefs.getString('user') != null)
       global_store.dispatch(new NavigatePushAction(AppRoutes.home));
   }
 
-
   @override
   Widget build(BuildContext context) {
-    // Loading indicator
-    Widget showCircularProgress() {
-      if (_isLoading) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      }
-      return Container(
-        height: 0.0,
-        width: 0.0,
-      );
-    }
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
 
     Widget showLogo() {
-      return Hero(
-        tag: 'hero',
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
-          child: CircleAvatar(
-            backgroundColor: Colors.transparent,
-            radius: 80.0,
-            child: Image.asset('assets/EcoEden-Logo.png'),
-          ),
+      return Container(
+        height: height * 0.5,
+        width: width,
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+              width: width / 2,
+              height: height * 0.5,
+              child: Image.asset('assets/EcoEden-Logo.png')),
         ),
       );
     }
 
     Widget showUserNameInput() {
-      return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 80.0, 0.0, 0.0),
+      return Container(
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: TextFormField(
           controller: _usernameController,
           maxLines: 1,
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
           decoration: InputDecoration(
             hintText: 'Username',
-            icon: Icon(
-              Icons.account_circle,
-              color: Colors.grey,
+            labelText: 'Username',
+            labelStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+            suffixIcon: Container(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
+              child: ImageIcon(
+                AssetImage('assets/profile-pic-icon.png'),
+              ),
             ),
           ),
           validator: (value) =>
-          value.isEmpty
-              ? 'Email cant\'t be empty.'
-              : null,
-          //onSaved: (value) => _email = value.trim(),
+              value.isEmpty ? 'Email cant\'t be empty.' : null,
         ),
       );
     }
 
     Widget showPasswordInput() {
-      return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      return Container(
+        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: TextFormField(
           controller: _passwordController,
           maxLines: 1,
           obscureText: true,
           autofocus: false,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
           decoration: InputDecoration(
             hintText: 'Password',
-            icon: Icon(
-              Icons.lock,
-              color: Colors.grey,
+            labelText: 'Password',
+            labelStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+            suffixIcon: Container(
+              padding: EdgeInsets.fromLTRB(0, 15, 0, 5),
+              child: ImageIcon(
+                AssetImage('assets/lock-icon.png'),
+              ),
             ),
           ),
           validator: (value) =>
-          value.isEmpty
-              ? 'Password can\'t be empty'
-              : null,
-          //onSaved: (value) => _password = value.trim(),
+              value.isEmpty ? 'Password can\'t be empty' : null,
+        ),
+      );
+    }
+
+    Widget showForgotButton() {
+      return Container(
+        height: 40,
+        padding: EdgeInsets.fromLTRB(0, 8, 12, 8),
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: FlatButton(
+            child: Text(
+              'Forgot Password?',
+              style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400),
+            ),
+            onPressed: () {
+//          Navigator.push(
+//            context,
+//            MaterialPageRoute(builder: (context) => RegisterPage()),
+//          );
+//          StoreProvider.of<AppState>(context).dispatch(NavigatePushAction(AppRoutes.signup));
+//            store.dispatch(NavigatePushAction(AppRoutes.signup));
+            },
+          ),
         ),
       );
     }
 
     Widget showPrimaryButton(_ViewModel vm) {
-      return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
-        child: SizedBox(
-          width: 30.0,
-          height: 50.0,
-          child: RaisedButton(
-              elevation: 5.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0),
-              ),
-              color: Colors.blue,
-              child: Text(
-                'Log in',
-                style: TextStyle(color: Colors.white, fontSize: 20.0),
-              ),
-              onPressed: () async {
-                vm.login(_usernameController.text, _passwordController.text,context);
-              }),
-        ),
+      return Container(
+        padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+        width: width,
+        height: 50.0,
+        child: RaisedButton(
+            elevation: 0.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            color: Color.fromRGBO(98, 203, 146, 1),
+            child: Text(
+              'LOGIN',
+              style: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.w800),
+            ),
+            onPressed: () async {
+              vm.login(_usernameController.text, _passwordController.text,
+                  context);
+            }),
       );
     }
 
@@ -141,78 +154,73 @@ class _LoginPageState extends State<LoginPage> {
       return FlatButton(
         child: Text(
           'Create a new account',
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300),
+          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),
         ),
         onPressed: () {
-//          Navigator.push(
-//            context,
-//            MaterialPageRoute(builder: (context) => RegisterPage()),
-//          );
-          StoreProvider.of<AppState>(context).dispatch(NavigatePushAction(AppRoutes.signup));
+          StoreProvider.of<AppState>(context)
+              .dispatch(NavigatePushAction(AppRoutes.signup));
 //            store.dispatch(NavigatePushAction(AppRoutes.signup));
         },
       );
     }
 
     // User login form
-    Widget showForm(BuildContext c , _ViewModel vm) {
+    Widget showForm(BuildContext c, _ViewModel vm) {
       return LoadingOverlay(
         isLoading: global_store.state.isLoading,
         opacity: 0.5,
         progressIndicator: CircularProgressIndicator(),
         child: Container(
-          padding: EdgeInsets.all(16.0),
-          child: Form(
-            //key: _formKey,
-            child: ListView(
-              shrinkWrap: true,
-              children: <Widget>[
-                showLogo(),
-                showUserNameInput(),
-                showPasswordInput(),
-                showPrimaryButton(vm),
-                showSecondaryButton(c),
-              ],
-            ),
+          height: height * 0.46,
+          padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+          child: Column(
+            children: <Widget>[
+              showUserNameInput(),
+              showPasswordInput(),
+              showForgotButton(),
+              showPrimaryButton(vm),
+              showSecondaryButton(c),
+            ],
           ),
         ),
       );
     }
 
 
-    return Scaffold(
 
+    return Scaffold(
       appBar: AppBar(
         title: Text('Register'),
       ),
-
       body: StoreConnector<AppState, _ViewModel>(
-
         converter: (store) => _ViewModel.create(store),
-        builder: (context, _ViewModel vm) =>
-            Stack(
+        builder: (context, _ViewModel vm) => Container(
+          child: Form(
+            child: ListView(
+              shrinkWrap: true,
               children: <Widget>[
-                showForm(context, vm),
+                showLogo(),
+                showForm(context, vm)
               ],
             ),
+          ),
+        ),
       ),
     );
   }
 }
 
-
-class _ViewModel{
-  final Function(String, String,BuildContext) login;
-  _ViewModel({
-    this.login
-  });
-  factory _ViewModel.create(Store<AppState> store){
-    _login(String username, String password,BuildContext context){
+class _ViewModel {
+  final Function(String, String, BuildContext) login;
+  _ViewModel({this.login});
+  factory _ViewModel.create(Store<AppState> store) {
+    _login(String username, String password, BuildContext context) {
       store.dispatch(new LoadingStartAction());
-      store.dispatch(new LoginAction(username: username, password: password,context: context).login());
+      store.dispatch(new LoginAction(
+              username: username, password: password, context: context)
+          .login());
     }
-    return _ViewModel(
-        login: _login
-    );
+
+    return _ViewModel(login: _login);
   }
 }

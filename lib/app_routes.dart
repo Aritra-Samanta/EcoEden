@@ -6,5 +6,6 @@ class AppRoutes {
   static const feed = "/feed";
   static const camera = "/camera";
   static const map = "/map";
+  static const corona = "/corona";
   static const leaderboard = "/leaderboard";
 }

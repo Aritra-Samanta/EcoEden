@@ -3,16 +3,11 @@ import 'package:ecoeden/models/user.dart';
 import 'package:ecoeden/redux/actions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:redux/redux.dart';
 import 'package:ecoeden/redux/app_state.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
-
-
-
-class RegisterPage extends StatelessWidget{
-
+class RegisterPage extends StatelessWidget {
   final _formKey = new GlobalKey<FormState>();
 
   final email = TextEditingController();
@@ -23,112 +18,156 @@ class RegisterPage extends StatelessWidget{
   final mobile = TextEditingController();
   final userName = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    EdgeInsets contentPadding = EdgeInsets.fromLTRB(0, 0, 0, 0);
 
+    Widget showBackButton() {
+      return Container(
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: IconButton(
+            color: Color.fromRGBO(90, 203, 146, 1),
+            icon: Icon(Icons.arrow_back, size: 25),
+            onPressed: () => {},
+          ),
+        ),
+      );
+    }
 
-    Widget showNameInput() {
-      return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    Widget showLogo() {
+      return Container(
+        child: Align(
+          child: Image.asset('assets/EcoEden-Logo.png'),
+        ),
+      );
+    }
+
+    Widget showLogoBack() {
+      return Container(
+        height: height * 0.25,
+        child: Stack(
           children: <Widget>[
-            Flexible(
-              child: TextFormField(
-                controller: firstName,
-                maxLines: 1,
-                autofocus: false,
-                decoration: InputDecoration(
-                  hintText: 'First Name',
-                  icon: Icon(
-                    Icons.face,
-                    color: Colors.grey,
-                  ),
-                  contentPadding: EdgeInsets.only(top: 0.0, bottom: 10.0),
-                  isDense: true,
-                ),
-                validator: (value) => value.isEmpty ? 'First Name cant\'t be empty.' : null,
-                //onSaved: (value) => firstName = value.trim(),
-              ),
+            Positioned(
+              top: 0,
+              child: showBackButton(),
             ),
-            SizedBox(width: 16.0,),
-            Flexible(
-              child: TextFormField(
-                controller: lastName,
-                maxLines: 1,
-                autofocus: false,
-                decoration: InputDecoration(
-                  hintText: 'Last Name',
-                  contentPadding: EdgeInsets.only(top: 0.0, bottom: 10.0),
-                  isDense: true,
-                ),
-                validator: (value) => value.isEmpty ? 'Last Name cant\'t be empty.' : null,
-                //onSaved: (value) => lastName = value.trim(),
-              ),
-            ),
-            SizedBox(width: 16.0,),
+            Positioned.fill(
+              child: showLogo(),
+            )
           ],
         ),
       );
     }
 
-
-    Widget showLogo() {
-      return Hero(
-        tag: 'hero',
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
-          child: CircleAvatar(
-            backgroundColor: Colors.transparent,
-            radius: 80.0,
-            child: Image.asset('assets/EcoEden-Logo.png'),
+    Widget showNameInput() {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Flexible(
+            child: Container(
+              padding: EdgeInsets.fromLTRB(25, 15, 10, 0),
+              child: TextFormField(
+                controller: firstName,
+                maxLines: 1,
+                autofocus: false,
+                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                decoration: InputDecoration(
+                  contentPadding: contentPadding,
+                  hintText: 'First Name',
+                  labelText: 'First Name',
+                  labelStyle:
+                      TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  suffixIcon: Container(
+                    height: 0,
+                    width: 0,
+                  ),
+                ),
+                validator: (value) =>
+                    value.isEmpty ? 'First Name cant\'t be empty.' : null,
+              ),
+            ),
           ),
-        ),
+          Flexible(
+            child: Container(
+              padding: EdgeInsets.fromLTRB(25, 15, 10, 0),
+              child: TextFormField(
+                controller: lastName,
+                maxLines: 1,
+                autofocus: false,
+                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                decoration: InputDecoration(
+                  contentPadding: contentPadding,
+                  hintText: 'Last Name',
+                  labelText: 'Last Name',
+                  labelStyle:
+                      TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  suffixIcon: Container(
+                    height: 0,
+                    width: 0,
+                  ),
+                ),
+                validator: (value) =>
+                    value.isEmpty ? 'Last Name cant\'t be empty.' : null,
+              ),
+            ),
+          ),
+        ],
       );
     }
 
     Widget showUserNameInput() {
-      return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
+      return Container(
+        padding: EdgeInsets.fromLTRB(25, 5, 25, 0),
         child: TextFormField(
           controller: userName,
           maxLines: 1,
           keyboardType: TextInputType.text,
           autofocus: false,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
           decoration: InputDecoration(
+            contentPadding: contentPadding,
             hintText: 'Username',
-            icon: Icon(
-              Icons.account_circle,
-              color: Colors.grey,
+            labelText: 'Username',
+            labelStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+            suffixIcon: Container(
+              padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+              child: ImageIcon(
+                AssetImage('assets/profile-pic-icon.png'),
+              ),
             ),
-            contentPadding: EdgeInsets.only(top: 11.0, bottom: 10.0),
-            isDense: true,
           ),
-          validator: (value) => value.isEmpty ? 'Email cant\'t be empty.' : null,
-          //onSaved: (value) => userName = value.trim(),
+          validator: (value) =>
+              value.isEmpty ? 'Email cant\'t be empty.' : null,
         ),
       );
     }
 
     Widget showMobileNumberInput() {
       return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
         child: TextFormField(
           controller: mobile,
           maxLines: 1,
           keyboardType: TextInputType.phone,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
           autofocus: false,
           decoration: InputDecoration(
+            contentPadding: contentPadding,
             hintText: 'Phone number',
-            icon: Icon(
-              Icons.phone,
-              color: Colors.grey,
+            labelText: 'Phone Number',
+            labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            suffixIcon: Container(
+              padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+              child: ImageIcon(
+                AssetImage('assets/phone-icon.png'),
+              ),
             ),
-            contentPadding: EdgeInsets.only(top: 11.0, bottom: 10.0),
-            isDense: true,
           ),
-          validator: (value) => value.isEmpty ? 'Email cant\'t be empty.' : null,
+          validator: (value) =>
+              value.isEmpty ? 'Email cant\'t be empty.' : null,
           //onSaved: (value) => mobile = value.trim(),
         ),
       );
@@ -136,22 +175,27 @@ class RegisterPage extends StatelessWidget{
 
     Widget showEmailInput() {
       return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
         child: TextFormField(
           controller: email,
           maxLines: 1,
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
           decoration: InputDecoration(
-            hintText: 'Email',
-            icon: Icon(
-              Icons.mail,
-              color: Colors.grey,
+            contentPadding: contentPadding,
+            hintText: 'Email Address',
+            labelText: 'Email Address',
+            labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            suffixIcon: Container(
+              padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+              child: ImageIcon(
+                AssetImage('assets/email-icon.png'),
+              ),
             ),
-            contentPadding: EdgeInsets.only(top: 11.0, bottom: 10.0),
-            isDense: true,
           ),
-          validator: (value) => value.isEmpty ? 'Email cant\'t be empty.' : null,
+          validator: (value) =>
+              value.isEmpty ? 'Email cant\'t be empty.' : null,
           //onSaved: (value) => email = value.trim(),
         ),
       );
@@ -159,120 +203,125 @@ class RegisterPage extends StatelessWidget{
 
     Widget showPasswordInput() {
       return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
         child: TextFormField(
-          controller: password,
+          controller: email,
           maxLines: 1,
-          obscureText: true,
+          keyboardType: TextInputType.emailAddress,
           autofocus: false,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
           decoration: InputDecoration(
+            contentPadding: contentPadding,
             hintText: 'Password',
-            icon: Icon(
-              FontAwesomeIcons.lock,
-              color: Colors.grey,
+            labelText: 'Password',
+            labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            suffixIcon: Container(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
+              child: ImageIcon(
+                AssetImage('assets/lock-icon.png'),
+              ),
             ),
-            contentPadding: EdgeInsets.only(top: 11.0, bottom: 10.0),
-            isDense: true,
           ),
-          validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
-          //onSaved: (value) => password = value.trim(),
+          validator: (value) =>
+          value.isEmpty ? 'Email cant\'t be empty.' : null,
+          //onSaved: (value) => email = value.trim(),
         ),
       );
     }
 
     Widget showConfirmPasswordInput() {
       return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
         child: TextFormField(
-          controller: confirmPassword,
+          controller: email,
           maxLines: 1,
-          obscureText: true,
+          keyboardType: TextInputType.emailAddress,
           autofocus: false,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
           decoration: InputDecoration(
+            contentPadding: contentPadding,
             hintText: 'Confirm Password',
-            icon: Icon(
-              Icons.lock,
-              color: Colors.grey,
+            labelText: 'Confirm Password',
+            labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            suffixIcon: Container(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
+              child: ImageIcon(
+                AssetImage('assets/lock-icon.png'),
+              ),
             ),
-            contentPadding: EdgeInsets.only(top: 11.0, bottom: 10.0),
-            isDense: true,
           ),
-          validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
-          //onSaved: (value) => confirmPassword = value.trim(),
+          validator: (value) =>
+          value.isEmpty ? 'Email cant\'t be empty.' : null,
+          //onSaved: (value) => email = value.trim(),
         ),
       );
     }
+
 
     Widget showPrimaryButton(_ViewModel vm) {
-      return Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
-        child: SizedBox(
-          width: 30.0,
-          height: 50.0,
-          child: RaisedButton(
-            elevation: 5.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
-            ),
-            color: Colors.blue,
-            child: Text(
-              'Register',
-              style: TextStyle(color: Colors.white, fontSize: 20.0, fontFamily: "SegoeUI", fontWeight: FontWeight.w600, fontStyle: FontStyle.italic),
-            ),
-            onPressed: () {
-
-              User nuser = new User(
-                firstName: firstName.text,
-                lastName:  lastName.text,
-                email:     email.text,
-                userName:  userName.text,
-                mobile:    mobile.text,
-                password : confirmPassword.text,
-
-              );
-              vm.signup(nuser,context);
-
-
-            },
+      return Container(
+        padding: EdgeInsets.fromLTRB(25.0, 36.0, 25.0, 0),
+        width: width,
+        height: 90.0,
+        child: RaisedButton(
+          elevation: 0.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
           ),
+          color: Color.fromRGBO(98, 203, 146, 1),
+          child: Text(
+            'REGISTER',
+            style: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.w800),
+          ),
+          onPressed: () {
+            User nuser = new User(
+              firstName: firstName.text,
+              lastName: lastName.text,
+              email: email.text,
+              userName: userName.text,
+              mobile: mobile.text,
+              password: confirmPassword.text,
+            );
+            vm.signup(nuser, context);
+          },
         ),
       );
     }
 
-    Widget showSecondaryButton(BuildContext context) {
-      return FlatButton(
-        child: Text(
-          'Have an account? Sign in.',
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300),
-        ),
-        onPressed: () {
-//          StoreProvider.of<AppState>(context).dispatch(NavigatePopAction());
-            Navigator.pop(context);
-        },
-      );
-    }
+//    Widget showSecondaryButton(BuildContext context) {
+//      return FlatButton(
+//        child: Text(
+//          'Have an account? Sign in.',
+//          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300),
+//        ),
+//        onPressed: () {
+////          StoreProvider.of<AppState>(context).dispatch(NavigatePopAction());
+//          Navigator.pop(context);
+//        },
+//      );
+//    }
 
-    Widget showForm(BuildContext c , _ViewModel vm) {
+    Widget showForm(BuildContext c, _ViewModel vm) {
       return LoadingOverlay(
         opacity: 0.5,
         isLoading: global_store.state.isLoading,
         progressIndicator: CircularProgressIndicator(),
         child: Container(
-          padding: EdgeInsets.all(16.0),
+          height: height,
           child: Form(
             key: _formKey,
             child: ListView(
               shrinkWrap: true,
               children: <Widget>[
-                showLogo(),
+                showLogoBack(),
                 showNameInput(),
                 showUserNameInput(),
-                showMobileNumberInput(),
                 showEmailInput(),
+                showMobileNumberInput(),
                 showPasswordInput(),
                 showConfirmPasswordInput(),
                 showPrimaryButton(vm),
-                showSecondaryButton(c),
+//                showSecondaryButton(c),
               ],
             ),
           ),
@@ -281,40 +330,32 @@ class RegisterPage extends StatelessWidget{
     }
 
     return Scaffold(
-
       appBar: AppBar(
         title: Text('Register'),
       ),
-
-      body: StoreConnector<AppState ,_ViewModel> (
-
-        converter:(store) => _ViewModel.create(store),
-        builder: ( context ,_ViewModel vm ) =>
-            Stack(
-              children: <Widget>[
-                showForm(context , vm),
-              ],
-            ),
+      body: StoreConnector<AppState, _ViewModel>(
+        converter: (store) => _ViewModel.create(store),
+        builder: (context, _ViewModel vm) => Stack(
+          children: <Widget>[
+            showForm(context, vm),
+          ],
+        ),
       ),
     );
-
-
   }
 }
 
-
-class _ViewModel{
-  final Function(User,BuildContext) signup;
+class _ViewModel {
+  final Function(User, BuildContext) signup;
   _ViewModel({
     this.signup,
   });
-  factory _ViewModel.create(Store<AppState> store){
-    _signup(User user,BuildContext context){
+  factory _ViewModel.create(Store<AppState> store) {
+    _signup(User user, BuildContext context) {
       store.dispatch(new LoadingStartAction());
-      store.dispatch(new SignupAction(user: user,context: context).signup());
+      store.dispatch(new SignupAction(user: user, context: context).signup());
     }
-    return _ViewModel(
-        signup: _signup
-    );
+
+    return _ViewModel(signup: _signup);
   }
 }

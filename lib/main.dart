@@ -1,3 +1,4 @@
+import 'package:ecoeden/screens/corona_page.dart';
 import 'package:ecoeden/screens/home_page.dart';
 import 'package:ecoeden/screens/login_page.dart';
 import 'package:ecoeden/screens/signup_page.dart';
@@ -59,6 +60,8 @@ class MyApp extends StatelessWidget {
         return MainRoute(ProfilePage(), settings: settings);
       case AppRoutes.leaderboard:
         return MainRoute(LeaderBoard(), settings: settings);
+      case AppRoutes.corona:
+        return MainRoute(CoronaPage(), settings: settings);
       default:
         return MainRoute(LoginPage(), settings: settings);
     }

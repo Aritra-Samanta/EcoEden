@@ -10,7 +10,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ecoeden/redux/actions.dart';
-import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Post extends StatefulWidget {
@@ -297,11 +296,11 @@ class _PostState extends State<Post> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: <Widget>[
-                    Image.network(getImg()),
+                    //Image.network(getImg()),
                     //Image.asset('assets/profile.jpg'),
-//                    widget.imageUrl == null
-//                        ? Image.asset(getImg())
-//                        : CachedNetworkImage(imageUrl: widget.imageUrl),
+                    widget.imageUrl == null
+                        ? Image.asset(getImg())
+                        : CachedNetworkImage(imageUrl: widget.imageUrl),
                     widget.showHeartOverlay
                         ? Icon(
                             FontAwesomeIcons.solidTrashAlt,

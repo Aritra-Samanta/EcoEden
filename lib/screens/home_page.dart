@@ -20,6 +20,7 @@ import 'package:ecoeden/models/feedsArticle.dart';
 import 'package:ecoeden/screens/feeds_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:ecoeden/screens/corona_page.dart';
 
 import '../redux/actions.dart';
 
@@ -255,7 +256,9 @@ class HomePageState extends State<HomePage> {
                             child: Column(
                               children: <Widget>[
                                 //Divider(),
-                                Image.asset("assets/COVID_19_2.png", height: 50, width: 150,),
+                                GestureDetector(child: Image.asset("assets/COVID_19_2.png", height: 50, width: 150,),onTap: (){
+                                  global_store.dispatch(new NavigatePushAction(AppRoutes.corona));
+                                },),
                                 SizedBox(height: 20.0),
                                 Image.asset("assets/EcoEden-Logo-withoutText.png",height: 150.0,width:200.0),
                                 Text("\u00a9 EcoEden 2020",
