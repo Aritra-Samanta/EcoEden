@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ecoeden/redux/actions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class Post extends StatefulWidget {
   bool showHeartOverlay = false;
@@ -148,12 +149,25 @@ class _PostState extends State<Post> {
   }
 
   Color getColor() {
-    if (widget.voted.upvotes < 5) {
-      return Colors.grey;
-    } else {
-      return Colors.red;
-    }
+    if(widget.verified.collected==true)
+      return Color.fromRGBO(243, 223, 129, 1);
+    if (ifCollect(double.parse(widget.lat), double.parse(widget.lng)))
+      return Color(0xff59b8e8);//Color(0xffeb858a);
+     if(widget.voted.upvotes>2)
+      return Color(0xffeb858a);
+    else
+      return Colors.grey[300];
   }
+
+  Color getIconColor() {
+    if(widget.verified.collected==true)
+      return Colors.yellow;
+    if(widget.voted.upvotes>2)
+      return Colors.red;
+    else
+      return Colors.grey[700];
+  }
+
 
   bool ifCollect(double lat, double long) {
     double lat2 = res.latitude;
@@ -174,81 +188,89 @@ class _PostState extends State<Post> {
               Container(
                   width: MediaQuery.of(context).size.width / 2.5,
                   decoration: BoxDecoration(
-                    color: Colors.yellow[400],
+                    color: Colors.white,
                     borderRadius: BorderRadius.all(
-                      Radius.circular(20.0),
+                      Radius.circular(10.0),
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 8.0),
+                    padding: const EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 12.0),
                     child: Text(
                       "Collected",
                       style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w500),
+                          color: Color(0xfffdde69), fontWeight: FontWeight.w500,fontSize: 19),
                       textAlign: TextAlign.center,
                     ),
                   )),
-              Wrap(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-                    child: Text(
-                      " ${widget.verified.upvotes}",
-                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+              Container(
+                //width: MediaQuery.of(context).size.width / 1.6,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(10.0))),
+                child: Wrap(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 17, 0, 0),
+                      child: Text(
+                        " ${widget.verified.upvotes}",
+                        style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                      ),
                     ),
-                  ),
-                  IconButton(
-                      padding: EdgeInsets.symmetric(horizontal: 0.0),
-                      iconSize: widget.verified.trashed ? 25.0 : 20.0,
-                      icon: Icon(
-                          widget.verified.trashed
-                              ? FontAwesomeIcons.solidArrowAltCircleUp
-                              : FontAwesomeIcons.arrowUp,
-                          color:
-                          widget.verified.trashed ? Colors.green : Colors.grey),
-                      onPressed: () {
-                        setState(() {
-                          widget.verified.upvotes = widget.verified.trashed
-                              ? widget.verified.upvotes - 1
-                              : widget.verified.upvotes + 1;
-                          widget.verified.downvotes = widget.verified.disliked
-                              ? widget.verified.downvotes - 1
-                              : widget.verified.downvotes;
-                          widget.verified.trashed = !widget.verified.trashed;
-                          widget.verified.disliked = false;
-                          verify_function();
-                        });
-                      }),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-                    child: Text(
-                      " ${widget.verified.downvotes}",
-                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                    IconButton(
+                        padding: EdgeInsets.symmetric(horizontal: 0.0),
+                        iconSize: widget.verified.trashed ? 25.0 : 20.0,
+                        icon: Icon(
+                            widget.verified.trashed
+                                ? FontAwesomeIcons.solidArrowAltCircleUp
+                                : FontAwesomeIcons.arrowUp,
+                            color:
+                            widget.verified.trashed ? Colors.green : Colors.grey),
+                        onPressed: () {
+                          setState(() {
+                            widget.verified.upvotes = widget.verified.trashed
+                                ? widget.verified.upvotes - 1
+                                : widget.verified.upvotes + 1;
+                            widget.verified.downvotes = widget.verified.disliked
+                                ? widget.verified.downvotes - 1
+                                : widget.verified.downvotes;
+                            widget.verified.trashed = !widget.verified.trashed;
+                            widget.verified.disliked = false;
+                            verify_function();
+                          });
+                        }),
+                    Container(padding: EdgeInsets.only(left: 4.0, right: 4.0), height: MediaQuery.of(context).size.height/22 , child: VerticalDivider(color: Colors.black, thickness: 1, width: 10,indent: 4,)),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
+                      child: Text(
+                        " ${widget.verified.downvotes}",
+                        style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                      ),
                     ),
-                  ),
-                  IconButton(
-                      padding: EdgeInsets.symmetric(horizontal: 0.0),
-                      iconSize: widget.verified.trashed ? 25.0 : 20.0,
-                      icon: Icon(
-                          widget.verified.disliked
-                              ? FontAwesomeIcons.solidArrowAltCircleDown
-                              : FontAwesomeIcons.arrowDown,
-                          color:
-                          widget.verified.disliked ? Colors.red : Colors.grey),
-                      onPressed: () {
-                        setState(() {
-                          widget.verified.downvotes = widget.verified.disliked
-                              ? widget.verified.downvotes - 1
-                              : widget.verified.downvotes + 1;
-                          widget.verified.upvotes = widget.verified.trashed
-                              ? widget.verified.upvotes - 1
-                              : widget.verified.upvotes;
-                          widget.verified.disliked = !widget.verified.disliked;
-                          widget.verified.trashed = false;
-                          verify_function();
-                        });
-                      }),
-                ],
+                    IconButton(
+                        padding: EdgeInsets.symmetric(horizontal: 0.0),
+                        iconSize: widget.verified.trashed ? 25.0 : 20.0,
+                        icon: Icon(
+                            widget.verified.disliked
+                                ? FontAwesomeIcons.solidArrowAltCircleDown
+                                : FontAwesomeIcons.arrowDown,
+                            color:
+                            widget.verified.disliked ? Colors.red : Colors.grey),
+                        onPressed: () {
+                          setState(() {
+                            widget.verified.downvotes = widget.verified.disliked
+                                ? widget.verified.downvotes - 1
+                                : widget.verified.downvotes + 1;
+                            widget.verified.upvotes = widget.verified.trashed
+                                ? widget.verified.upvotes - 1
+                                : widget.verified.upvotes;
+                            widget.verified.disliked = !widget.verified.disliked;
+                            widget.verified.trashed = false;
+                            verify_function();
+                          });
+                        }),
+                  ],
+                ),
               ),
             ],
           ),
@@ -273,11 +295,14 @@ class _PostState extends State<Post> {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
-              Radius.circular(6.0))),
+              Radius.circular(15.0))),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(10, 8, 7, 6),
         child: Card(
-            color: Colors.lightGreenAccent[100],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            color: getColor(),
             shadowColor: Colors.grey,
             elevation: 20.0,
             child: Container(
@@ -291,37 +316,46 @@ class _PostState extends State<Post> {
                       Container(
                           width: MediaQuery.of(context).size.width / 1.6,
                           decoration: BoxDecoration(
-                              color: Colors.green,
+                              color: Colors.white,
                               borderRadius:
                               BorderRadius.all(Radius.circular(10.0))),
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(8.0, 6.0, 8.0, 6.0),
                             child: Row(
                               children: <Widget>[
-                                CircleAvatar(
-                                  radius: 18.0,
-                                  backgroundColor: Colors.lightBlueAccent,
-                                  child: Text(
-                                    _sendData(),
-                                    style: TextStyle(fontSize: 26.0),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: CircleAvatar(
+                                    radius: 18.0,
+                                    backgroundColor: Colors.lightBlueAccent,
+                                    child: Text(
+                                      _sendData(),
+                                      style: TextStyle(fontSize: 26.0),
+                                    ),
                                   ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
-                                  child: Text(
-                                    widget.description,
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w500),
-                                    textAlign: TextAlign.center,
+                                  child: SizedBox(
+                                    height: 80,
+                                    width:140,
+                                    child: AutoSizeText(
+                                      widget.description,
+                                      softWrap: true,
+                                      maxLines: 4,
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.w500),
+                                      textAlign: TextAlign.center,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           )),
                       CircleAvatar(
-                        backgroundColor: getColor(),
+                        backgroundColor: getIconColor(),
                         child: Icon(
                           FontAwesomeIcons.trashAlt,
                           color: Colors.white,
@@ -381,89 +415,100 @@ class _PostState extends State<Post> {
                       ),
                       Container(
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(14.0, 0.0, 8.0, 4.0),
+                          padding: const EdgeInsets.fromLTRB(14.0, 10.0, 8.0, 4.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Wrap(
-                                spacing: 1.0,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(0, 18, 0, 0),
-                                    child: Text(
-                                      " ${widget.voted.upvotes}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 18),
+                              Container(
+                                //width: MediaQuery.of(context).size.width / 1.6,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0))),
+                                child: Wrap(
+                                  spacing: 1.0,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(0, 17, 0, 0),
+                                      child: Text(
+                                        " ${widget.voted.upvotes}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 18),
+                                      ),
                                     ),
-                                  ),
-                                  IconButton(
-                                      iconSize: 25.0,
-                                      icon: Icon(
-                                          widget.voted.trashed
-                                              ? FontAwesomeIcons.solidThumbsUp
-                                              : FontAwesomeIcons.thumbsUp,
-                                          color: widget.voted.trashed
-                                              ? Colors.green
-                                              : Colors.grey),
-                                      onPressed: () async {
-                                        setState(() {
-                                          widget.voted.upvotes =
-                                          widget.voted.trashed
-                                              ? widget.voted.upvotes - 1
-                                              : widget.voted.upvotes + 1;
-                                          widget.voted.downvotes =
-                                          widget.voted.disliked
-                                              ? widget.voted.downvotes - 1
-                                              : widget.voted.downvotes;
-                                          widget.voted.trashed =
-                                          !widget.voted.trashed;
-                                          widget.voted.disliked = false;
-                                        });
-                                        await vote_function();
-                                      }),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(0, 16, 0, 0),
-                                    child: Text(
-                                      " ${widget.voted.downvotes}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 18),
+                                    IconButton(
+                                        iconSize: 25.0,
+                                        icon: Icon(
+                                            widget.voted.trashed
+                                                ? FontAwesomeIcons.solidThumbsUp
+                                                : FontAwesomeIcons.thumbsUp,
+                                            color: widget.voted.trashed
+                                                ? Colors.green
+                                                : Colors.grey),
+                                        onPressed: () async {
+                                          setState(() {
+                                            widget.voted.upvotes =
+                                            widget.voted.trashed
+                                                ? widget.voted.upvotes - 1
+                                                : widget.voted.upvotes + 1;
+                                            widget.voted.downvotes =
+                                            widget.voted.disliked
+                                                ? widget.voted.downvotes - 1
+                                                : widget.voted.downvotes;
+                                            widget.voted.trashed =
+                                            !widget.voted.trashed;
+                                            widget.voted.disliked = false;
+                                          });
+                                          await vote_function();
+                                        }),
+                                    Container(padding: EdgeInsets.only(left: 4.0, right: 4.0), height: MediaQuery.of(context).size.height/22 , child: VerticalDivider(color: Colors.black, thickness: 1, width: 10,indent: 4,)),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(0, 17, 0, 0),
+                                      child: Text(
+                                        " ${widget.voted.downvotes}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 18),
+                                      ),
                                     ),
-                                  ),
-                                  IconButton(
-                                      iconSize: 25.0,
-                                      icon: Icon(
-                                          widget.voted.disliked
-                                              ? FontAwesomeIcons.solidThumbsDown
-                                              : FontAwesomeIcons.thumbsDown,
-                                          color: widget.voted.disliked
-                                              ? Colors.red
-                                              : Colors.grey),
-                                      onPressed: () async {
-                                        setState(() {
-                                          widget.voted.downvotes =
-                                          widget.voted.disliked
-                                              ? widget.voted.downvotes - 1
-                                              : widget.voted.downvotes + 1;
-                                          widget.voted.upvotes =
-                                          widget.voted.trashed
-                                              ? widget.voted.upvotes - 1
-                                              : widget.voted.upvotes;
-                                          widget.voted.disliked =
-                                          !widget.voted.disliked;
-                                          widget.voted.trashed = false;
-                                        });
-                                        await vote_function();
-                                      }),
-                                ],
+                                    IconButton(
+                                        iconSize: 25.0,
+                                        icon: Icon(
+                                            widget.voted.disliked
+                                                ? FontAwesomeIcons.solidThumbsDown
+                                                : FontAwesomeIcons.thumbsDown,
+                                            color: widget.voted.disliked
+                                                ? Colors.red
+                                                : Colors.grey),
+                                        onPressed: () async {
+                                          setState(() {
+                                            widget.voted.downvotes =
+                                            widget.voted.disliked
+                                                ? widget.voted.downvotes - 1
+                                                : widget.voted.downvotes + 1;
+                                            widget.voted.upvotes =
+                                            widget.voted.trashed
+                                                ? widget.voted.upvotes - 1
+                                                : widget.voted.upvotes;
+                                            widget.voted.disliked =
+                                            !widget.voted.disliked;
+                                            widget.voted.trashed = false;
+                                          });
+                                          await vote_function();
+                                        }),
+                                  ],
+                                ),
                               ),
                               GestureDetector(
                                 child: render
                                     ? Image.asset("assets/Collect Button.png",
                                     height: 60, width: 120)
-                                    : Image.asset("assets/maps.png",
-                                    height: 60, width: 120),
+                                    : Container(
+                                  color: Colors.white,
+                                      child: Image.asset("assets/Google Maps.png",
+                                      height: 60, width: 120),
+                                    ),
                                 onTap: () async {
                                   if (render) {
                                     await collect();
@@ -482,7 +527,10 @@ class _PostState extends State<Post> {
                           ),
                         ),
                       ),
-                      Divider(),
+                      widget.verified.collected ?Divider(
+                        color: Colors.black,
+                        thickness: 1.2,
+                      ):Container(),
                       widget.verified.collected ? getCollect(context) : Container(),
                     ],
                   )

@@ -35,7 +35,7 @@ class CoronaPage extends StatelessWidget {
               children: <Widget>[
                 SizedBox(width: MediaQuery.of(context).size.width / 15,),
                 Image.asset("assets/Mask.png",height: L,width: L),
-                Text(' ' * 8 + 'Use a Medical Mask',style: TextStyle(color: Color(0xff22cf8d),fontSize: 21.0),),
+                Expanded(child: Text('Use a Medical Mask',style: TextStyle(color: Color(0xff22cf8d),fontSize: 21.0),)),
               ],
             ),
             Row(
@@ -61,7 +61,7 @@ class CoronaPage extends StatelessWidget {
               children: <Widget>[
                 SizedBox(width: MediaQuery.of(context).size.width / 12,),
                 Image.asset("assets/No Contact.png",height: M,width: M),
-                Text(' ' * 8 + 'Avoid Physical Contact',style: TextStyle(color: Color(0xffff9a1b),fontSize: 20.5),),
+                Expanded(child: Text('Avoid Physical Contact',style: TextStyle(color: Color(0xffff9a1b),fontSize: 20.5),)),
                 SizedBox(width: 40,),
               ],
             ),

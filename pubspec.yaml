@@ -49,6 +49,7 @@ dependencies:
   path_drawing: ^0.4.1
   threading: ^0.0.10
   pie_chart:
+  auto_size_text: ^2.1.0
 
 
 dev_dependencies:

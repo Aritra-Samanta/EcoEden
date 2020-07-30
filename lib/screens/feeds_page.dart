@@ -52,7 +52,7 @@ class FeedsPageState extends State<FeedsPage> {
   }
 
   Future _getLocation() async {
-    while(_insideFeed) {
+    while (_insideFeed) {
       await Thread.sleep(3000);
       myLoc = await Geolocator()
           .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -90,40 +90,98 @@ class FeedsPageState extends State<FeedsPage> {
   Widget build(BuildContext context) {
     //print(_newsArticles[0].description);
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Feed'),
-        ),
-        body: Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _newsArticles.length + 1,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index == _newsArticles.length) {
-                      return _buildProgressIndicator();
-                    } else {
-                      print("Index : " + index.toString());
-                      return Post(
-                          showHeartOverlay: showHeartOverlay,
-                          description: _newsArticles[index].description,
-                          imageUrl: _newsArticles[index].image,
-                          lat: _newsArticles[index].lat,
-                          lng: _newsArticles[index].lng,
-                          id: _newsArticles[index].id,
-                          user: _newsArticles[index].user,
-                          voted: _newsArticles[index].voted,
-                          verified: _newsArticles[index].verified);
-                    }
-                  },
-                  controller: _scrollController,
-                ),
-              )
-            ],
+        body: Stack(
+      children: <Widget>[
+        Positioned(
+            child: Image.asset(
+          'assets/wave.png',
+          fit: BoxFit.fitWidth,
+        )),
+        showPost(context),
+      ],
+    ));
+  }
+
+  List<Widget> getPosts() {
+    return _newsArticles
+        .map((article) => Post(
+            showHeartOverlay: false,
+            description: article.description,
+            imageUrl: article.image,
+            lat: article.lat,
+            lng: article.lng,
+            id: article.id,
+            user: article.user,
+            voted: article.voted,
+            verified: article.verified))
+        .toList();
+  }
+
+  Widget showPost(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.fromLTRB(5, 25, 0, 0),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back, size: 28, color: Colors.white),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
           ),
-        ));
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(30, 10, 0, 0),
+          child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Feeds',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 48.0,
+                    fontFamily: "SegoeUI",
+                    fontWeight: FontWeight.w700),
+                textAlign: TextAlign.left,
+              )),
+        ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(0, 0.0, 30.0, 4.0),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              width: 50,
+              height: 50,
+              child: Image.asset('assets/EcoEden-Logo-withoutText.png'),
+            ),
+          ),
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _newsArticles.length + 1,
+            itemBuilder: (BuildContext context, int index) {
+              if (index == _newsArticles.length) {
+                return _buildProgressIndicator();
+              } else {
+                print("Index : " + index.toString());
+                return Post(
+                    showHeartOverlay: showHeartOverlay,
+                    description: _newsArticles[index].description,
+                    imageUrl: _newsArticles[index].image,
+                    lat: _newsArticles[index].lat,
+                    lng: _newsArticles[index].lng,
+                    id: _newsArticles[index].id,
+                    user: _newsArticles[index].user,
+                    voted: _newsArticles[index].voted,
+                    verified: _newsArticles[index].verified);
+              }
+            },
+            controller: _scrollController,
+          ),
+        )
+      ],
+    );
   }
 }
 

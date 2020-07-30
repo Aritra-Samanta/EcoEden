@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../app_routes.dart';
-import '../app_routes.dart';
-import '../main.dart';
 import '../main.dart';
 import '../models/feedsArticle.dart';
 import '../redux/actions.dart';
@@ -21,9 +19,7 @@ import 'package:ecoeden/screens/feeds_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:pie_chart/pie_chart.dart';
-import 'package:ecoeden/screens/corona_page.dart';
 
-import '../redux/actions.dart';
 
 final get_User = 'https://api.ecoeden.xyz/users/';
 
@@ -45,19 +41,44 @@ class HomePageState extends State<HomePage> {
     Colors.red,
     Colors.green[400]
   ];
-
+  BitmapDescriptor trashIcon , collectedIcon,  postIcon, currentIcon;
   List<FeedsArticle> _newsArticles = List<FeedsArticle>();
   static String nextPage = 'https://api.ecoeden.xyz/leaderboard/';
   @override
   void initState() {
     super.initState();
     print("Inside home");
+    CustomMapPin();
     FeedsPageState.nextPage = 'https://api.ecoeden.xyz/feed/';
     _fetcher();
   }
 
   void _fetcher() async {
     await _fetch();
+  }
+
+  void CustomMapPin() async {
+    trashIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/trash-icon-red.png');
+    collectedIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/trash-icon-yellow.png');
+    postIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/trash-icon-green.png');
+    currentIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio:3.5),
+        'assets/map-marker.png');
+  }
+
+  BitmapDescriptor setCustomMapMarkers(FeedsArticle x ){
+    if(x.verified.collected==true)
+      return collectedIcon;
+    else if (x.voted.upvotes > 2)
+      return trashIcon;
+    else
+      return postIcon;
   }
 
   Future<void> _fetch() async {
@@ -188,6 +209,7 @@ class HomePageState extends State<HomePage> {
               children: <Widget>[
                 Expanded(
                   child: ListView(
+                    shrinkWrap: true,
                     children: <Widget>[
                       UserAccountsDrawerHeader(
                         decoration: BoxDecoration(
@@ -204,85 +226,39 @@ class HomePageState extends State<HomePage> {
                                 fontSize: 18.0,
                                 fontFamily: "SegoeUI",
                                 fontWeight: FontWeight.w600)),
-                        currentAccountPicture: GestureDetector(
-                          child: Hero(
-                            tag: "profile",
-                            child: CircleAvatar(
-                              backgroundColor: Colors.lightBlueAccent,
-                              child: Text(sendData(), style: TextStyle(fontSize: 40.0)),
+                        currentAccountPicture: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GestureDetector(
+                            child: Hero(
+                              tag: "profile",
+                              child: CircleAvatar(
+                                backgroundColor: Colors.lightBlueAccent,
+                                child: Text(sendData(), style: TextStyle(fontSize: 40.0)),
+                              ),
                             ),
+                            onTap: () {
+                              global_store.dispatch(new NavigatePushAction(AppRoutes.profile));
+                            },
                           ),
-                          onTap: () {
-                            global_store.dispatch(new NavigatePushAction(AppRoutes.profile));
-                          },
                         ),
                       ),
                       GestureDetector(
                         child: Container(
+                          padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 3.0),
+                          child: Text('Profile', style: TextStyle(fontFamily: "SegoeUI", fontSize: 20.0)),
+                        ),
+                        onTap: () {
+                          global_store.dispatch(new NavigatePushAction(AppRoutes.profile));
+                        },
+                      ),
+                      Divider(indent: 15.0, endIndent: 20.0, color: Colors.black),
+                      GestureDetector(
+                        child: Container(
                           padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 5.0),
-                          child: Text('Insights', style: TextStyle(fontSize: 20.0),),
+                          child: Text('Leaderboard', style: TextStyle(fontSize: 20.0),),
                         ),
                         onTap: () async {
-                          await showModalBottomSheet<void>(
-                            backgroundColor: Colors.transparent,
-                            context:context,
-                            builder: (BuildContext context) {
-                              return ClipRRect(
-                                borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
-                                child: Container(
-                                    height: 300,
-                                    color: Colors.green[100],
-                                    child :Center(
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Text( 'Analytics' , style: TextStyle(color:Colors.black , fontSize: 30),),
-                                            ),
-
-                                            PieChart(
-                                              dataMap: data,
-                                              colorList: _colors, // if not declared, random colors will be chosen
-                                              animationDuration: Duration(milliseconds: 1500),
-                                              chartLegendSpacing: 32.0,
-                                              chartRadius: MediaQuery.of(context).size.width /
-                                                  2.7, //determines the size of the chart
-                                              showChartValuesInPercentage: true,
-                                              showChartValues: true,
-                                              showChartValuesOutside: false,
-                                              chartValueBackgroundColor: Colors.grey[100],
-                                              showLegends: true,
-                                              legendPosition: LegendPosition.right, //can be changed to top, left, bottom
-                                              decimalPlaces: 1,
-                                              showChartValueLabel: true,
-                                              initialAngle: 0,
-                                              chartValueStyle: defaultChartValueStyle.copyWith(
-                                                color: Colors.blueGrey[900].withOpacity(0.9),
-                                              ),
-                                              chartType: ChartType.disc, //can be changed to ChartType.ring
-                                            ),
-
-                                            RaisedButton(
-                                                child: const Text('Close'),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(10.0),
-                                                ),
-                                                color: Colors.blueGrey[300],
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                }
-                                            )
-                                          ],
-
-                                        )
-                                    )
-                                ),
-                              );
-                            },
-                            elevation: 20.0,
-                            isScrollControlled: true,
-                          );
+                          global_store.dispatch(new NavigatePushAction(AppRoutes.leaderboard));
                         },
                       ),
                       Divider(indent: 15.0, endIndent: 20.0, color: Colors.black),
@@ -316,35 +292,37 @@ class HomePageState extends State<HomePage> {
                         },
                       ),
                       Divider(indent: 15.0, endIndent: 20.0, color: Colors.black),
+                      GestureDetector(child: Image.asset("assets/COVID_19_2.png", height: 50, width: 150,),onTap: (){
+                        global_store.dispatch(new NavigatePushAction(AppRoutes.corona));
+                      },),
+                      SizedBox(height: MediaQuery.of(context).size.height/10,),
+                      Align(
+                        alignment: FractionalOffset.bottomLeft,
+                        child: Container(
+                          child: Container(
+                              padding: EdgeInsets.only(left: 45.0, bottom: 30.0),
+                              child: Column(
+                                children: <Widget>[
+                                  //Divider(),
+                                  SizedBox(height: 20.0),
+                                  Image.asset("assets/EcoEden-Logo-withoutText.png",height: 150.0,width:200.0),
+                                  Text("\u00a9 EcoEden 2020",
+                                    style: TextStyle(
+                                        fontFamily: "SegoeUI"
+                                    ),),
+                                  Text("All Rights Reserved.",
+                                    style: TextStyle(
+                                        fontFamily: "SegoeUI"
+                                    ),),
+                                ],
+                              )
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
-                Container(
-                    child: Align(
-                        alignment: FractionalOffset.bottomLeft,
-                        child: Container(
-                            padding: EdgeInsets.only(left: 45.0, bottom: 30.0),
-                            child: Column(
-                              children: <Widget>[
-                                //Divider(),
-                                GestureDetector(child: Image.asset("assets/COVID_19_2.png", height: 50, width: 150,),onTap: (){
-                                  global_store.dispatch(new NavigatePushAction(AppRoutes.corona));
-                                },),
-                                SizedBox(height: 20.0),
-                                Image.asset("assets/EcoEden-Logo-withoutText.png",height: 150.0,width:200.0),
-                                Text("\u00a9 EcoEden 2020",
-                                style: TextStyle(
-                                    fontFamily: "SegoeUI"
-                                ),),
-                                Text("All Rights Reserved.",
-                                style: TextStyle(
-                                    fontFamily: "SegoeUI"
-                                ),),
-                              ],
-                            )
-                        )
-                    )
-                )
+
               ],
             ),
           ),
@@ -372,9 +350,68 @@ class HomePageState extends State<HomePage> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20.0),
                     child: IconButton(
-                      icon: Icon(FontAwesomeIcons.trophy),
-                      onPressed: (){
-                        global_store.dispatch(new NavigatePushAction(AppRoutes.leaderboard));
+                      icon: Icon(FontAwesomeIcons.chartPie),
+                      onPressed: () async{
+                        await showModalBottomSheet<void>(
+                          backgroundColor: Colors.transparent,
+                          context:context,
+                          builder: (BuildContext context) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
+                              child: Container(
+                                  height: 300,
+                                  color: Colors.green[100],
+                                  child :Center(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text( 'Analytics' , style: TextStyle(color:Colors.black , fontSize: 30),),
+                                          ),
+
+                                          PieChart(
+                                            dataMap: data,
+                                            colorList: _colors, // if not declared, random colors will be chosen
+                                            animationDuration: Duration(milliseconds: 1500),
+                                            chartLegendSpacing: 32.0,
+                                            chartRadius: MediaQuery.of(context).size.width /
+                                                2.7, //determines the size of the chart
+                                            showChartValuesInPercentage: true,
+                                            showChartValues: true,
+                                            showChartValuesOutside: false,
+                                            chartValueBackgroundColor: Colors.grey[100],
+                                            showLegends: true,
+                                            legendPosition: LegendPosition.right, //can be changed to top, left, bottom
+                                            decimalPlaces: 1,
+                                            showChartValueLabel: true,
+                                            initialAngle: 0,
+                                            chartValueStyle: defaultChartValueStyle.copyWith(
+                                              color: Colors.blueGrey[900].withOpacity(0.9),
+                                            ),
+                                            chartType: ChartType.disc, //can be changed to ChartType.ring
+                                          ),
+
+                                          RaisedButton(
+                                              child: const Text('Close'),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(10.0),
+                                              ),
+                                              color: Colors.blueGrey[300],
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              }
+                                          )
+                                        ],
+
+                                      )
+                                  )
+                              ),
+                            );
+                          },
+                          elevation: 20.0,
+                          isScrollControlled: true,
+                        );
                       },
                     ),
                   ),
@@ -405,20 +442,19 @@ class HomePageState extends State<HomePage> {
     return Marker(
       markerId: MarkerId('Home'),
       position: LatLng(position.latitude, position.longitude),
-      icon: BitmapDescriptor.defaultMarker,
+      icon: currentIcon,
       infoWindow: InfoWindow(title: 'Home', snippet: _address),
     );
   }
 
   void _createMarker(List<FeedsArticle> articles) async {
-    // color = x.verified.collected ? pLI_Yellow : (x.voted.upvotes >= 5 ? pLI_Red : pLI_Grey);
     for (FeedsArticle x in articles) {
       String markerAddress =
       await getAddress(double.parse(x.lat), double.parse(x.lng));
       Marker marker = Marker(
           markerId: MarkerId(x.lat + "," + x.lng),
           position: LatLng(double.parse(x.lat), double.parse(x.lng)),
-          icon: BitmapDescriptor.defaultMarker,
+          icon: setCustomMapMarkers(x),
           infoWindow: InfoWindow(title: 'Location', snippet: markerAddress),
           onTap: () {
             showModalBottomSheet(
