@@ -411,6 +411,7 @@ class HomePageState extends State<HomePage> {
   }
 
   void _createMarker(List<FeedsArticle> articles) async {
+    // color = x.verified.collected ? pLI_Yellow : (x.voted.upvotes >= 5 ? pLI_Red : pLI_Grey);
     for (FeedsArticle x in articles) {
       String markerAddress =
       await getAddress(double.parse(x.lat), double.parse(x.lng));

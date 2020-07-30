@@ -62,8 +62,8 @@ class _ProfilePageState extends State<ProfilePage> {
               lng: article.lng,
               id: article.id,
               user: article.user,
-              activity: article.activity,
-              voted: article.voted
+              voted: article.voted,
+              verified: article.verified
             ))
         .toList();
   }

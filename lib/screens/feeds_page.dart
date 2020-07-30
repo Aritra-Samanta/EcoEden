@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:ecoeden/models/post.dart';
 import 'package:ecoeden/models/feedsArticle.dart';
 import 'package:ecoeden/services/webservice.dart';
+import 'package:geolocator/geolocator.dart';
+import "package:threading/threading.dart";
 
 class FeedsPageState extends State<FeedsPage> {
   List<FeedsArticle> _newsArticles = List<FeedsArticle>();
   bool showHeartOverlay = false;
   bool isLoading = false;
+  bool _insideFeed = true;
+  Position myLoc;
 
   ScrollController _scrollController = new ScrollController();
   static String nextPage = 'https://api.ecoeden.xyz/feed/';
@@ -18,6 +22,7 @@ class FeedsPageState extends State<FeedsPage> {
   void initState() {
     print("Inside Feed");
     super.initState();
+    locationTracker();
     nextPage = 'https://api.ecoeden.xyz/feed/';
     _populateNewsArticles();
     _scrollController.addListener(() {
@@ -35,7 +40,24 @@ class FeedsPageState extends State<FeedsPage> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _insideFeed = false;
     super.dispose();
+  }
+
+  void locationTracker() async {
+    print("Inside tracker");
+    var thread = new Thread(_getLocation);
+    await thread.start();
+    await thread.join();
+  }
+
+  Future _getLocation() async {
+    while(_insideFeed) {
+      await Thread.sleep(3000);
+      myLoc = await Geolocator()
+          .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      print("Upgraded Location !!");
+    }
   }
 
   void _populateNewsArticles() async {
@@ -92,10 +114,7 @@ class FeedsPageState extends State<FeedsPage> {
                           lng: _newsArticles[index].lng,
                           id: _newsArticles[index].id,
                           user: _newsArticles[index].user,
-                          activity: _newsArticles[index].activity,
                           voted: _newsArticles[index].voted,
-                          trash_collection:
-                              _newsArticles[index].trash_collection,
                           verified: _newsArticles[index].verified);
                     }
                   },
@@ -109,8 +128,6 @@ class FeedsPageState extends State<FeedsPage> {
 }
 
 class FeedsPage extends StatefulWidget {
-//  final String apikey;
-//  FeedsPage(this.apikey);
   @override
   createState() => FeedsPageState();
 }

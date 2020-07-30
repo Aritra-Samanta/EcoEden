@@ -66,6 +66,7 @@ class _ImageInput extends State<ImageInput> {
         '/';
     imageUploadRequest.fields['lat'] = '${res.latitude}';
     imageUploadRequest.fields['lng'] = '${res.longitude}';
+    imageUploadRequest.fields['visible'] = "true";
     imageUploadRequest.fields['description'] =
         _descriptionController.text; //"Anonymous post";
     imageUploadRequest.files.add(file);

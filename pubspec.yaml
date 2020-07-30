@@ -47,6 +47,7 @@ dependencies:
   toast: ^0.1.5
   cached_network_image: ^2.2.0+1
   path_drawing: ^0.4.1
+  threading: ^0.0.10
   pie_chart:
 
 

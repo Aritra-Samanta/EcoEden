@@ -518,6 +518,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.15"
+  threading:
+    dependency: "direct main"
+    description:
+      name: threading
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.10"
   toast:
     dependency: "direct main"
     description:
