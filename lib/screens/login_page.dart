@@ -60,11 +60,11 @@ class _LoginPageState extends State<LoginPage> {
           maxLines: 1,
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+          style: TextStyle(fontSize: 20, fontFamily: "SegoeUI", fontWeight: FontWeight.w600),
           decoration: InputDecoration(
             hintText: 'Username',
             labelText: 'Username',
-            labelStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+            labelStyle: TextStyle(fontFamily: "SegoeUI", fontSize: 18),
             suffixIcon: Container(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
               child: ImageIcon(
@@ -86,11 +86,11 @@ class _LoginPageState extends State<LoginPage> {
           maxLines: 1,
           obscureText: true,
           autofocus: false,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+          style: TextStyle(fontSize: 20, fontFamily: "SegoeUI", fontWeight: FontWeight.w600),
           decoration: InputDecoration(
             hintText: 'Password',
             labelText: 'Password',
-            labelStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+            labelStyle: TextStyle(fontFamily: "SegoeUI", fontSize: 18),
             suffixIcon: Container(
               padding: EdgeInsets.fromLTRB(0, 15, 0, 5),
               child: ImageIcon(
@@ -113,7 +113,9 @@ class _LoginPageState extends State<LoginPage> {
           child: FlatButton(
             child: Text(
               'Forgot Password?',
-              style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400),
+              style: TextStyle(fontSize: 16.0,
+                  fontFamily: "SegoeUI",
+                  fontWeight: FontWeight.w400),
             ),
             onPressed: () {
 //          Navigator.push(
@@ -130,9 +132,9 @@ class _LoginPageState extends State<LoginPage> {
 
     Widget showPrimaryButton(_ViewModel vm) {
       return Container(
-        padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
         width: width,
-        height: 50.0,
+        height: 60.0,
         child: RaisedButton(
             elevation: 0.0,
             shape: RoundedRectangleBorder(
@@ -141,7 +143,10 @@ class _LoginPageState extends State<LoginPage> {
             color: Color.fromRGBO(98, 203, 146, 1),
             child: Text(
               'LOGIN',
-              style: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.w800),
+              style: TextStyle(color: Colors.black,
+                  fontSize: 22.0,
+                  fontFamily: "SegoeUI",
+                  fontWeight: FontWeight.w600),
             ),
             onPressed: () async {
               vm.login(_usernameController.text, _passwordController.text,
@@ -154,7 +159,9 @@ class _LoginPageState extends State<LoginPage> {
       return FlatButton(
         child: Text(
           'Create a new account',
-          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400),
+          style: TextStyle(fontSize: 20.0,
+              fontFamily: "SegoeUI",
+              fontWeight: FontWeight.w300),
         ),
         onPressed: () {
           StoreProvider.of<AppState>(context).dispatch(NavigatePushAction(AppRoutes.signup));

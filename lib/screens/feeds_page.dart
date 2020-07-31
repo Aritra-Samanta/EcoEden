@@ -27,7 +27,7 @@ class FeedsPageState extends State<FeedsPage> {
     _populateNewsArticles();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
-              _scrollController.position.maxScrollExtent &&
+          _scrollController.position.maxScrollExtent &&
           FeedsPageState.nextPage != null) {
         _populateNewsArticles();
         var val = _newsArticles.map((x) => x.id).toList();
@@ -66,7 +66,7 @@ class FeedsPageState extends State<FeedsPage> {
         isLoading = true;
       });
       List<FeedsArticle> newsArticles =
-          await Webservice().load(FeedsArticle.all);
+      await Webservice().load(FeedsArticle.all);
       setState(() {
         isLoading = false;
         _newsArticles.addAll(newsArticles);
@@ -91,29 +91,29 @@ class FeedsPageState extends State<FeedsPage> {
     //print(_newsArticles[0].description);
     return Scaffold(
         body: Stack(
-      children: <Widget>[
-        Positioned(
-            child: Image.asset(
-          'assets/wave.png',
-          fit: BoxFit.fitWidth,
-        )),
-        showPost(context),
-      ],
-    ));
+          children: <Widget>[
+            Positioned(
+                child: Image.asset(
+                  'assets/wave.png',
+                  fit: BoxFit.fitWidth,
+                )),
+            showPost(context),
+          ],
+        ));
   }
 
   List<Widget> getPosts() {
     return _newsArticles
         .map((article) => Post(
-            showHeartOverlay: false,
-            description: article.description,
-            imageUrl: article.image,
-            lat: article.lat,
-            lng: article.lng,
-            id: article.id,
-            user: article.user,
-            voted: article.voted,
-            verified: article.verified))
+        showHeartOverlay: false,
+        description: article.description,
+        imageUrl: article.image,
+        lat: article.lat,
+        lng: article.lng,
+        id: article.id,
+        user: article.user,
+        voted: article.voted,
+        verified: article.verified))
         .toList();
   }
 
@@ -137,7 +137,7 @@ class FeedsPageState extends State<FeedsPage> {
           child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Feeds',
+                'Feed',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 48.0,

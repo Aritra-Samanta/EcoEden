@@ -73,13 +73,12 @@ class RegisterPage extends StatelessWidget {
                 controller: firstName,
                 maxLines: 1,
                 autofocus: false,
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                style: TextStyle(fontSize: 20, fontFamily: "SegoeUI", fontWeight: FontWeight.w600),
                 decoration: InputDecoration(
                   contentPadding: contentPadding,
                   hintText: 'First Name',
                   labelText: 'First Name',
-                  labelStyle:
-                      TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  labelStyle: TextStyle(fontFamily: "SegoeUI", fontSize: 18),
                   suffixIcon: Container(
                     height: 0,
                     width: 0,
@@ -97,13 +96,12 @@ class RegisterPage extends StatelessWidget {
                 controller: lastName,
                 maxLines: 1,
                 autofocus: false,
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
+                style: TextStyle(fontSize: 20, fontFamily: "SegoeUI", fontWeight: FontWeight.w600),
                 decoration: InputDecoration(
                   contentPadding: contentPadding,
                   hintText: 'Last Name',
                   labelText: 'Last Name',
-                  labelStyle:
-                      TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  labelStyle: TextStyle(fontFamily: "SegoeUI", fontSize: 18),
                   suffixIcon: Container(
                     height: 0,
                     width: 0,
@@ -126,16 +124,19 @@ class RegisterPage extends StatelessWidget {
           maxLines: 1,
           keyboardType: TextInputType.text,
           autofocus: false,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+          style: TextStyle(fontSize: 20, fontFamily: "SegoeUI", fontWeight: FontWeight.w600),
           decoration: InputDecoration(
             contentPadding: contentPadding,
             hintText: 'Username',
             labelText: 'Username',
-            labelStyle: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+            labelStyle: TextStyle(fontFamily: "SegoeUI", fontSize: 18),
             suffixIcon: Container(
               padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-              child: ImageIcon(
-                AssetImage('assets/profile-pic-icon.png'),
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: ImageIcon(
+                  AssetImage('assets/profile-pic-icon.png'),
+                ),
               ),
             ),
           ),
@@ -152,17 +153,20 @@ class RegisterPage extends StatelessWidget {
           controller: mobile,
           maxLines: 1,
           keyboardType: TextInputType.phone,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+          style: TextStyle(fontSize: 20, fontFamily: "SegoeUI", fontWeight: FontWeight.w600),
           autofocus: false,
           decoration: InputDecoration(
             contentPadding: contentPadding,
             hintText: 'Phone number',
             labelText: 'Phone Number',
-            labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            labelStyle: TextStyle(fontFamily: "SegoeUI", fontSize: 18),
             suffixIcon: Container(
               padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-              child: ImageIcon(
-                AssetImage('assets/phone-icon.png'),
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: ImageIcon(
+                  AssetImage('assets/phone-icon.png'),
+                ),
               ),
             ),
           ),
@@ -181,16 +185,19 @@ class RegisterPage extends StatelessWidget {
           maxLines: 1,
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+          style: TextStyle(fontSize: 20, fontFamily: "SegoeUI", fontWeight: FontWeight.w600),
           decoration: InputDecoration(
             contentPadding: contentPadding,
             hintText: 'Email Address',
             labelText: 'Email Address',
-            labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            labelStyle: TextStyle(fontFamily: "SegoeUI", fontSize: 18),
             suffixIcon: Container(
               padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-              child: ImageIcon(
-                AssetImage('assets/email-icon.png'),
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: ImageIcon(
+                  AssetImage('assets/email-icon.png'),
+                ),
               ),
             ),
           ),
@@ -209,16 +216,19 @@ class RegisterPage extends StatelessWidget {
           maxLines: 1,
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+          style: TextStyle(fontSize: 20, fontFamily: "SegoeUI", fontWeight: FontWeight.w600),
           decoration: InputDecoration(
             contentPadding: contentPadding,
             hintText: 'Password',
             labelText: 'Password',
-            labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            labelStyle: TextStyle(fontFamily: "SegoeUI", fontSize: 18),
             suffixIcon: Container(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
-              child: ImageIcon(
-                AssetImage('assets/lock-icon.png'),
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: ImageIcon(
+                  AssetImage('assets/lock-icon.png'),
+                ),
               ),
             ),
           ),
@@ -237,16 +247,19 @@ class RegisterPage extends StatelessWidget {
           maxLines: 1,
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+          style: TextStyle(fontSize: 20, fontFamily: "SegoeUI", fontWeight: FontWeight.w600),
           decoration: InputDecoration(
             contentPadding: contentPadding,
             hintText: 'Confirm Password',
             labelText: 'Confirm Password',
-            labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            labelStyle: TextStyle(fontFamily: "SegoeUI", fontSize: 18),
             suffixIcon: Container(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 5),
-              child: ImageIcon(
-                AssetImage('assets/lock-icon.png'),
+              child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: ImageIcon(
+                  AssetImage('assets/lock-icon.png'),
+                ),
               ),
             ),
           ),
@@ -260,9 +273,9 @@ class RegisterPage extends StatelessWidget {
 
     Widget showPrimaryButton(_ViewModel vm) {
       return Container(
-        padding: EdgeInsets.fromLTRB(25.0, 36.0, 25.0, 0),
+        padding: EdgeInsets.fromLTRB(25.0, 30.0, 25.0, 0),
         width: width,
-        height: 90.0,
+        height: 80.0,
         child: RaisedButton(
           elevation: 0.0,
           shape: RoundedRectangleBorder(
@@ -271,7 +284,10 @@ class RegisterPage extends StatelessWidget {
           color: Color.fromRGBO(98, 203, 146, 1),
           child: Text(
             'REGISTER',
-            style: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.w800),
+            style: TextStyle(color: Colors.black,
+                fontSize: 22.0,
+                fontFamily: "SegoeUI",
+                fontWeight: FontWeight.w600),
           ),
           onPressed: () {
             User nuser = new User(
@@ -292,7 +308,9 @@ class RegisterPage extends StatelessWidget {
       return FlatButton(
         child: Text(
           'Have an account? Sign in.',
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300),
+          style: TextStyle(fontSize: 20.0,
+              fontFamily: "SegoeUI",
+              fontWeight: FontWeight.w300),
         ),
         onPressed: () {
           Navigator.pop(context);

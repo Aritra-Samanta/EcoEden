@@ -35,7 +35,7 @@ class CoronaPage extends StatelessWidget {
               children: <Widget>[
                 SizedBox(width: MediaQuery.of(context).size.width / 15,),
                 Image.asset("assets/Mask.png",height: L,width: L),
-                Expanded(child: Text('Use a Medical Mask',style: TextStyle(color: Color(0xff22cf8d),fontSize: 21.0),)),
+                Text(' ' * 8 + 'Use a Medical Mask',style: TextStyle(color: Color(0xff22cf8d),fontSize: 21.0),),
               ],
             ),
             Row(
@@ -61,7 +61,7 @@ class CoronaPage extends StatelessWidget {
               children: <Widget>[
                 SizedBox(width: MediaQuery.of(context).size.width / 12,),
                 Image.asset("assets/No Contact.png",height: M,width: M),
-                Expanded(child: Text('Avoid Physical Contact',style: TextStyle(color: Color(0xffff9a1b),fontSize: 20.5),)),
+                Text(' ' * 8 + 'Avoid Physical Contact',style: TextStyle(color: Color(0xffff9a1b),fontSize: 20.5),),
                 SizedBox(width: 40,),
               ],
             ),
@@ -73,7 +73,7 @@ class CoronaPage extends StatelessWidget {
 //                  SizedBox(width: MediaQuery.of(context).size.width / 7),
                   Image.asset("assets/EcoEden-Logo-withoutText.png",height: S, width: S),
                   Container(padding: EdgeInsets.only(left: 10.0, right: 10.0), height: S / 1.1 , child: VerticalDivider(color: Colors.black, thickness: 1, width: 20,)),
-                  RichText(text: TextSpan(text :'#In This',style: TextStyle(color: Color(0xff22cf8d),fontSize: 20.5),children: <TextSpan>[
+                  RichText(text: TextSpan(text :'#InThis',style: TextStyle(color: Color(0xff22cf8d),fontSize: 20.5),children: <TextSpan>[
                     TextSpan(text :'Together',style: TextStyle(color: Color(0xffff9a1b),fontSize: 20.5)),
                   ])
                   ),

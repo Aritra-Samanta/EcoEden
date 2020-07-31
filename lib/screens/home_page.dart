@@ -48,7 +48,7 @@ class HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     print("Inside home");
-    CustomMapPin();
+    customMapPin();
     FeedsPageState.nextPage = 'https://api.ecoeden.xyz/feed/';
     _fetcher();
   }
@@ -57,28 +57,20 @@ class HomePageState extends State<HomePage> {
     await _fetch();
   }
 
-  void CustomMapPin() async {
+  void customMapPin() async {
     trashIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
         'assets/trash-icon-red.png');
     collectedIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
         'assets/trash-icon-yellow.png');
-    postIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/trash-icon-green.png');
-    currentIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio:3.5),
-        'assets/map-marker.png');
   }
 
   BitmapDescriptor setCustomMapMarkers(FeedsArticle x ){
     if(x.verified.collected==true)
       return collectedIcon;
-    else if (x.voted.upvotes > 2)
-      return trashIcon;
     else
-      return postIcon;
+      return trashIcon;
   }
 
   Future<void> _fetch() async {
@@ -204,107 +196,107 @@ class HomePageState extends State<HomePage> {
             topRight: Radius.circular(10.0),
             bottomRight: Radius.circular(10.0),
           ),
-          child: Drawer(
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      UserAccountsDrawerHeader(
-                        decoration: BoxDecoration(
-                          color: Colors.greenAccent[100],
+          child: Container(
+            width: MediaQuery.of(context).size.width / 1.5,
+            child: Drawer(
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: <Widget>[
+                        UserAccountsDrawerHeader(
+                          decoration: BoxDecoration(
+                            color: Colors.greenAccent[100],
 //                        color: Color.fromRGBO(250,250, 250, 1),
-                        ),
-                        accountName: Text(global_store.state.user.userName,
-                            style:TextStyle(color:Colors.black,
-                                fontSize: 24.0,
-                                fontFamily: "SegoeUI",
-                                fontWeight: FontWeight.w700)),
-                        accountEmail: Text(global_store.state.user.email,
-                            style:TextStyle( color:Colors.black,
-                                fontSize: 18.0,
-                                fontFamily: "SegoeUI",
-                                fontWeight: FontWeight.w600)),
-                        currentAccountPicture: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GestureDetector(
-                            child: Hero(
-                              tag: "profile",
-                              child: CircleAvatar(
-                                backgroundColor: Colors.lightBlueAccent,
-                                child: Text(sendData(), style: TextStyle(fontSize: 40.0)),
+                          ),
+                          accountName: Text(global_store.state.user.userName,
+                              style:TextStyle(color:Colors.black,
+                                  fontSize: 24.0,
+                                  fontFamily: "SegoeUI",
+                                  fontWeight: FontWeight.w700)),
+                          accountEmail: Text(global_store.state.user.email,
+                              style:TextStyle( color:Colors.black,
+                                  fontSize: 18.0,
+                                  fontFamily: "SegoeUI",
+                                  fontWeight: FontWeight.w600)),
+                          currentAccountPicture: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              child: Hero(
+                                tag: "profile",
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.lightBlueAccent,
+                                  child: Text(sendData(), style: TextStyle(fontSize: 40.0)),
+                                ),
                               ),
+                              onTap: () {
+                                global_store.dispatch(new NavigatePushAction(AppRoutes.profile));
+                              },
                             ),
-                            onTap: () {
-                              global_store.dispatch(new NavigatePushAction(AppRoutes.profile));
-                            },
                           ),
                         ),
-                      ),
-                      GestureDetector(
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 3.0),
-                          child: Text('Profile', style: TextStyle(fontFamily: "SegoeUI", fontSize: 20.0)),
-                        ),
-                        onTap: () {
-                          global_store.dispatch(new NavigatePushAction(AppRoutes.profile));
-                        },
-                      ),
-                      Divider(indent: 15.0, endIndent: 20.0, color: Colors.black),
-                      GestureDetector(
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 5.0),
-                          child: Text('Leaderboard', style: TextStyle(fontSize: 20.0),),
-                        ),
-                        onTap: () async {
-                          global_store.dispatch(new NavigatePushAction(AppRoutes.leaderboard));
-                        },
-                      ),
-                      Divider(indent: 15.0, endIndent: 20.0, color: Colors.black),
-                      GestureDetector(
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 3.0),
-                          child: Text('About Us', style: TextStyle(fontFamily: "SegoeUI", fontSize: 20.0)),
-                        ),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      Divider(indent: 15.0, endIndent: 20.0, color: Colors.black),
-                      GestureDetector(
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 3.0),
-                          child: Text('Privacy Policy', style: TextStyle(fontFamily: "SegoeUI", fontSize: 20.0)),
-                        ),
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      Divider(indent: 15.0, endIndent: 20.0, color: Colors.black),
-                      GestureDetector(
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(15.0, 5.0, 0.0, 3.0),
-                          child: Text('Logout', style: TextStyle(fontFamily: "SegoeUI", fontSize: 20.0)),
-                        ),
-                        onTap: () {
-                          global_store.dispatch(new LogoutAction().logout());
-                        },
-                      ),
-                      Divider(indent: 15.0, endIndent: 20.0, color: Colors.black),
-                      GestureDetector(child: Image.asset("assets/COVID_19_2.png", height: 50, width: 150,),onTap: (){
-                        global_store.dispatch(new NavigatePushAction(AppRoutes.corona));
-                      },),
-                      SizedBox(height: MediaQuery.of(context).size.height/10,),
-                      Align(
-                        alignment: FractionalOffset.bottomLeft,
-                        child: Container(
+                        GestureDetector(
                           child: Container(
-                              padding: EdgeInsets.only(left: 45.0, bottom: 30.0),
+                            padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 3.0),
+                            child: Text('Profile', style: TextStyle(fontFamily: "SegoeUI", fontSize: 18.0)),
+                          ),
+                          onTap: () {
+                            global_store.dispatch(new NavigatePushAction(AppRoutes.profile));
+                          },
+                        ),
+                        Divider(indent: 10.0, endIndent: 20.0, color: Colors.black),
+                        GestureDetector(
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 5.0),
+                            child: Text('Leaderboard', style: TextStyle(fontSize: 18.0),),
+                          ),
+                          onTap: () async {
+                            global_store.dispatch(new NavigatePushAction(AppRoutes.leaderboard));
+                          },
+                        ),
+                        Divider(indent: 10.0, endIndent: 20.0, color: Colors.black),
+                        GestureDetector(
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 3.0),
+                            child: Text('About Us', style: TextStyle(fontFamily: "SegoeUI", fontSize: 18.0)),
+                          ),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        Divider(indent: 10.0, endIndent: 20.0, color: Colors.black),
+                        GestureDetector(
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 3.0),
+                            child: Text('Privacy Policy', style: TextStyle(fontFamily: "SegoeUI", fontSize: 18.0)),
+                          ),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        Divider(indent: 10.0, endIndent: 20.0, color: Colors.black),
+                        GestureDetector(
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 3.0),
+                            child: Text('Logout', style: TextStyle(fontFamily: "SegoeUI", fontSize: 18.0)),
+                          ),
+                          onTap: () {
+                            global_store.dispatch(new LogoutAction().logout());
+                          },
+                        ),
+                        Divider(indent: 10.0, endIndent: 20.0, color: Colors.black),
+                        GestureDetector(child: Image.asset("assets/COVID_19_2.png", height: 50, width: 150,),onTap: (){
+                          global_store.dispatch(new NavigatePushAction(AppRoutes.corona));
+                        },),
+                        Align(
+                          alignment: FractionalOffset.bottomLeft,
+                          child: Container(
+                              padding: EdgeInsets.only(left: 38.0, bottom: 5.0),
                               child: Column(
                                 children: <Widget>[
                                   //Divider(),
-                                  SizedBox(height: 20.0),
+                                  SizedBox(height: 5.0),
                                   Image.asset("assets/EcoEden-Logo-withoutText.png",height: 150.0,width:200.0),
                                   Text("\u00a9 EcoEden 2020",
                                     style: TextStyle(
@@ -317,13 +309,13 @@ class HomePageState extends State<HomePage> {
                                 ],
                               )
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
 
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -442,7 +434,7 @@ class HomePageState extends State<HomePage> {
     return Marker(
       markerId: MarkerId('Home'),
       position: LatLng(position.latitude, position.longitude),
-      icon: currentIcon,
+      icon: BitmapDescriptor.defaultMarker,
       infoWindow: InfoWindow(title: 'Home', snippet: _address),
     );
   }
