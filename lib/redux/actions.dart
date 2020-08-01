@@ -183,7 +183,7 @@ class LoginAction{
   });
 
 
-  ThunkAction<AppState> login( ){
+  ThunkAction<AppState> login(bool isAno ){
     return (Store<AppState> store) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       if ( prefs.getString('user') != null){
@@ -196,8 +196,12 @@ class LoginAction{
           Toast.show("Incorrect username or password!!!", context,
               duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM),
         }else{
-          prefs.setString('user', jwt),
-          store.dispatch(NavigatePushAction(AppRoutes.home)),
+          if(isAno==true)
+            store.dispatch(NavigatePushAction(AppRoutes.camera))
+          else{
+            prefs.setString('user', jwt),
+            store.dispatch(NavigatePushAction(AppRoutes.home)),
+          }
         }
       }).catchError((e){
         print(e);

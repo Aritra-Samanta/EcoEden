@@ -155,6 +155,31 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
 
+    Widget showTernaryButton(_ViewModel vm) {
+      return Container(
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
+        width: width,
+        height: 60.0,
+        child: RaisedButton(
+            elevation: 0.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            color: Color.fromRGBO(98, 203, 146, 1),
+            child: Text(
+              'Upload as Anonymous',
+              style: TextStyle(color: Colors.black,
+                  fontSize: 22.0,
+                  fontFamily: "SegoeUI",
+                  fontWeight: FontWeight.w600),
+            ),
+            onPressed: () async {
+              vm.login("anonymous","anonymous2020",
+                  context);
+            }),
+      );
+    }
+
     Widget showSecondaryButton(BuildContext context) {
       return FlatButton(
         child: Text(
@@ -181,6 +206,7 @@ class _LoginPageState extends State<LoginPage> {
             showForgotButton(),
             showPrimaryButton(vm),
             showSecondaryButton(c),
+            showTernaryButton(vm)
           ],
         ),
       );
@@ -218,9 +244,14 @@ class _ViewModel {
   factory _ViewModel.create(Store<AppState> store) {
     _login(String username, String password, BuildContext context) {
       store.dispatch(new LoadingStartAction());
+      if(username=="anonymous" && password== "anonymous2020")
       store.dispatch(new LoginAction(
               username: username, password: password, context: context)
-          .login());
+          .login(true));
+      else
+        store.dispatch(new LoginAction(
+            username: username, password: password, context: context)
+            .login(false));
     }
 
     return _ViewModel(login: _login);
