@@ -13,8 +13,10 @@ class FeedsArticle {
   final Map<String,dynamic> user;
   HasVoted voted;
   HasVerified verified;
+  bool is_indoors;
 
-  FeedsArticle({this.id,
+  FeedsArticle({
+    this.id,
     this.image,
     this.createdAt,
     this.lat,
@@ -22,7 +24,8 @@ class FeedsArticle {
     this.description,
     this.user,
     this.voted,
-    this.verified
+    this.verified,
+    this.is_indoors,
   });
 
   factory FeedsArticle.fromJson(Map<String,dynamic> json) {
@@ -34,6 +37,7 @@ class FeedsArticle {
       lat : json['lat'],
       lng : json['lng'],
       description : json['description'],
+      is_indoors: json['is_indoors'],
       voted: HasVoted(json['upvotes'], json['downvotes'], json['activity']),
       verified: HasVerified(json['trash_collection']),
     );

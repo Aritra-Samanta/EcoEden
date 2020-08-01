@@ -25,6 +25,8 @@ class _ImageInput extends State<ImageInput> {
   // To track the file uploading state
   bool _isUploading = false;
 
+  bool _isIndoors = false;
+
   String baseUrl = 'https://api.ecoeden.xyz/photos/';
 
   final _descriptionController = TextEditingController();
@@ -65,6 +67,7 @@ class _ImageInput extends State<ImageInput> {
         global_store.state.user.id.toString() +
         '/';
     imageUploadRequest.fields['lat'] = '${res.latitude}';
+    imageUploadRequest.fields['is_indoors']='${_isIndoors.toString()}';
     imageUploadRequest.fields['lng'] = '${res.longitude}';
     imageUploadRequest.fields['visible'] = "true";
     imageUploadRequest.fields['description'] =
@@ -214,7 +217,7 @@ class _ImageInput extends State<ImageInput> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(35, 10, 0, 0),
+          padding: const EdgeInsets.fromLTRB(35, 0, 0, 0),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -260,7 +263,7 @@ class _ImageInput extends State<ImageInput> {
                               child: Column(
                                 children: <Widget>[
                                   Align(
-                                    heightFactor: 2.3,
+                                    heightFactor: 2.0,
                                     child: Container(
                                       width: 140,
                                       height: 140,
@@ -317,7 +320,7 @@ class _ImageInput extends State<ImageInput> {
                                 Image.file(
                                   _imageFile,
                                   fit: BoxFit.cover,
-                                  height: MediaQuery.of(context).size.height / 2.25,
+                                  height: MediaQuery.of(context).size.height / 2.5,
                                   alignment: Alignment.topCenter,
                                   width: MediaQuery.of(context).size.width,
                                 ),
@@ -326,12 +329,45 @@ class _ImageInput extends State<ImageInput> {
                                     alignment: Alignment.bottomCenter,
                                     child: Padding(
                                       padding: const EdgeInsets.fromLTRB(10.0, 12.0, 10.0, 0.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10),
-                                            color: Colors.white),
-                                        child: _buildUploadBtn(),
-                                      ),
+
+                                        child :Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: <Widget>[
+                                                 Container(
+                                                  decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  color: Colors.white),
+                                                child:_buildUploadBtn(),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(4.0),
+                                                  child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                      children : <Widget>[
+
+                                                        Switch(
+                                                          value:  _isIndoors,
+                                                          onChanged: (value){
+                                                            setState(() {
+                                                              _isIndoors = value;
+                                                            });
+                                                          },
+                                                          activeTrackColor: Colors.black,
+                                                          activeColor: Colors.grey[100],
+                                                        ),
+                                                        Image.asset(
+                                                            'assets/home.png',
+                                                          height : 20  ,
+                                                          width: 20,
+                                                        ),
+
+
+                                                      ]
+                                                  ),
+                                                )
+                                              ]
+                                        )
+
                                     ),
                                   ),
                                 )
@@ -340,6 +376,9 @@ class _ImageInput extends State<ImageInput> {
                           ),
                   ),
                 ),
+
+
+
               ],
             ),
           ),

@@ -23,9 +23,11 @@ class Post extends StatefulWidget {
   final Map<String, dynamic> user;
   HasVoted voted;
   HasVerified verified;
+  final bool is_indoors;
 
   Post(
-      {this.id,
+      {
+        this.id,
       this.showHeartOverlay,
       this.lat,
       this.lng,
@@ -33,7 +35,9 @@ class Post extends StatefulWidget {
       this.imageUrl,
       this.user,
       this.voted,
-      this.verified});
+      this.verified,
+      this.is_indoors
+      });
 
   @override
   _PostState createState() => _PostState();
@@ -151,6 +155,9 @@ class _PostState extends State<Post> {
   Color getColor() {
     if (widget.verified.collected == true)
       return Color.fromRGBO(243, 240, 140, 1);
+    else if ( widget.is_indoors == true)
+      return Color.fromRGBO(251, 207, 146, 1);
+
     else if (ifCollect(double.parse(widget.lat), double.parse(widget.lng)))
       return Color(0xff59b8e8);
     else
@@ -399,13 +406,19 @@ class _PostState extends State<Post> {
                               ],
                             ),
                           )),
+                      widget.is_indoors==false ?
                       CircleAvatar(
                         backgroundColor: getIconColor(),
                         child: Icon(
                           FontAwesomeIcons.trashAlt,
                           color: Colors.white,
                         ),
-                      ),
+                      ):  Image.asset(
+                          'assets/home.png',
+                              width : 30 ,
+                          height: 30,
+                        ),
+
                     ],
                   ),
                   SizedBox(height: 8),
@@ -436,8 +449,6 @@ class _PostState extends State<Post> {
                     child: Stack(
                       alignment: Alignment.center,
                       children: <Widget>[
-                        //Image.network(getImg()),
-                        //Image.asset('assets/profile.jpg'),
                         widget.imageUrl == null
                             ? Image.asset('assets/profile.jpg')
                             : CachedNetworkImage(imageUrl: widget.imageUrl),
@@ -568,26 +579,52 @@ class _PostState extends State<Post> {
                                 ),
                               ),
                               GestureDetector(
-                                child: render
-                                    ? Image.asset("assets/Collect Button.png",
-                                        height: 50, width: 135)
-                                    : Container(
-                                        child: Image.asset(
-                                            "assets/Google Maps Button.png",
-                                            height: 43,
-                                            width: 150),
+                                child: widget.is_indoors == false?
+                                (
+                                  render
+                                      ? Image.asset("assets/Collect Button.png",
+                                      height: 50, width: 135)
+                                      : Container(
+                                    child: Image.asset(
+                                        "assets/Google Maps Button.png",
+                                        height: 43,
+                                        width: 150),
+                                  )
+                                ):Container(
+                                    child: Container(
+
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                                        color: Colors.white,
                                       ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Contact' , style:TextStyle(
+                                          fontFamily: 'SegoeUI' , color: Colors.yellow[700],
+                                          fontSize: 20 ,
+                                        )
+                                        ),
+                                      ),
+                                    )
+                                ),
                                 onTap: () async {
-                                  if (render) {
-                                    await collect();
-                                    print("Tapped");
-                                  } else {
-                                    global_store
-                                        .dispatch(new LatAction(widget.lat));
-                                    global_store
-                                        .dispatch(new LngAction(widget.lng));
-                                    global_store.dispatch(
-                                        new NavigatePushAction(AppRoutes.map));
+                                  if ( widget.is_indoors == true ){
+                                    print('Contact');
+                                  }
+                                  else {
+                                    if (render) {
+                                      await collect();
+                                      print("Tapped");
+                                    } else {
+                                      global_store
+                                          .dispatch(new LatAction(widget.lat));
+                                      global_store
+                                          .dispatch(new LngAction(widget.lng));
+                                      global_store.dispatch(
+                                          new NavigatePushAction(
+                                              AppRoutes.map));
+                                    }
                                   }
                                 },
                               ),
@@ -595,15 +632,22 @@ class _PostState extends State<Post> {
                           ),
                         ),
                       ),
-                      widget.verified.collected
-                          ? Divider(
-                              color: Colors.black,
-                              thickness: 1.2,
-                            )
-                          : Container(),
+                      widget.is_indoors == false ?
+                      (
+                        widget.verified.collected
+                            ? Divider(
+                          color: Colors.black,
+                          thickness: 1.2,
+                        )
+                            : Container()
+
+                      ):Container(),
+                      widget.is_indoors == false ?
+                      (
                       widget.verified.collected
                           ? getCollect(context)
-                          : Container(),
+                          : Container()
+                      ):Container()
                     ],
                   )
                 ],

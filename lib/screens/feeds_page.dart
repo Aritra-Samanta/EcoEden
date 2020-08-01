@@ -113,7 +113,9 @@ class FeedsPageState extends State<FeedsPage> {
         id: article.id,
         user: article.user,
         voted: article.voted,
-        verified: article.verified))
+        is_indoors : article.is_indoors,
+        verified: article.verified)
+    )
         .toList();
   }
 
@@ -174,7 +176,9 @@ class FeedsPageState extends State<FeedsPage> {
                     id: _newsArticles[index].id,
                     user: _newsArticles[index].user,
                     voted: _newsArticles[index].voted,
+                    is_indoors : _newsArticles[index].is_indoors,
                     verified: _newsArticles[index].verified);
+
               }
             },
             controller: _scrollController,
