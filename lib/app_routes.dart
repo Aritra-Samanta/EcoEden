@@ -8,4 +8,5 @@ class AppRoutes {
   static const map = "/map";
   static const corona = "/corona";
   static const leaderboard = "/leaderboard";
+  static const community = "/community";
 }

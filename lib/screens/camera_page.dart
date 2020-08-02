@@ -1,3 +1,4 @@
+import 'package:ecoeden/redux/actions.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -104,6 +105,9 @@ class _ImageInput extends State<ImageInput> {
     } else {
       Toast.show("Image Uploaded Successfully!!!", context,
           duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      if (global_store.state.user.userName == "anonymous") {
+        global_store.dispatch(new LogoutAction().logout());
+      }
     }
   }
 
@@ -263,7 +267,7 @@ class _ImageInput extends State<ImageInput> {
                               child: Column(
                                 children: <Widget>[
                                   Align(
-                                    heightFactor: 2.0,
+                                    heightFactor: 2.3,
                                     child: Container(
                                       width: 140,
                                       height: 140,
@@ -320,16 +324,16 @@ class _ImageInput extends State<ImageInput> {
                                 Image.file(
                                   _imageFile,
                                   fit: BoxFit.cover,
-                                  height: MediaQuery.of(context).size.height / 2.5,
+                                  height: MediaQuery.of(context).size.height / 2.3,
                                   alignment: Alignment.topCenter,
                                   width: MediaQuery.of(context).size.width,
                                 ),
-                                Expanded(
+                                SizedBox(
+                                  height: 50,
                                   child: Align(
                                     alignment: Alignment.bottomCenter,
                                     child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(10.0, 12.0, 10.0, 0.0),
-
+                                      padding: const EdgeInsets.fromLTRB(15.0, 12.0, 10.0, 0.0),
                                         child :Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: <Widget>[
@@ -340,11 +344,10 @@ class _ImageInput extends State<ImageInput> {
                                                 child:_buildUploadBtn(),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsets.all(4.0),
+                                                  padding: const EdgeInsets.only(right: 16.0),
                                                   child: Row(
                                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children : <Widget>[
-
                                                         Switch(
                                                           value:  _isIndoors,
                                                           onChanged: (value){
@@ -360,8 +363,6 @@ class _ImageInput extends State<ImageInput> {
                                                           height : 20  ,
                                                           width: 20,
                                                         ),
-
-
                                                       ]
                                                   ),
                                                 )

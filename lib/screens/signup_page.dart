@@ -85,7 +85,7 @@ class RegisterPage extends StatelessWidget {
                   ),
                 ),
                 validator: (value) =>
-                    value.isEmpty ? 'First Name cant\'t be empty.' : null,
+                    value.isEmpty ? 'First Name can\'t be empty.' : null,
               ),
             ),
           ),
@@ -108,7 +108,7 @@ class RegisterPage extends StatelessWidget {
                   ),
                 ),
                 validator: (value) =>
-                    value.isEmpty ? 'Last Name cant\'t be empty.' : null,
+                    value.isEmpty ? 'Last Name can\'t be empty.' : null,
               ),
             ),
           ),
@@ -141,7 +141,7 @@ class RegisterPage extends StatelessWidget {
             ),
           ),
           validator: (value) =>
-              value.isEmpty ? 'Email cant\'t be empty.' : null,
+              value.isEmpty ? 'Username can\'t be empty.' : null,
         ),
       );
     }
@@ -171,7 +171,7 @@ class RegisterPage extends StatelessWidget {
             ),
           ),
           validator: (value) =>
-              value.isEmpty ? 'Email cant\'t be empty.' : null,
+              value.isEmpty ? 'Mobile number can\'t be empty.' : null,
           //onSaved: (value) => mobile = value.trim(),
         ),
       );
@@ -202,7 +202,7 @@ class RegisterPage extends StatelessWidget {
             ),
           ),
           validator: (value) =>
-              value.isEmpty ? 'Email cant\'t be empty.' : null,
+              value.isEmpty ? 'Email can\'t be empty.' : null,
           //onSaved: (value) => email = value.trim(),
         ),
       );
@@ -212,7 +212,7 @@ class RegisterPage extends StatelessWidget {
       return Padding(
         padding: EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
         child: TextFormField(
-          controller: email,
+          controller: password,
           maxLines: 1,
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
@@ -233,7 +233,7 @@ class RegisterPage extends StatelessWidget {
             ),
           ),
           validator: (value) =>
-          value.isEmpty ? 'Email cant\'t be empty.' : null,
+          value.isEmpty ? 'Password can\'t be empty.' : null,
           //onSaved: (value) => email = value.trim(),
         ),
       );
@@ -243,7 +243,7 @@ class RegisterPage extends StatelessWidget {
       return Padding(
         padding: EdgeInsets.fromLTRB(25.0, 5.0, 25.0, 5.0),
         child: TextFormField(
-          controller: email,
+          controller: confirmPassword,
           maxLines: 1,
           keyboardType: TextInputType.emailAddress,
           autofocus: false,
@@ -264,7 +264,7 @@ class RegisterPage extends StatelessWidget {
             ),
           ),
           validator: (value) =>
-          value.isEmpty ? 'Email cant\'t be empty.' : null,
+          value.isEmpty ? 'Password can\'t be empty.' : null,
           //onSaved: (value) => email = value.trim(),
         ),
       );

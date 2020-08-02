@@ -210,12 +210,12 @@ class HomePageState extends State<HomePage> {
                             color: Colors.greenAccent[100],
 //                        color: Color.fromRGBO(250,250, 250, 1),
                           ),
-                          accountName: Text(global_store.state.user.userName,
+                          accountName: Text(global_store.state.user.firstName + " " + global_store.state.user.lastName,
                               style:TextStyle(color:Colors.black,
                                   fontSize: 24.0,
                                   fontFamily: "SegoeUI",
                                   fontWeight: FontWeight.w700)),
-                          accountEmail: Text(global_store.state.user.email,
+                          accountEmail: Text(global_store.state.user.userName,
                               style:TextStyle( color:Colors.black,
                                   fontSize: 18.0,
                                   fontFamily: "SegoeUI",
@@ -248,16 +248,6 @@ class HomePageState extends State<HomePage> {
                         Divider(indent: 10.0, endIndent: 20.0, color: Colors.black),
                         GestureDetector(
                           child: Container(
-                            padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 5.0),
-                            child: Text('Leaderboard', style: TextStyle(fontSize: 18.0),),
-                          ),
-                          onTap: () async {
-                            global_store.dispatch(new NavigatePushAction(AppRoutes.leaderboard));
-                          },
-                        ),
-                        Divider(indent: 10.0, endIndent: 20.0, color: Colors.black),
-                        GestureDetector(
-                          child: Container(
                             padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 3.0),
                             child: Text('About Us', style: TextStyle(fontFamily: "SegoeUI", fontSize: 18.0)),
                           ),
@@ -279,6 +269,16 @@ class HomePageState extends State<HomePage> {
                         GestureDetector(
                           child: Container(
                             padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 3.0),
+                            child: Text('Help & Feedback', style: TextStyle(fontFamily: "SegoeUI", fontSize: 18.0)),
+                          ),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        Divider(indent: 10.0, endIndent: 20.0, color: Colors.black),
+                        GestureDetector(
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 3.0),
                             child: Text('Logout', style: TextStyle(fontFamily: "SegoeUI", fontSize: 18.0)),
                           ),
                           onTap: () {
@@ -286,16 +286,15 @@ class HomePageState extends State<HomePage> {
                           },
                         ),
                         Divider(indent: 10.0, endIndent: 20.0, color: Colors.black),
-                        GestureDetector(child: Image.asset("assets/COVID_19_2.png", height: 50, width: 150,),onTap: (){
-                          global_store.dispatch(new NavigatePushAction(AppRoutes.corona));
-                        },),
                         Align(
                           alignment: FractionalOffset.bottomLeft,
                           child: Container(
-                              padding: EdgeInsets.only(left: 38.0, bottom: 5.0),
+                              padding: EdgeInsets.only(left: 30.0, bottom: 5.0),
                               child: Column(
                                 children: <Widget>[
-                                  //Divider(),
+                                  GestureDetector(child: Image.asset("assets/COVID_19_2.png", height: 50, width: 150,),onTap: (){
+                                    global_store.dispatch(new NavigatePushAction(AppRoutes.corona));
+                                  },),
                                   SizedBox(height: 5.0),
                                   Image.asset("assets/EcoEden-Logo-withoutText.png",height: 150.0,width:200.0),
                                   Text("\u00a9 EcoEden 2020",
@@ -334,13 +333,50 @@ class HomePageState extends State<HomePage> {
             height: 40.0,
             color: Color(0xff22AA8D),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(40.0, 0.0, 40.0, 0.0),
+              padding: const EdgeInsets.fromLTRB(25.0, 0.0, 25.0, 0.0),
               child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(left: 20.0),
+                    padding: const EdgeInsets.only(right: 30.0),
+                    child: IconButton(
+//                color: Colors.black,
+                      icon: Icon(
+                        FontAwesomeIcons.users,
+                      ),
+                      onPressed: () {
+                        global_store
+                            .dispatch(new NavigatePushAction(AppRoutes.community));
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 100.0),
+                    child: IconButton(
+//                color: Colors.black,
+                      icon: Icon(
+                        FontAwesomeIcons.trophy,
+                      ),
+                      onPressed: () {
+                        global_store
+                            .dispatch(new NavigatePushAction(AppRoutes.leaderboard));
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 30.0),
+                    child: IconButton(
+//                color: Colors.black,
+                      icon: Icon(
+                        FontAwesomeIcons.listAlt,
+                      ),
+                      onPressed: () {
+                        global_store
+                            .dispatch(new NavigatePushAction(AppRoutes.feed));
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(),
                     child: IconButton(
                       icon: Icon(FontAwesomeIcons.chartPie),
                       onPressed: () async{
@@ -404,19 +440,6 @@ class HomePageState extends State<HomePage> {
                           elevation: 20.0,
                           isScrollControlled: true,
                         );
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20.0),
-                    child: IconButton(
-//                color: Colors.black,
-                      icon: Icon(
-                        FontAwesomeIcons.listAlt,
-                      ),
-                      onPressed: () {
-                        global_store
-                            .dispatch(new NavigatePushAction(AppRoutes.feed));
                       },
                     ),
                   ),
@@ -520,16 +543,39 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget mapWidget() {
-    return GoogleMap(
-      mapType: MapType.normal,
-      markers: _markings,
-      initialCameraPosition: CameraPosition(
-        target: LatLng(position.latitude, position.longitude),
-        zoom: 12.0,
-      ),
-      onMapCreated: (GoogleMapController controller) {
-        _controller = controller;
-      },
+    return Stack(
+      children: <Widget>[
+        GoogleMap(
+          mapType: MapType.normal,
+          markers: _markings,
+          initialCameraPosition: CameraPosition(
+            target: LatLng(position.latitude, position.longitude),
+            zoom: 12.0,
+          ),
+          onMapCreated: (GoogleMapController controller) {
+            _controller = controller;
+          },
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10.0,0.0,7.0,100.0),
+          child: Align(
+            alignment: Alignment.bottomRight,
+            child: CircleAvatar(
+              backgroundColor: Colors.grey[300],
+              radius: 25,
+              child: IconButton(icon: Icon(Icons.my_location,size: 28, color: Colors.black), onPressed:(){
+                _controller.animateCamera(CameraUpdate.newCameraPosition(
+                  CameraPosition(
+                    bearing: 0,
+                    target: LatLng(position.latitude, position.longitude),
+                    zoom: 17.0,
+                  ),
+                ));
+              }),
+            ),
+          ),
+        )
+      ],
     );
   }
 }

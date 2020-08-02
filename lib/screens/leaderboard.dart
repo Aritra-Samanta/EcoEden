@@ -39,20 +39,20 @@ class _LeaderBoardState extends State<LeaderBoard> {
   }
 
   String _getName(String x) {
-    if(x.length < 10 ) return x;
+    if(x.length < 15 ) return x;
     else return x.substring(0, 15) + "...";
   }
 
   Color renderColors(int arg) {
     switch (arg) {
-      case 1:
-        return Color(0xffFDDE69);
       case 2:
-        return Color(0xffDFE3E6);
+        return Color(0xffFDDE69);
       case 3:
+        return Color(0xffDFE3E6);
+      case 4:
         return Color(0xffEDC194);
       default:
-        return Colors.white;
+        return Colors.grey[200];
     }
   }
 
@@ -117,7 +117,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
             child: ListView.builder(
                 itemCount: widget._army.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Padding(
+                  return widget._army[index].userName != "anonymous" ? Padding(
                     padding:
                     EdgeInsets.fromLTRB(16, 10, 16, 2),
                     child: Container(
@@ -134,9 +134,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                           children: <Widget>[
                             Text(
                               " " * 2 +
-                                  (index + 1)
-                                      .toString()
-                                      .padLeft(2, '0') + " " * 3,
+                                  index.toString().padLeft(2, '0') + " " * 3,
                               style:
                               TextStyle(fontSize: 24.0, fontFamily: "SegoeUI", fontWeight: FontWeight.w300),
                             ),
@@ -150,7 +148,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                             ),
                             Expanded(
                               child: Text(
-                                  " " * 3 + _getName(widget._army[index].userName),
+                                  " " * 3 + _getName(widget._army[index].firstName + " " + widget._army[index].lastName),
                                   style: TextStyle(
                                       fontSize: 20.0,
                                       fontFamily:
@@ -173,7 +171,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                         ),
                       ),
                     ),
-                  );
+                  ): Container();
                 }
             ),
           )

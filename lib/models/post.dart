@@ -26,8 +26,7 @@ class Post extends StatefulWidget {
   final bool is_indoors;
 
   Post(
-      {
-        this.id,
+      {this.id,
       this.showHeartOverlay,
       this.lat,
       this.lng,
@@ -36,8 +35,7 @@ class Post extends StatefulWidget {
       this.user,
       this.voted,
       this.verified,
-      this.is_indoors
-      });
+      this.is_indoors});
 
   @override
   _PostState createState() => _PostState();
@@ -155,9 +153,8 @@ class _PostState extends State<Post> {
   Color getColor() {
     if (widget.verified.collected == true)
       return Color.fromRGBO(243, 240, 140, 1);
-    else if ( widget.is_indoors == true)
+    else if (widget.is_indoors == true)
       return Color.fromRGBO(251, 207, 146, 1);
-
     else if (ifCollect(double.parse(widget.lat), double.parse(widget.lng)))
       return Color(0xff59b8e8);
     else
@@ -165,8 +162,10 @@ class _PostState extends State<Post> {
   }
 
   Color getIconColor() {
-    if (widget.verified.collected == true) return Color(0xFFE7BF04);
-    else return Colors.red;
+    if (widget.verified.collected == true)
+      return Color(0xFFE7BF04);
+    else
+      return Colors.red;
   }
 
   bool ifCollect(double lat, double long) {
@@ -174,7 +173,7 @@ class _PostState extends State<Post> {
     double long2 = res.longitude;
     print("Latitude : " + lat2.toString());
     print("Longitude : " + long2.toString());
-    if ((lat - lat2).abs() <= 1.0 && (long - long2).abs() <= 1.0) return true;
+    if ((lat - lat2).abs() <= 0.1 && (long - long2).abs() <= 0.1) return true;
     return false;
   }
 
@@ -227,24 +226,19 @@ class _PostState extends State<Post> {
             height: 42.0,
             decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.all(
-                    Radius.circular(10.0))),
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
             child: Wrap(
               spacing: 1.0,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                      10.0, 6, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(10.0, 6, 0, 0),
                   child: Text(
                     " ${widget.verified.upvotes}",
-                    style: TextStyle(
-                        fontFamily: "SegoeUI",
-                        fontSize: 20),
+                    style: TextStyle(fontFamily: "SegoeUI", fontSize: 20),
                   ),
                 ),
                 IconButton(
-                    padding: EdgeInsets.only(
-                        left: 10.0, top: 6.0),
+                    padding: EdgeInsets.only(left: 10.0, top: 6.0),
                     alignment: Alignment.topLeft,
                     iconSize: 25.0,
                     icon: Icon(
@@ -256,23 +250,19 @@ class _PostState extends State<Post> {
                             : Colors.grey),
                     onPressed: () async {
                       setState(() {
-                        widget.verified.upvotes =
-                        widget.verified.trashed
+                        widget.verified.upvotes = widget.verified.trashed
                             ? widget.verified.upvotes - 1
                             : widget.verified.upvotes + 1;
-                        widget.verified.downvotes =
-                        widget.verified.disliked
+                        widget.verified.downvotes = widget.verified.disliked
                             ? widget.verified.downvotes - 1
                             : widget.verified.downvotes;
-                        widget.verified.trashed =
-                        !widget.verified.trashed;
+                        widget.verified.trashed = !widget.verified.trashed;
                         widget.verified.disliked = false;
                       });
                       await verify_function();
                     }),
                 Container(
-                    padding: EdgeInsets.only(
-                        left: 2.0, right: 4.0),
+                    padding: EdgeInsets.only(left: 2.0, right: 4.0),
                     height: 36.0,
                     child: VerticalDivider(
                       color: Colors.black,
@@ -281,18 +271,14 @@ class _PostState extends State<Post> {
                       indent: 6,
                     )),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                      5.0, 6, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(5.0, 6, 0, 0),
                   child: Text(
                     " ${widget.verified.downvotes}",
-                    style: TextStyle(
-                        fontFamily: "SegoeUI",
-                        fontSize: 20),
+                    style: TextStyle(fontFamily: "SegoeUI", fontSize: 20),
                   ),
                 ),
                 IconButton(
-                    padding: EdgeInsets.only(
-                        left: 10.0, bottom: 14.0),
+                    padding: EdgeInsets.only(left: 10.0, bottom: 14.0),
                     alignment: Alignment.bottomLeft,
                     iconSize: 25.0,
                     icon: Icon(
@@ -304,16 +290,13 @@ class _PostState extends State<Post> {
                             : Colors.grey),
                     onPressed: () async {
                       setState(() {
-                        widget.verified.downvotes = widget
-                            .verified.disliked
+                        widget.verified.downvotes = widget.verified.disliked
                             ? widget.verified.downvotes - 1
                             : widget.verified.downvotes + 1;
-                        widget.verified.upvotes =
-                        widget.verified.trashed
+                        widget.verified.upvotes = widget.verified.trashed
                             ? widget.verified.upvotes - 1
                             : widget.verified.upvotes;
-                        widget.verified.disliked =
-                        !widget.verified.disliked;
+                        widget.verified.disliked = !widget.verified.disliked;
                         widget.verified.trashed = false;
                       });
                       await verify_function();
@@ -341,324 +324,357 @@ class _PostState extends State<Post> {
     bool render =
         ifCollect(double.parse(widget.lat), double.parse(widget.lng)) &&
             !widget.verified.collected;
-    if(widget.is_indoors==true && render == true)
-      return Container();
-    else{
-      return Container(
-        decoration:
-        BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(15.0))),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 8, 7, 6),
-          child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              color: getColor(),
-              shadowColor: Colors.grey,
-              elevation: 15.0,
-              child: Container(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                            width: MediaQuery.of(context).size.width / 1.6,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(10.0))),
-                            child: Padding(
-                              padding:
-                              const EdgeInsets.fromLTRB(8.0, 6.0, 8.0, 6.0),
-                              child: Row(
-                                children: <Widget>[
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: CircleAvatar(
-                                      radius: 18.0,
-                                      backgroundColor: Colors.lightBlueAccent,
-                                      child: Text(
-                                        _sendData(),
-                                        style: TextStyle(fontSize: 26.0),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: SizedBox(
-//                                    height: 60,
-                                      width: MediaQuery.of(context).size.width / 1.6 - 60,
-                                      child: AutoSizeText(
-                                        widget.description,
-                                        softWrap: true,
-                                        minFontSize: 14.0,
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily: "SegoeUI"),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )),
-                        widget.is_indoors==false ?
-                        CircleAvatar(
-                          backgroundColor: getIconColor(),
-                          child: Icon(
-                            FontAwesomeIcons.trashAlt,
-                            color: Colors.white,
-                          ),
-                        ):  Image.asset(
-                          'assets/home.png',
-                          width : 30 ,
-                          height: 30,
-                        ),
-
-                      ],
-                    ),
-                    SizedBox(height: 8),
-                    GestureDetector(
-                      onDoubleTap: () async {
-                        if (widget.voted.trashed != true) {
-                          setState(() {
-                            widget.voted.upvotes = widget.voted.trashed
-                                ? widget.voted.upvotes
-                                : widget.voted.upvotes + 1;
-                            widget.voted.downvotes = widget.voted.disliked
-                                ? widget.voted.downvotes - 1
-                                : widget.voted.downvotes;
-                            widget.voted.trashed = true;
-                            widget.voted.disliked = false;
-                            widget.showHeartOverlay = true;
-                            if (widget.showHeartOverlay) {
-                              Timer(const Duration(milliseconds: 180), () {
-                                setState(() {
-                                  widget.showHeartOverlay = false;
-                                });
-                              });
-                            }
-                          });
-                        }
-                        await vote_function();
-                      },
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: <Widget>[
-                          widget.imageUrl == null
-                              ? Image.asset('assets/profile.jpg')
-                              : CachedNetworkImage(imageUrl: widget.imageUrl),
-                          widget.showHeartOverlay
-                              ? Icon(
-                            FontAwesomeIcons.solidTrashAlt,
-                            color: Colors.white54,
-                            size: 80.0,
-                          )
-                              : Container(),
-                        ],
-                      ),
-                    ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        SizedBox(
-                          height: 0.0,
-                          child: Divider(
-                            color: Color(0xff4E4F50),
-                          ),
-                        ),
-                        Container(
+    return Container(
+      decoration:
+          BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(15.0))),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 8, 7, 6),
+        child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            color: getColor(),
+            shadowColor: Colors.grey,
+            elevation: 15.0,
+            child: Container(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                          width: MediaQuery.of(context).size.width / 1.6,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0))),
                           child: Padding(
                             padding:
-                            const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 2.0),
+                                const EdgeInsets.fromLTRB(8.0, 6.0, 8.0, 6.0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                Container(
-                                  width: MediaQuery.of(context).size.width / 2.45,
-                                  height: 42.0,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0))),
-                                  child: Wrap(
-                                    spacing: 1.0,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            10.0, 8, 0, 0),
-                                        child: Text(
-                                          " ${widget.voted.upvotes}",
-                                          style: TextStyle(
-                                              fontFamily: "SegoeUI",
-                                              fontSize: 20),
-                                        ),
-                                      ),
-                                      IconButton(
-                                          padding: EdgeInsets.only(
-                                              left: 10.0, top: 6.0),
-                                          alignment: Alignment.topLeft,
-                                          iconSize: 25.0,
-                                          icon: Icon(
-                                              widget.voted.trashed
-                                                  ? FontAwesomeIcons.solidThumbsUp
-                                                  : FontAwesomeIcons.thumbsUp,
-                                              color: widget.voted.trashed
-                                                  ? Colors.green
-                                                  : Colors.grey),
-                                          onPressed: () async {
-                                            setState(() {
-                                              widget.voted.upvotes =
-                                              widget.voted.trashed
-                                                  ? widget.voted.upvotes - 1
-                                                  : widget.voted.upvotes + 1;
-                                              widget.voted.downvotes =
-                                              widget.voted.disliked
-                                                  ? widget.voted.downvotes - 1
-                                                  : widget.voted.downvotes;
-                                              widget.voted.trashed =
-                                              !widget.voted.trashed;
-                                              widget.voted.disliked = false;
-                                            });
-                                            await vote_function();
-                                          }),
-                                      Container(
-                                          padding: EdgeInsets.only(
-                                              left: 2.0, right: 4.0),
-                                          height: 36.0,
-                                          child: VerticalDivider(
-                                            color: Colors.black,
-                                            thickness: 1,
-                                            width: 10,
-                                            indent: 6,
-                                          )),
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            5.0, 8, 0, 0),
-                                        child: Text(
-                                          " ${widget.voted.downvotes}",
-                                          style: TextStyle(
-                                              fontFamily: "SegoeUI",
-                                              fontSize: 20),
-                                        ),
-                                      ),
-                                      IconButton(
-                                          padding: EdgeInsets.only(
-                                              left: 10.0, bottom: 14.0),
-                                          alignment: Alignment.bottomLeft,
-                                          iconSize: 25.0,
-                                          icon: Icon(
-                                              widget.voted.disliked
-                                                  ? FontAwesomeIcons
-                                                  .solidThumbsDown
-                                                  : FontAwesomeIcons.thumbsDown,
-                                              color: widget.voted.disliked
-                                                  ? Colors.red
-                                                  : Colors.grey),
-                                          onPressed: () async {
-                                            setState(() {
-                                              widget.voted.downvotes = widget
-                                                  .voted.disliked
-                                                  ? widget.voted.downvotes - 1
-                                                  : widget.voted.downvotes + 1;
-                                              widget.voted.upvotes =
-                                              widget.voted.trashed
-                                                  ? widget.voted.upvotes - 1
-                                                  : widget.voted.upvotes;
-                                              widget.voted.disliked =
-                                              !widget.voted.disliked;
-                                              widget.voted.trashed = false;
-                                            });
-                                            await vote_function();
-                                          }),
-                                    ],
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: CircleAvatar(
+                                    radius: 18.0,
+                                    backgroundColor: Colors.lightBlueAccent,
+                                    child: Text(
+                                      _sendData(),
+                                      style: TextStyle(fontSize: 26.0),
+                                    ),
                                   ),
                                 ),
-                                GestureDetector(
-                                  child: widget.is_indoors == false?
-                                  (
-                                      render
-                                          ? Image.asset("assets/Collect Button.png",
-                                          height: 50, width: 135)
-                                          : Container(
-                                        child: Image.asset(
-                                            "assets/Google Maps Button.png",
-                                            height: 43,
-                                            width: 150),
-                                      )
-                                  ):Container(
-                                      child: Container(
-
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: SizedBox(
+//                                    height: 60,
+                                    width: MediaQuery.of(context).size.width /
+                                            1.6 -
+                                        60,
+                                    child: AutoSizeText(
+                                      widget.description == "" ||
+                                              widget.description == null
+                                          ? "Trash without description"
+                                          : widget.description,
+                                      softWrap: true,
+                                      minFontSize: 14.0,
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: "SegoeUI"),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                      widget.is_indoors == false
+                          ? CircleAvatar(
+                              backgroundColor: getIconColor(),
+                              child: Icon(
+                                FontAwesomeIcons.trashAlt,
+                                color: Colors.white,
+                              ),
+                            )
+                          : Image.asset(
+                              'assets/home.png',
+                              width: 30,
+                              height: 30,
+                            ),
+                    ],
+                  ),
+                  SizedBox(height: 8),
+                  GestureDetector(
+                    onDoubleTap: () async {
+                      if (widget.voted.trashed != true) {
+                        setState(() {
+                          widget.voted.upvotes = widget.voted.trashed
+                              ? widget.voted.upvotes
+                              : widget.voted.upvotes + 1;
+                          widget.voted.downvotes = widget.voted.disliked
+                              ? widget.voted.downvotes - 1
+                              : widget.voted.downvotes;
+                          widget.voted.trashed = true;
+                          widget.voted.disliked = false;
+                          widget.showHeartOverlay = true;
+                          if (widget.showHeartOverlay) {
+                            Timer(const Duration(milliseconds: 180), () {
+                              setState(() {
+                                widget.showHeartOverlay = false;
+                              });
+                            });
+                          }
+                        });
+                      }
+                      await vote_function();
+                    },
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        widget.imageUrl == null
+                            ? Image.asset('assets/profile.jpg')
+                            : CachedNetworkImage(
+                                imageUrl: widget.imageUrl,
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) =>
+                                        SizedBox(
+                                            height: 250,
+                                            width: 380,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.all(
+                                                    Radius.circular(10.0),
+                                                  ),
+                                                  gradient: LinearGradient(
+                                                      begin: Alignment.topLeft,
+                                                      end: Alignment.bottomRight,
+                                                      colors: [
+                                                        Colors.blueGrey,
+                                                        Colors.blueAccent
+                                                      ])),
+                                            )),
+                                errorWidget: (context, url, error) => SizedBox(
+                                    height: 250,
+                                    width: 380,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0),
+                                          ),
+                                          gradient: LinearGradient(
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                              colors: [
+                                                Colors.blueGrey,
+                                                Colors.blueAccent
+                                              ])),
+                                    )),
+                              ),
+                        widget.showHeartOverlay
+                            ? Icon(
+                                FontAwesomeIcons.solidTrashAlt,
+                                color: Colors.white54,
+                                size: 80.0,
+                              )
+                            : Container(),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 0.0,
+                        child: Divider(
+                          color: Color(0xff4E4F50),
+                        ),
+                      ),
+                      Container(
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 2.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                width: MediaQuery.of(context).size.width / 2.45,
+                                height: 42.0,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                child: Wrap(
+                                  spacing: 1.0,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10.0, 8, 0, 0),
+                                      child: Text(
+                                        " ${widget.voted.upvotes}",
+                                        style: TextStyle(
+                                            fontFamily: "SegoeUI",
+                                            fontSize: 20),
+                                      ),
+                                    ),
+                                    IconButton(
+                                        padding: EdgeInsets.only(
+                                            left: 10.0, top: 6.0),
+                                        alignment: Alignment.topLeft,
+                                        iconSize: 25.0,
+                                        icon: Icon(
+                                            widget.voted.trashed
+                                                ? FontAwesomeIcons.solidThumbsUp
+                                                : FontAwesomeIcons.thumbsUp,
+                                            color: widget.voted.trashed
+                                                ? Colors.green
+                                                : Colors.grey),
+                                        onPressed: () async {
+                                          setState(() {
+                                            widget.voted.upvotes =
+                                                widget.voted.trashed
+                                                    ? widget.voted.upvotes - 1
+                                                    : widget.voted.upvotes + 1;
+                                            widget.voted.downvotes =
+                                                widget.voted.disliked
+                                                    ? widget.voted.downvotes - 1
+                                                    : widget.voted.downvotes;
+                                            widget.voted.trashed =
+                                                !widget.voted.trashed;
+                                            widget.voted.disliked = false;
+                                          });
+                                          await vote_function();
+                                        }),
+                                    Container(
+                                        padding: EdgeInsets.only(
+                                            left: 2.0, right: 4.0),
+                                        height: 36.0,
+                                        child: VerticalDivider(
+                                          color: Colors.black,
+                                          thickness: 1,
+                                          width: 10,
+                                          indent: 6,
+                                        )),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          5.0, 8, 0, 0),
+                                      child: Text(
+                                        " ${widget.voted.downvotes}",
+                                        style: TextStyle(
+                                            fontFamily: "SegoeUI",
+                                            fontSize: 20),
+                                      ),
+                                    ),
+                                    IconButton(
+                                        padding: EdgeInsets.only(
+                                            left: 10.0, bottom: 14.0),
+                                        alignment: Alignment.bottomLeft,
+                                        iconSize: 25.0,
+                                        icon: Icon(
+                                            widget.voted.disliked
+                                                ? FontAwesomeIcons
+                                                    .solidThumbsDown
+                                                : FontAwesomeIcons.thumbsDown,
+                                            color: widget.voted.disliked
+                                                ? Colors.red
+                                                : Colors.grey),
+                                        onPressed: () async {
+                                          setState(() {
+                                            widget.voted.downvotes = widget
+                                                    .voted.disliked
+                                                ? widget.voted.downvotes - 1
+                                                : widget.voted.downvotes + 1;
+                                            widget.voted.upvotes =
+                                                widget.voted.trashed
+                                                    ? widget.voted.upvotes - 1
+                                                    : widget.voted.upvotes;
+                                            widget.voted.disliked =
+                                                !widget.voted.disliked;
+                                            widget.voted.trashed = false;
+                                          });
+                                          await vote_function();
+                                        }),
+                                  ],
+                                ),
+                              ),
+                              GestureDetector(
+                                child: widget.is_indoors == false
+                                    ? (render
+                                        ? Image.asset(
+                                            "assets/Collect Button.png",
+                                            height: 50,
+                                            width: 135)
+                                        : Container(
+                                            child: Image.asset(
+                                                "assets/Google Maps Button.png",
+                                                height: 43,
+                                                width: 150),
+                                          ))
+                                    : Container(
+                                        child: Container(
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
                                           color: Colors.white,
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                              'Contact' , style:TextStyle(
-                                            fontFamily: 'SegoeUI' , color: Colors.yellow[700],
-                                            fontSize: 20 ,
-                                          )
-                                          ),
+                                          child: Text('Contact',
+                                              style: TextStyle(
+                                                fontFamily: 'SegoeUI',
+                                                color: Colors.yellow[700],
+                                                fontSize: 20,
+                                              )),
                                         ),
-                                      )
-                                  ),
-                                  onTap: () async {
-                                    if ( widget.is_indoors == true ){
-                                      print('Contact');
+                                      )),
+                                onTap: () async {
+                                  if (widget.is_indoors == true) {
+                                    print('Contact');
+                                  } else {
+                                    if (render) {
+                                      await collect();
+                                      print("Tapped");
+                                    } else {
+                                      global_store
+                                          .dispatch(new LatAction(widget.lat));
+                                      global_store
+                                          .dispatch(new LngAction(widget.lng));
+                                      global_store.dispatch(
+                                          new NavigatePushAction(
+                                              AppRoutes.map));
                                     }
-                                    else {
-                                      if (render) {
-                                        await collect();
-                                        print("Tapped");
-                                      } else {
-                                        global_store
-                                            .dispatch(new LatAction(widget.lat));
-                                        global_store
-                                            .dispatch(new LngAction(widget.lng));
-                                        global_store.dispatch(
-                                            new NavigatePushAction(
-                                                AppRoutes.map));
-                                      }
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
+                                  }
+                                },
+                              ),
+                            ],
                           ),
                         ),
-                        widget.is_indoors == false ?
-                        (
-                            widget.verified.collected
-                                ? Divider(
-                              color: Colors.black,
-                              thickness: 1.2,
-                            )
-                                : Container()
-
-                        ):Container(),
-                        widget.is_indoors == false ?
-                        (
-                            widget.verified.collected
-                                ? getCollect(context)
-                                : Container()
-                        ):Container()
-                      ],
-                    )
-                  ],
-                ),
-              )),
-        ),
-      );
-    }
+                      ),
+                      widget.is_indoors == false
+                          ? (widget.verified.collected
+                              ? Divider(
+                                  color: Colors.black,
+                                  thickness: 1.2,
+                                )
+                              : Container())
+                          : Container(),
+                      widget.is_indoors == false
+                          ? (widget.verified.collected
+                              ? getCollect(context)
+                              : Container())
+                          : Container()
+                    ],
+                  )
+                ],
+              ),
+            )),
+      ),
+    );
   }
 }
 

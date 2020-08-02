@@ -17,6 +17,7 @@ import 'package:ecoeden/route_aware_widget.dart';
 import 'package:flutter/services.dart' ;
 import 'package:ecoeden/screens/map.dart';
 import 'screens/camera_page.dart';
+import 'screens/community_page.dart';
 import 'screens/feeds_page.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -60,6 +61,8 @@ class MyApp extends StatelessWidget {
         return MainRoute(ProfilePage(), settings: settings);
       case AppRoutes.leaderboard:
         return MainRoute(LeaderBoard(), settings: settings);
+      case AppRoutes.community:
+        return MainRoute(CommunityPage(), settings: settings);
       case AppRoutes.corona:
         return MainRoute(CoronaPage(), settings: settings);
       default:

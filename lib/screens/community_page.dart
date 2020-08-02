@@ -6,6 +6,8 @@ import 'package:ecoeden/services/webservice.dart';
 import 'package:geolocator/geolocator.dart';
 import "package:threading/threading.dart";
 
+import 'feeds_page.dart';
+
 class CommunityPageState extends State<CommunityPage> {
   List<FeedsArticle> _newsArticles = List<FeedsArticle>();
   bool showHeartOverlay = false;
@@ -14,7 +16,6 @@ class CommunityPageState extends State<CommunityPage> {
   Position myLoc;
 
   ScrollController _scrollController = new ScrollController();
-  static String nextPage = 'https://api.ecoeden.xyz/feed/';
   // ignore: non_constant_identifier_names
   static final String NEWS_PLACEHOLDER_IMAGE_ASSET_URL =
       'assets/placeholder.png';
@@ -23,12 +24,12 @@ class CommunityPageState extends State<CommunityPage> {
     print("Inside Feed");
     super.initState();
     locationTracker();
-    nextPage = 'https://api.ecoeden.xyz/community/';
+    FeedsPageState.nextPage = 'https://api.ecoeden.xyz/community/';
     _populateNewsArticles();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent &&
-          CommunityPageState.nextPage != null) {
+          FeedsPageState.nextPage != null) {
         _populateNewsArticles();
         var val = _newsArticles.map((x) => x.id).toList();
         print("It's Feed Show Time !!!");
@@ -88,7 +89,6 @@ class CommunityPageState extends State<CommunityPage> {
 
   @override
   Widget build(BuildContext context) {
-    //print(_newsArticles[0].description);
     return Scaffold(
         body: Stack(
           children: <Widget>[
@@ -100,21 +100,6 @@ class CommunityPageState extends State<CommunityPage> {
             showPost(context),
           ],
         ));
-  }
-
-  List<Widget> getPosts() {
-    return _newsArticles
-        .map((article) => Post(
-        showHeartOverlay: false,
-        description: article.description,
-        imageUrl: article.image,
-        lat: article.lat,
-        lng: article.lng,
-        id: article.id,
-        user: article.user,
-        voted: article.voted,
-        verified: article.verified))
-        .toList();
   }
 
   Widget showPost(BuildContext context) {
@@ -137,10 +122,10 @@ class CommunityPageState extends State<CommunityPage> {
           child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Feed',
+                'Municipality',
                 style: TextStyle(
                     color: Colors.black,
-                    fontSize: 48.0,
+                    fontSize: 40.0,
                     fontFamily: "SegoeUI",
                     fontWeight: FontWeight.w700),
                 textAlign: TextAlign.left,
@@ -162,8 +147,9 @@ class CommunityPageState extends State<CommunityPage> {
             itemCount: _newsArticles.length + 1,
             itemBuilder: (BuildContext context, int index) {
               if (index == _newsArticles.length) {
-                return _buildProgressIndicator();
-              } else {
+                return _buildProgressIndicator();}
+//              } else if (_newsArticles[index].verified.collected == true) return Container();
+              else {
                 print("Index : " + index.toString());
                 return Post(
                     showHeartOverlay: showHeartOverlay,

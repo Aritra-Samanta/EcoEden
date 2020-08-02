@@ -63,9 +63,9 @@ class _ProfilePageState extends State<ProfilePage> {
               id: article.id,
               user: article.user,
               voted: article.voted,
-              verified: article.verified
-            ))
-        .toList();
+              verified: article.verified,
+              is_indoors : article.is_indoors
+            )).toList();
   }
 
 //  Porny & Bati Productions
@@ -142,7 +142,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           Text(
-                            global_store.state.user.email,
+                            global_store.state.user.userName,
                             style: TextStyle(
                                 fontSize: 18.0,
                                 fontFamily: "SegoeUI",

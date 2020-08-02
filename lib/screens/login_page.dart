@@ -7,6 +7,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:ecoeden/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../app_routes.dart';
+import 'signup_page.dart';
 
 const URL = 'https://api.ecoeden.xyz/auth/';
 
@@ -40,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
 
     Widget showLogo() {
       return Container(
-        height: height * 0.5,
+        height: height * 0.42,
         width: width,
         child: Align(
           alignment: Alignment.bottomCenter,
@@ -54,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
 
     Widget showUserNameInput() {
       return Container(
-        padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+        padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
         child: TextFormField(
           controller: _usernameController,
           maxLines: 1,
@@ -118,12 +119,6 @@ class _LoginPageState extends State<LoginPage> {
                   fontWeight: FontWeight.w400),
             ),
             onPressed: () {
-//          Navigator.push(
-//            context,
-//            MaterialPageRoute(builder: (context) => RegisterPage()),
-//          );
-//          StoreProvider.of<AppState>(context).dispatch(NavigatePushAction(AppRoutes.signup));
-//            store.dispatch(NavigatePushAction(AppRoutes.signup));
             },
           ),
         ),
@@ -155,31 +150,6 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
 
-    Widget showTernaryButton(_ViewModel vm) {
-      return Container(
-        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
-        width: width,
-        height: 60.0,
-        child: RaisedButton(
-            elevation: 0.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            color: Color.fromRGBO(98, 203, 146, 1),
-            child: Text(
-              'Upload as Anonymous',
-              style: TextStyle(color: Colors.black,
-                  fontSize: 22.0,
-                  fontFamily: "SegoeUI",
-                  fontWeight: FontWeight.w600),
-            ),
-            onPressed: () async {
-              vm.login("anonymous","anonymous2020",
-                  context);
-            }),
-      );
-    }
-
     Widget showSecondaryButton(BuildContext context) {
       return FlatButton(
         child: Text(
@@ -194,20 +164,46 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
 
+    Widget showTernaryButton(_ViewModel vm) {
+      return Container(
+        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 0.0),
+        width: width / 1.9,
+        height: 50.0,
+        child: RaisedButton(
+            elevation: 0.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            color: Colors.blueGrey[100],
+            child: Text(
+              'Upload as Anonymous',
+              style: TextStyle(color: Colors.black,
+                  fontSize: 14.0,
+                  fontFamily: "SegoeUI",
+                  fontWeight: FontWeight.w400),
+            ),
+            onPressed: () async {
+              vm.login("anonymous","anonymous2020",
+                  context);
+            }),
+      );
+    }
+
     // User login form
     Widget showForm(BuildContext c, _ViewModel vm) {
       return Container(
-        height: height * 0.46,
         padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-        child: Column(
-          children: <Widget>[
-            showUserNameInput(),
-            showPasswordInput(),
-            showForgotButton(),
-            showPrimaryButton(vm),
-            showSecondaryButton(c),
-            showTernaryButton(vm)
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              showUserNameInput(),
+              showPasswordInput(),
+              showForgotButton(),
+              showPrimaryButton(vm),
+              showSecondaryButton(c),
+              showTernaryButton(vm)
+            ],
+          ),
         ),
       );
     }
@@ -221,16 +217,11 @@ class _LoginPageState extends State<LoginPage> {
           isLoading: global_store.state.isLoading,
           opacity: 0.5,
           progressIndicator: CircularProgressIndicator(),
-          child: Container(
-            child: Form(
-              child: ListView(
-                shrinkWrap: true,
-                children: <Widget>[
-                  showLogo(),
-                  showForm(context, vm)
-                ],
-              ),
-            ),
+          child: ListView(
+            children: <Widget>[
+              showLogo(),
+              showForm(context, vm)
+            ],
           ),
         ),
       ),

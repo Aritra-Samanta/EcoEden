@@ -1,7 +1,6 @@
 import 'package:ecoeden/app_routes.dart';
 import 'package:ecoeden/models/user.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import '../app_routes.dart';
 import 'app_state.dart';
@@ -10,7 +9,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
-import 'package:ecoeden/screens/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const URL = 'https://api.ecoeden.xyz/auth/';
@@ -183,7 +181,7 @@ class LoginAction{
   });
 
 
-  ThunkAction<AppState> login(bool isAno ){
+  ThunkAction<AppState> login(bool isAno){
     return (Store<AppState> store) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       if ( prefs.getString('user') != null){
@@ -196,10 +194,10 @@ class LoginAction{
           Toast.show("Incorrect username or password!!!", context,
               duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM),
         }else{
+          prefs.setString('user', jwt),
           if(isAno==true)
             store.dispatch(NavigatePushAction(AppRoutes.camera))
           else{
-            prefs.setString('user', jwt),
             store.dispatch(NavigatePushAction(AppRoutes.home)),
           }
         }

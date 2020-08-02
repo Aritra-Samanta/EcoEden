@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:ecoeden/services/webservice.dart';
-import 'package:ecoeden/screens/home_page.dart';
 import 'package:ecoeden/screens/leaderboard.dart';
 
 class User{
@@ -75,10 +74,8 @@ class User{
     map['last_name'] = lastName;
     map['username'] = userName;
     map['email'] = email;
-    // map['id'] = id;
     map['mobile'] = mobile;
     map['password'] = password;
-//    map['score'] = score;
     return map;
   }
 
