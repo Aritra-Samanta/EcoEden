@@ -74,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           validator: (value) =>
-              value.isEmpty ? 'Email cant\'t be empty.' : null,
+          value.isEmpty ? 'Email cant\'t be empty.' : null,
         ),
       );
     }
@@ -100,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           validator: (value) =>
-              value.isEmpty ? 'Password can\'t be empty' : null,
+          value.isEmpty ? 'Password can\'t be empty' : null,
         ),
       );
     }
@@ -236,9 +236,9 @@ class _ViewModel {
     _login(String username, String password, BuildContext context) {
       store.dispatch(new LoadingStartAction());
       if(username=="anonymous" && password== "anonymous2020")
-      store.dispatch(new LoginAction(
-              username: username, password: password, context: context)
-          .login(true));
+        store.dispatch(new LoginAction(
+            username: username, password: password, context: context)
+            .login(true));
       else
         store.dispatch(new LoginAction(
             username: username, password: password, context: context)

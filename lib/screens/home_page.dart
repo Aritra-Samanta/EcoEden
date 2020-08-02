@@ -20,7 +20,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:pie_chart/pie_chart.dart';
 
-
 final get_User = 'https://api.ecoeden.xyz/users/';
 
 class HomePage extends StatefulWidget {
@@ -36,12 +35,9 @@ class HomePageState extends State<HomePage> {
   String _address;
   double _lat, _lng;
   Set<Marker> _markings = Set<Marker>();
-  Map<String , double > data = new Map();
-  List<Color> _colors = [
-    Colors.red,
-    Colors.green[400]
-  ];
-  BitmapDescriptor trashIcon , collectedIcon,  postIcon, currentIcon;
+  Map<String, double> data = new Map();
+  List<Color> _colors = [Colors.red, Colors.green[400]];
+  BitmapDescriptor trashIcon, collectedIcon, postIcon, currentIcon;
   List<FeedsArticle> _newsArticles = List<FeedsArticle>();
   static String nextPage = 'https://api.ecoeden.xyz/leaderboard/';
   @override
@@ -59,15 +55,14 @@ class HomePageState extends State<HomePage> {
 
   void customMapPin() async {
     trashIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/trash-icon-red.png');
+        ImageConfiguration(devicePixelRatio: 2.5), 'assets/trash-icon-red.png');
     collectedIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 2.5),
         'assets/trash-icon-yellow.png');
   }
 
-  BitmapDescriptor setCustomMapMarkers(FeedsArticle x ){
-    if(x.verified.collected==true)
+  BitmapDescriptor setCustomMapMarkers(FeedsArticle x) {
+    if (x.verified.collected == true)
       return collectedIcon;
     else
       return trashIcon;
@@ -79,7 +74,6 @@ class HomePageState extends State<HomePage> {
     while (FeedsPageState.nextPage != null) {
       await _fetchNewsArticles();
     }
-
   }
 
   Future<void> getValidUser() async {
@@ -112,17 +106,12 @@ class HomePageState extends State<HomePage> {
     var len = _markings.length;
     int trash = (0.7 * len).round();
     int collected = len - trash;
-    data.addAll({
-      "Trash": trash.toDouble(),
-      "Collected": collected.toDouble()
-    });
+    data.addAll({"Trash": trash.toDouble(), "Collected": collected.toDouble()});
   }
-
-
 
   Future<String> getAddress(double latitude, double longitude) async {
     placemark =
-    await Geolocator().placemarkFromCoordinates(latitude, longitude);
+        await Geolocator().placemarkFromCoordinates(latitude, longitude);
     String ad = placemark[0].name.toString() +
         ", " +
         placemark[0].locality.toString() +
@@ -157,23 +146,23 @@ class HomePageState extends State<HomePage> {
 
   Future<bool> _onBackPressed() {
     return showDialog(
-      context: context,
-      builder: (context) => new AlertDialog(
-        title: new Text('Are you sure?'),
-        content: new Text('Do you want to exit the App'),
-        actions: <Widget>[
-          new GestureDetector(
-            onTap: () => Navigator.of(context).pop(false),
-            child: Text("NO"),
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text('Do you want to exit the App'),
+            actions: <Widget>[
+              new GestureDetector(
+                onTap: () => Navigator.of(context).pop(false),
+                child: Text("NO"),
+              ),
+              SizedBox(height: 16),
+              new GestureDetector(
+                onTap: () => SystemNavigator.pop(),
+                child: Text("YES"),
+              ),
+            ],
           ),
-          SizedBox(height: 16),
-          new GestureDetector(
-            onTap: () => SystemNavigator.pop(),
-            child: Text("YES"),
-          ),
-        ],
-      ),
-    ) ??
+        ) ??
         false;
   }
 
@@ -210,13 +199,18 @@ class HomePageState extends State<HomePage> {
                             color: Colors.greenAccent[100],
 //                        color: Color.fromRGBO(250,250, 250, 1),
                           ),
-                          accountName: Text(global_store.state.user.firstName + " " + global_store.state.user.lastName,
-                              style:TextStyle(color:Colors.black,
+                          accountName: Text(
+                              global_store.state.user.firstName +
+                                  " " +
+                                  global_store.state.user.lastName,
+                              style: TextStyle(
+                                  color: Colors.black,
                                   fontSize: 24.0,
                                   fontFamily: "SegoeUI",
                                   fontWeight: FontWeight.w700)),
                           accountEmail: Text(global_store.state.user.userName,
-                              style:TextStyle( color:Colors.black,
+                              style: TextStyle(
+                                  color: Colors.black,
                                   fontSize: 18.0,
                                   fontFamily: "SegoeUI",
                                   fontWeight: FontWeight.w600)),
@@ -227,11 +221,13 @@ class HomePageState extends State<HomePage> {
                                 tag: "profile",
                                 child: CircleAvatar(
                                   backgroundColor: Colors.lightBlueAccent,
-                                  child: Text(sendData(), style: TextStyle(fontSize: 40.0)),
+                                  child: Text(sendData(),
+                                      style: TextStyle(fontSize: 40.0)),
                                 ),
                               ),
                               onTap: () {
-                                global_store.dispatch(new NavigatePushAction(AppRoutes.profile));
+                                global_store.dispatch(
+                                    new NavigatePushAction(AppRoutes.profile));
                               },
                             ),
                           ),
@@ -239,80 +235,106 @@ class HomePageState extends State<HomePage> {
                         GestureDetector(
                           child: Container(
                             padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 3.0),
-                            child: Text('Profile', style: TextStyle(fontFamily: "SegoeUI", fontSize: 18.0)),
+                            child: Text('Profile',
+                                style: TextStyle(
+                                    fontFamily: "SegoeUI", fontSize: 18.0)),
                           ),
                           onTap: () {
-                            global_store.dispatch(new NavigatePushAction(AppRoutes.profile));
+                            global_store.dispatch(
+                                new NavigatePushAction(AppRoutes.profile));
                           },
                         ),
-                        Divider(indent: 10.0, endIndent: 20.0, color: Colors.black),
+                        Divider(
+                            indent: 10.0, endIndent: 20.0, color: Colors.black),
                         GestureDetector(
                           child: Container(
                             padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 3.0),
-                            child: Text('About Us', style: TextStyle(fontFamily: "SegoeUI", fontSize: 18.0)),
-                          ),
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                        Divider(indent: 10.0, endIndent: 20.0, color: Colors.black),
-                        GestureDetector(
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 3.0),
-                            child: Text('Privacy Policy', style: TextStyle(fontFamily: "SegoeUI", fontSize: 18.0)),
+                            child: Text('About Us',
+                                style: TextStyle(
+                                    fontFamily: "SegoeUI", fontSize: 18.0)),
                           ),
                           onTap: () {
                             Navigator.pop(context);
                           },
                         ),
-                        Divider(indent: 10.0, endIndent: 20.0, color: Colors.black),
+                        Divider(
+                            indent: 10.0, endIndent: 20.0, color: Colors.black),
                         GestureDetector(
                           child: Container(
                             padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 3.0),
-                            child: Text('Help & Feedback', style: TextStyle(fontFamily: "SegoeUI", fontSize: 18.0)),
+                            child: Text('Privacy Policy',
+                                style: TextStyle(
+                                    fontFamily: "SegoeUI", fontSize: 18.0)),
                           ),
                           onTap: () {
                             Navigator.pop(context);
                           },
                         ),
-                        Divider(indent: 10.0, endIndent: 20.0, color: Colors.black),
+                        Divider(
+                            indent: 10.0, endIndent: 20.0, color: Colors.black),
                         GestureDetector(
                           child: Container(
                             padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 3.0),
-                            child: Text('Logout', style: TextStyle(fontFamily: "SegoeUI", fontSize: 18.0)),
+                            child: Text('Help & Feedback',
+                                style: TextStyle(
+                                    fontFamily: "SegoeUI", fontSize: 18.0)),
+                          ),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        Divider(
+                            indent: 10.0, endIndent: 20.0, color: Colors.black),
+                        GestureDetector(
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(10.0, 5.0, 0.0, 3.0),
+                            child: Text('Logout',
+                                style: TextStyle(
+                                    fontFamily: "SegoeUI", fontSize: 18.0)),
                           ),
                           onTap: () {
                             global_store.dispatch(new LogoutAction().logout());
                           },
                         ),
-                        Divider(indent: 10.0, endIndent: 20.0, color: Colors.black),
+                        Divider(
+                            indent: 10.0, endIndent: 20.0, color: Colors.black),
                         Align(
                           alignment: FractionalOffset.bottomLeft,
                           child: Container(
                               padding: EdgeInsets.only(left: 30.0, bottom: 5.0),
                               child: Column(
                                 children: <Widget>[
-                                  GestureDetector(child: Image.asset("assets/COVID_19_2.png", height: 50, width: 150,),onTap: (){
-                                    global_store.dispatch(new NavigatePushAction(AppRoutes.corona));
-                                  },),
+                                  GestureDetector(
+                                    child: Image.asset(
+                                      "assets/COVID_19_2.png",
+                                      height: 50,
+                                      width: 150,
+                                    ),
+                                    onTap: () {
+                                      global_store.dispatch(
+                                          new NavigatePushAction(
+                                              AppRoutes.corona));
+                                    },
+                                  ),
                                   SizedBox(height: 5.0),
-                                  Image.asset("assets/EcoEden-Logo-withoutText.png",height: 150.0,width:200.0),
-                                  Text("\u00a9 EcoEden 2020",
-                                    style: TextStyle(
-                                        fontFamily: "SegoeUI"
-                                    ),),
-                                  Text("All Rights Reserved.",
-                                    style: TextStyle(
-                                        fontFamily: "SegoeUI"
-                                    ),),
+                                  Image.asset(
+                                      "assets/EcoEden-Logo-withoutText.png",
+                                      height: 150.0,
+                                      width: 200.0),
+                                  Text(
+                                    "\u00a9 EcoEden 2020",
+                                    style: TextStyle(fontFamily: "SegoeUI"),
+                                  ),
+                                  Text(
+                                    "All Rights Reserved.",
+                                    style: TextStyle(fontFamily: "SegoeUI"),
+                                  ),
                                 ],
-                              )
-                          ),
+                              )),
                         )
                       ],
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -321,7 +343,11 @@ class HomePageState extends State<HomePage> {
         body: _child,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add_a_photo, color: Colors.black, size: 27.5,),
+          child: Icon(
+            Icons.add_a_photo,
+            color: Colors.black,
+            size: 27.5,
+          ),
           backgroundColor: Colors.blueGrey[100],
           elevation: 0.0,
           onPressed: () {
@@ -344,8 +370,8 @@ class HomePageState extends State<HomePage> {
                         FontAwesomeIcons.users,
                       ),
                       onPressed: () {
-                        global_store
-                            .dispatch(new NavigatePushAction(AppRoutes.community));
+                        global_store.dispatch(
+                            new NavigatePushAction(AppRoutes.community));
                       },
                     ),
                   ),
@@ -357,8 +383,8 @@ class HomePageState extends State<HomePage> {
                         FontAwesomeIcons.trophy,
                       ),
                       onPressed: () {
-                        global_store
-                            .dispatch(new NavigatePushAction(AppRoutes.leaderboard));
+                        global_store.dispatch(
+                            new NavigatePushAction(AppRoutes.leaderboard));
                       },
                     ),
                   ),
@@ -379,27 +405,36 @@ class HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.only(),
                     child: IconButton(
                       icon: Icon(FontAwesomeIcons.chartPie),
-                      onPressed: () async{
+                      onPressed: () async {
                         await showModalBottomSheet<void>(
                           backgroundColor: Colors.transparent,
-                          context:context,
+                          context: context,
                           builder: (BuildContext context) {
                             return ClipRRect(
-                              borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(15.0),
+                                  topRight: Radius.circular(15.0)),
                               child: Container(
                                   height: 300,
                                   color: Colors.green[100],
-                                  child :Center(
+                                  child: Center(
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: Text( 'Analytics' , style: TextStyle(color:Colors.black , fontSize: 30),),
+                                            child: Text('Analytics',
+                                                style: TextStyle(
+                                                color: Colors.black,
+                                                fontFamily: "SegoeUI",
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 30),),
                                           ),
 
                                           PieChart(
                                             dataMap: data,
+                                            legendStyle: TextStyle(color: Colors.black, fontFamily: "SegoeUI", fontSize: 18.0),
                                             colorList: _colors, // if not declared, random colors will be chosen
                                             animationDuration: Duration(milliseconds: 1500),
                                             chartLegendSpacing: 32.0,
@@ -421,7 +456,7 @@ class HomePageState extends State<HomePage> {
                                           ),
 
                                           RaisedButton(
-                                              child: const Text('Close'),
+                                              child: const Text('Close', style: TextStyle(color: Colors.black, fontFamily: "SegoeUI", fontSize: 18.0),),
                                               shape: RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.circular(10.0),
                                               ),
@@ -432,9 +467,7 @@ class HomePageState extends State<HomePage> {
                                           )
                                         ],
 
-                                      )
-                                  )
-                              ),
+                                      ))),
                             );
                           },
                           elevation: 20.0,
@@ -465,7 +498,7 @@ class HomePageState extends State<HomePage> {
   void _createMarker(List<FeedsArticle> articles) async {
     for (FeedsArticle x in articles) {
       String markerAddress =
-      await getAddress(double.parse(x.lat), double.parse(x.lng));
+          await getAddress(double.parse(x.lat), double.parse(x.lng));
       Marker marker = Marker(
           markerId: MarkerId(x.lat + "," + x.lng),
           position: LatLng(double.parse(x.lat), double.parse(x.lng)),
@@ -494,7 +527,7 @@ class HomePageState extends State<HomePage> {
   Widget popUpPage(String date, String url, String description) {
     date = date.substring(0, date.indexOf('T'));
     final String dateFormat =
-    DateFormat("dd-MM-yyyy").format(DateTime.parse(date));
+        DateFormat("dd-MM-yyyy").format(DateTime.parse(date));
     DateTime dateTimeCreatedAt = DateTime.parse(date);
     DateTime dateTimeNow = DateTime.now();
     final differenceInDays = dateTimeNow.difference(dateTimeCreatedAt).inDays;
@@ -534,7 +567,9 @@ class HomePageState extends State<HomePage> {
                   fontStyle: FontStyle.normal, fontWeight: FontWeight.w900),
             ),
             Text(
-              "- $differenceInDays days ago", style: TextStyle(fontStyle: FontStyle.normal, fontWeight: FontWeight.w300),
+              "- $differenceInDays days ago",
+              style: TextStyle(
+                  fontStyle: FontStyle.normal, fontWeight: FontWeight.w300),
             ),
           ],
         ),
@@ -557,21 +592,23 @@ class HomePageState extends State<HomePage> {
           },
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(10.0,0.0,7.0,100.0),
+          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 7.0, 100.0),
           child: Align(
             alignment: Alignment.bottomRight,
             child: CircleAvatar(
               backgroundColor: Colors.grey[300],
               radius: 25,
-              child: IconButton(icon: Icon(Icons.my_location,size: 28, color: Colors.black), onPressed:(){
-                _controller.animateCamera(CameraUpdate.newCameraPosition(
-                  CameraPosition(
-                    bearing: 0,
-                    target: LatLng(position.latitude, position.longitude),
-                    zoom: 17.0,
-                  ),
-                ));
-              }),
+              child: IconButton(
+                  icon: Icon(Icons.my_location, size: 28, color: Colors.black),
+                  onPressed: () {
+                    _controller.animateCamera(CameraUpdate.newCameraPosition(
+                      CameraPosition(
+                        bearing: 0,
+                        target: LatLng(position.latitude, position.longitude),
+                        zoom: 17.0,
+                      ),
+                    ));
+                  }),
             ),
           ),
         )

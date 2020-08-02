@@ -489,12 +489,6 @@ class _PostState extends State<Post> {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
-                      SizedBox(
-                        height: 0.0,
-                        child: Divider(
-                          color: Color(0xff4E4F50),
-                        ),
-                      ),
                       Container(
                         child: Padding(
                           padding:

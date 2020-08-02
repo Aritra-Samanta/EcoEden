@@ -53,11 +53,11 @@ class _ImageInput extends State<ImageInput> {
 
     // Find the mime type of the selected file by looking at the header bytes of the file
     final mimeTypeData =
-        lookupMimeType(image.path, headerBytes: [0xFF, 0xD8]).split('/');
+    lookupMimeType(image.path, headerBytes: [0xFF, 0xD8]).split('/');
 
     // Initialize the multipart request
     final imageUploadRequest =
-        http.MultipartRequest('POST', Uri.parse(baseUrl));
+    http.MultipartRequest('POST', Uri.parse(baseUrl));
 
     // Attach the file in the request
     final file = await http.MultipartFile.fromPath('image', image.path,
@@ -215,7 +215,7 @@ class _ImageInput extends State<ImageInput> {
               color: Colors.white,
               icon: Icon(Icons.arrow_back, size: 30),
               onPressed: () => {
-              Navigator.pop(context),
+                Navigator.pop(context),
               },
             ),
           ),
@@ -252,7 +252,7 @@ class _ImageInput extends State<ImageInput> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: MediaQuery.of(context).size.height / 1.53,
+                  height: MediaQuery.of(context).size.height / 1.45,
                   width: 350,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
@@ -261,120 +261,122 @@ class _ImageInput extends State<ImageInput> {
                     padding: EdgeInsets.fromLTRB(14.0, 14.0, 14.0, 9.0),
                     child: _imageFile == null
                         ? Container(
-                            color: Colors.transparent,
-                            child: CustomPaint(
-                              painter: RectPainter(),
-                              child: Column(
-                                children: <Widget>[
-                                  Align(
-                                    heightFactor: 2.3,
-                                    child: Container(
-                                      width: 140,
-                                      height: 140,
-                                      child: Image.asset(
-                                          'assets/add-image-symbol.jpg'),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: Container(
-                                          width: 150,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              color: Colors.white),
-                                          child: FlatButton(
-                                            onPressed: () => {
-                                              _openImagePickerModal(context)
-                                            },
-                                            child: Text(
-                                              '+ IMAGE',
-                                              style: TextStyle(
-                                                  fontSize: 20.0,
-                                                  fontFamily: "SegoeUI",
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          ),
-                                        ),
+                      color: Colors.transparent,
+                      child: CustomPaint(
+                        painter: RectPainter(),
+                        child: Column(
+                          children: <Widget>[
+                            Align(
+                              heightFactor: 2.3,
+                              child: Container(
+                                width: 140,
+                                height: 140,
+                                child: Image.asset(
+                                    'assets/add-image-symbol.jpg'),
+                              ),
+                            ),
+                            Expanded(
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Container(
+                                    width: 150,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(10),
+                                        color: Colors.white),
+                                    child: FlatButton(
+                                      onPressed: () => {
+                                        _openImagePickerModal(context)
+                                      },
+                                      child: Text(
+                                        '+ IMAGE',
+                                        style: TextStyle(
+                                            fontSize: 20.0,
+                                            fontFamily: "SegoeUI",
+                                            fontWeight: FontWeight.w600),
                                       ),
                                     ),
                                   ),
-                                  SizedBox(height: 18.0,),
-                                ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 18.0,),
+                          ],
+                        ),
+                      ),
+                    )
+                        : Container(
+                      color: Colors.transparent,
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                BorderRadius.circular(10),
+                                color: Colors.white),
+                            height: MediaQuery.of(context).size.height / 11.0,
+                            width: MediaQuery.of(context).size.width,
+                            child : descriptionField(),
+                          ),
+                          SizedBox(height: 10.0),
+                          Image.file(
+                            _imageFile,
+                            fit: BoxFit.cover,
+                            height: MediaQuery.of(context).size.height / 2.4,
+                            alignment: Alignment.topCenter,
+                            width: MediaQuery.of(context).size.width,
+                          ),
+                          SizedBox(height: 10.0),
+                          Center(child: SliderContainer(minGrad: Color(0xFF00c6ff), maxGrad: Color(0xFF0072ff),)),
+                          SizedBox(
+                            height: 50,
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Padding(
+                                  padding: const EdgeInsets.fromLTRB(15.0, 12.0, 10.0, 0.0),
+                                  child :Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(10),
+                                              color: Colors.white),
+                                          child:_buildUploadBtn(),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(right: 16.0),
+                                          child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children : <Widget>[
+                                                Switch(
+                                                  value:  _isIndoors,
+                                                  onChanged: (value){
+                                                    setState(() {
+                                                      _isIndoors = value;
+                                                    });
+                                                  },
+                                                  activeTrackColor: Colors.black,
+                                                  activeColor: Colors.grey[100],
+                                                ),
+                                                Image.asset(
+                                                  'assets/home.png',
+                                                  height : 20  ,
+                                                  width: 20,
+                                                ),
+                                              ]
+                                          ),
+                                        )
+                                      ]
+                                  )
+
                               ),
                             ),
                           )
-                        : Container(
-                            color: Colors.transparent,
-                            child: Column(
-                              children: <Widget>[
-                                Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                      BorderRadius.circular(10),
-                                      color: Colors.white),
-                                  height: MediaQuery.of(context).size.height / 11.0,
-                                  width: MediaQuery.of(context).size.width,
-                                  child : descriptionField(),
-                                ),
-                                SizedBox(height: 10.0),
-                                Image.file(
-                                  _imageFile,
-                                  fit: BoxFit.cover,
-                                  height: MediaQuery.of(context).size.height / 2.3,
-                                  alignment: Alignment.topCenter,
-                                  width: MediaQuery.of(context).size.width,
-                                ),
-                                SizedBox(
-                                  height: 50,
-                                  child: Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(15.0, 12.0, 10.0, 0.0),
-                                        child :Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                 Container(
-                                                  decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  color: Colors.white),
-                                                child:_buildUploadBtn(),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(right: 16.0),
-                                                  child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                      children : <Widget>[
-                                                        Switch(
-                                                          value:  _isIndoors,
-                                                          onChanged: (value){
-                                                            setState(() {
-                                                              _isIndoors = value;
-                                                            });
-                                                          },
-                                                          activeTrackColor: Colors.black,
-                                                          activeColor: Colors.grey[100],
-                                                        ),
-                                                        Image.asset(
-                                                            'assets/home.png',
-                                                          height : 20  ,
-                                                          width: 20,
-                                                        ),
-                                                      ]
-                                                  ),
-                                                )
-                                              ]
-                                        )
-
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
 
@@ -395,9 +397,9 @@ class _ImageInput extends State<ImageInput> {
         child: Stack(children: <Widget>[
           Positioned(
               child: Image.asset(
-            'assets/wave.png',
-            fit: BoxFit.fitWidth,
-          )),
+                'assets/wave.png',
+                fit: BoxFit.fitWidth,
+              )),
           cameraWidget(context),
         ]),
       ),
@@ -434,5 +436,169 @@ class RectPainter extends CustomPainter {
   @override
   bool shouldRebuildSemantics(CustomPainter oldDelegate) {
     return false;
+  }
+}
+
+class CustomSliderThumbRect extends SliderComponentShape {
+  final double thumbRadius;
+  final thumbHeight;
+  final int min;
+  final int max;
+  final Color textColor;
+
+  const CustomSliderThumbRect({
+    this.thumbRadius,
+    this.thumbHeight,
+    this.min,
+    this.max,
+    this.textColor
+  });
+
+  String showLabel(double value) {
+    if (value == 0) {
+      return 'Individual';
+    } else if (value == 1) {
+      return 'Community';
+    } else {
+      return 'Municipality';
+    }
+  }
+
+  @override
+  Size getPreferredSize(bool isEnabled, bool isDiscrete) {
+    return Size.fromRadius(thumbRadius);
+  }
+
+  @override
+  void paint(
+      PaintingContext context,
+      Offset center, {
+        Animation<double> activationAnimation,
+        Animation<double> enableAnimation,
+        bool isDiscrete,
+        TextPainter labelPainter,
+        RenderBox parentBox,
+        SliderThemeData sliderTheme,
+        TextDirection textDirection,
+        double value,
+      }) {
+    final Canvas canvas = context.canvas;
+
+    final rRect = RRect.fromRectAndRadius(
+      Rect.fromCenter(
+          center: center, width: thumbHeight * 2.0, height: thumbHeight * .6),
+      Radius.circular(thumbRadius * .4),
+    );
+
+    final paint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.fill;
+
+    TextSpan span = new TextSpan(
+        style: new TextStyle(
+            fontSize: thumbHeight * .3,
+            fontWeight: FontWeight.w700,
+            color: this.textColor,
+            height: 1),
+        text: showLabel(getValue(value)));
+    TextPainter tp = new TextPainter(
+        text: span,
+        textAlign: TextAlign.left,
+        textDirection: TextDirection.ltr);
+    tp.layout();
+    Offset textCenter =
+    Offset(center.dx - (tp.width / 2), center.dy - (tp.height / 2));
+
+    canvas.drawRRect(rRect, paint);
+    tp.paint(canvas, textCenter);
+  }
+
+  double getValue(double value) {
+    return ((max) * (value));
+  }
+}
+
+class SliderContainer extends StatefulWidget {
+  final double sliderHeight;
+  final int min;
+  final int max;
+  final fullWidth;
+  final Color minGrad;
+  final Color maxGrad;
+
+  SliderContainer(
+      {this.sliderHeight = 28,
+        this.max = 2,
+        this.min = 0,
+        this.fullWidth = false,
+        this.minGrad = const Color(0xFF00c6ff),
+        this.maxGrad = const Color(0xFF0072ff)});
+
+  @override
+  _SliderContainerState createState() => _SliderContainerState();
+}
+
+class _SliderContainerState extends State<SliderContainer> {
+  double _value = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    double paddingFactor = 0.8;
+    if (this.widget.fullWidth) paddingFactor = .4;
+
+    return Container(
+      width: this.widget.fullWidth
+          ? double.infinity
+          : (this.widget.sliderHeight) * 12,
+      height: (this.widget.sliderHeight),
+      decoration: new BoxDecoration(
+        borderRadius: new BorderRadius.all(
+          Radius.circular((this.widget.sliderHeight * .3)),
+        ),
+        gradient: new LinearGradient(
+            colors: [
+              this.widget.minGrad,
+              this.widget.maxGrad,
+            ],
+            begin: const FractionalOffset(0.0, 0.0),
+            end: const FractionalOffset(1.0, 1.00),
+            stops: [0.0, 1.0],
+            tileMode: TileMode.clamp),
+      ),
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(this.widget.sliderHeight * paddingFactor,
+            2, this.widget.sliderHeight * paddingFactor, 2),
+        child: Center(
+          child: SliderTheme(
+            data: SliderTheme.of(context).copyWith(
+              activeTrackColor: Colors.white.withOpacity(1),
+              inactiveTrackColor: Colors.white.withOpacity(.5),
+
+              trackHeight: 8.0,
+              thumbShape: CustomSliderThumbRect(
+                  thumbRadius: this.widget.sliderHeight * .4,
+                  thumbHeight: 40,
+                  min: this.widget.min,
+                  max: this.widget.max,
+                  textColor: this.widget.maxGrad
+              ),
+              overlayColor: Colors.white.withOpacity(.4),
+              activeTickMarkColor: Colors.white,
+              inactiveTickMarkColor: Colors.white.withOpacity(.7),
+            ),
+            child: Slider(
+                divisions: 2,
+                value: _value,
+                min: 0,
+                max: 2,
+                onChanged: (value) {
+                  setState(() {
+                    _value = value;
+                  });
+                }),
+          ),
+        ),
+      ),
+    );
   }
 }

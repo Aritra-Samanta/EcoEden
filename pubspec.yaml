@@ -50,6 +50,7 @@ dependencies:
   threading: ^0.0.10
   pie_chart:
   auto_size_text: ^2.1.0
+  flutter_xlider: ^3.4.0
 
 
 dev_dependencies:
