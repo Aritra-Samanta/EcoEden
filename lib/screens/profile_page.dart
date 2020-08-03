@@ -60,6 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
               imageUrl: article.image,
               lat: article.lat,
               lng: article.lng,
+              scale: article.scale,
               id: article.id,
               user: article.user,
               voted: article.voted,

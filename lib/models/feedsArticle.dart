@@ -9,6 +9,7 @@ class FeedsArticle {
   final String createdAt;
   final String lat;
   final String lng;
+  final int scale;
   final String description;
   final Map<String,dynamic> user;
   HasVoted voted;
@@ -21,6 +22,7 @@ class FeedsArticle {
     this.createdAt,
     this.lat,
     this.lng,
+    this.scale,
     this.description,
     this.user,
     this.voted,
@@ -36,6 +38,7 @@ class FeedsArticle {
       user : json['user'],
       lat : json['lat'],
       lng : json['lng'],
+      scale : json['scale'],
       description : json['description'],
       is_indoors: json['is_indoors'],
       voted: HasVoted(json['upvotes'], json['downvotes'], json['activity']),

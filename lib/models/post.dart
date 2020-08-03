@@ -19,6 +19,7 @@ class Post extends StatefulWidget {
   final String imageUrl;
   final String lat;
   final String lng;
+  final int scale;
   final int id;
   final Map<String, dynamic> user;
   HasVoted voted;
@@ -30,6 +31,7 @@ class Post extends StatefulWidget {
       this.showHeartOverlay,
       this.lat,
       this.lng,
+      this.scale,
       this.description,
       this.imageUrl,
       this.user,
@@ -50,6 +52,27 @@ class _PostState extends State<Post> {
   @override
   void initState() {
     super.initState();
+  }
+
+  Image geticon(int n) {
+    if (n == 1)
+      return Image.asset(
+        'assets/individual-icon-red.png',
+        width: 40,
+        height: 40,
+      );
+    if (n == 2)
+      return Image.asset(
+        'assets/group-icon-red.png',
+        width: 40,
+        height: 40,
+      );
+    else
+      return Image.asset(
+        'assets/garbage-truck-icon-red.png',
+        width: 40,
+        height: 40,
+      );
   }
 
   Future<void> vote_function() async {
@@ -395,12 +418,20 @@ class _PostState extends State<Post> {
                             ),
                           )),
                       widget.is_indoors == false
-                          ? CircleAvatar(
-                              backgroundColor: getIconColor(),
-                              child: Icon(
-                                FontAwesomeIcons.trashAlt,
-                                color: Colors.white,
-                              ),
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                widget.verified.collected == false
+                                    ? Padding(
+                                      padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+                                      child: geticon(widget.scale),
+                                    ) : Container(),
+                                CircleAvatar(
+                                  backgroundColor: getIconColor(),
+                                  child: Icon(FontAwesomeIcons.trashAlt,
+                                      color: Colors.white, size: 18),
+                                ),
+                              ],
                             )
                           : Image.asset(
                               'assets/home.png',
@@ -441,24 +472,24 @@ class _PostState extends State<Post> {
                             ? Image.asset('assets/profile.jpg')
                             : CachedNetworkImage(
                                 imageUrl: widget.imageUrl,
-                                progressIndicatorBuilder:
-                                    (context, url, downloadProgress) =>
-                                        SizedBox(
-                                            height: 250,
-                                            width: 380,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0),
-                                                  ),
-                                                  gradient: LinearGradient(
-                                                      begin: Alignment.topLeft,
-                                                      end: Alignment.bottomRight,
-                                                      colors: [
-                                                        Colors.blueGrey,
-                                                        Colors.blueAccent
-                                                      ])),
-                                            )),
+                                progressIndicatorBuilder: (context, url,
+                                        downloadProgress) =>
+                                    SizedBox(
+                                        height: 250,
+                                        width: 380,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0),
+                                              ),
+                                              gradient: LinearGradient(
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                  colors: [
+                                                    Colors.blueGrey,
+                                                    Colors.blueAccent
+                                                  ])),
+                                        )),
                                 errorWidget: (context, url, error) => SizedBox(
                                     height: 250,
                                     width: 380,
@@ -618,7 +649,7 @@ class _PostState extends State<Post> {
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Text('Contact',
+                                          child: Text('CONTACT',
                                               style: TextStyle(
                                                 fontFamily: 'SegoeUI',
                                                 color: Colors.yellow[700],
@@ -628,7 +659,7 @@ class _PostState extends State<Post> {
                                       )),
                                 onTap: () async {
                                   if (widget.is_indoors == true) {
-                                    print('Contact');
+                                    print('CONTACT');
                                   } else {
                                     if (render) {
                                       await collect();

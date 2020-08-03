@@ -28,6 +28,8 @@ class _ImageInput extends State<ImageInput> {
 
   bool _isIndoors = false;
 
+  int scale = _SliderContainerState._value.round() + 1;
+
   String baseUrl = 'https://api.ecoeden.xyz/photos/';
 
   final _descriptionController = TextEditingController();
@@ -49,6 +51,7 @@ class _ImageInput extends State<ImageInput> {
 
     setState(() {
       _isUploading = true;
+      scale = _SliderContainerState._value.round() + 1;
     });
 
     // Find the mime type of the selected file by looking at the header bytes of the file
@@ -71,6 +74,7 @@ class _ImageInput extends State<ImageInput> {
     imageUploadRequest.fields['is_indoors']='${_isIndoors.toString()}';
     imageUploadRequest.fields['lng'] = '${res.longitude}';
     imageUploadRequest.fields['visible'] = "true";
+    imageUploadRequest.fields['scale']='${scale.toString()}';
     imageUploadRequest.fields['description'] =
         _descriptionController.text; //"Anonymous post";
     imageUploadRequest.files.add(file);
@@ -98,6 +102,7 @@ class _ImageInput extends State<ImageInput> {
   void _startUploading() async {
     final Map<String, dynamic> response = await _uploadImage(_imageFile);
     print(response);
+    print("Scale Value : " + scale.toString());
     // Check if any error occured
     if (response == null || response.containsKey("error")) {
       Toast.show("Image Upload Failed!!!", context,
@@ -539,7 +544,7 @@ class SliderContainer extends StatefulWidget {
 }
 
 class _SliderContainerState extends State<SliderContainer> {
-  double _value = 0;
+  static double _value = 0;
 
   @override
   Widget build(BuildContext context) {

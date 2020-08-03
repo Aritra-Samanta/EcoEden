@@ -45,11 +45,11 @@ class _LeaderBoardState extends State<LeaderBoard> {
 
   Color renderColors(int arg) {
     switch (arg) {
-      case 2:
+      case 1:
         return Color(0xffFDDE69);
-      case 3:
+      case 2:
         return Color(0xffDFE3E6);
-      case 4:
+      case 3:
         return Color(0xffEDC194);
       default:
         return Colors.grey[200];
@@ -134,7 +134,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                           children: <Widget>[
                             Text(
                               " " * 2 +
-                                  index.toString().padLeft(2, '0') + " " * 3,
+                                  (index+1).toString().padLeft(2, '0') + " " * 3,
                               style:
                               TextStyle(fontSize: 24.0, fontFamily: "SegoeUI", fontWeight: FontWeight.w300),
                             ),

@@ -157,6 +157,7 @@ class CommunityPageState extends State<CommunityPage> {
                     imageUrl: _newsArticles[index].image,
                     lat: _newsArticles[index].lat,
                     lng: _newsArticles[index].lng,
+                    scale: _newsArticles[index].scale,
                     id: _newsArticles[index].id,
                     user: _newsArticles[index].user,
                     voted: _newsArticles[index].voted,
